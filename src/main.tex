@@ -1,23 +1,26 @@
 
 \documentclass[twoside, english, a4paper]{uiofysmaster}
-\usepackage{natbib}
 
+\usepackage{HASstyle}
+
+%\includeonly{existingmodels}
 
 \title{myMaster}
 \author{Henrik Andersen Sveinsson}
 
 \begin{document}
 \maketitle
-\include{abstract}
-\include{acknowledgements}
+\include{intro/abstract}
+\include{intro/acknowledgements}
 
 \tableofcontents
 
-\include{introduction}
+\include{intro/introduction}
 
 \part{State of the science}
-\include{existingmodels}
+\include{part1/existingmodels}
 \part{}
+\include{part2/tools}
 \part{}
 
 \bibliographystyle{plain}
