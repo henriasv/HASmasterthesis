@@ -1,14 +1,34 @@
 \documentclass[a4paper]{article}
 %\usepackage{natbib}
+
+\author{Henrik Andersen Sveinsson}
+\title{Review of papers on clathrate hydrate modeling: Methods and software}
 \begin{document}
 \bibliographystyle{naturemag}
+\maketitle
 
 The intention of this document is to give an overview of current molecular dynamics models of gas hydrates. What are the methods and what potentials are in use? The strategy will be to find some review articles, to find papers that have had some impact, and inspect the methods used in those papers. 
 
-\section{}
+\section{Introduction}
 A particularly interesting review article is \cite{Barnes2013}. It cites and/or recommends 48 papers on clathrate hydrates of which only a handful were published before 2010. 4 of the papers cited here are tagged as "of outstanding interest". Then a few more are tagged as "of special interest". The rest might be of interest, but the tagged papers will be prioritized. 
-A paper that got some attention in 2009 was \cite{Walsh2009}. It also got a perspective article \cite{Debenedetti2009}.
+
+
+\section{Papers of outstanding interest}
+The outstanding papers are \cite{Walsh2009, Matsumoto2002, Jacobson2010, Jensen2010}.
+
+\subsection{Nucleation and growth}
+\cite{Walsh2009} is a full simulation of methane hydrate nucleation and growth. It also got a perspective article \cite{Debenedetti2009}. This simulation was done using Gromacs, introduced in \cite{Hess2008}. The system consisted of 512 methane atoms as in \cite{Goodbody1991} and 2944 TIP4P-ICE water molecules as in \cite{Abascal2005}. Long range forces were computed with smooth particle Ewald summation as \cite{Essmann1995}.
+
+\cite{Jacobson2010} models precursors in nucleation of clathrate hydrates. They use a coarse-grained model which is claimed to be 2-3 orders of magnitude more efficient than atomistic methods. Water is modeled using the mW model as in \cite{Molinero2009}. Guest-water and guest-guest is modeled as in another paper by Jacobson \cite{Jacobson2010a}. 
+
+\section{Papers of special interest}
+
+\section{Review of methods}
+
+\subsection{TIP4P-ICE water molecules}
+This seems to be a method in a family of related methods. Experimentally fitted. 
 
 \bibliography{../../bib/mendeleybib}
+
 \end{document}
 
