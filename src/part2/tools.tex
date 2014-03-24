@@ -1,0 +1,23 @@
+\chapter{Simulation tools}
+
+\section{LAMMPS}
+
+\subsection{Input files}
+Lammps input files are a set of commands to be executed. Some commands are only valid in the right order. The structure of such a file is:
+
+\begin{enumerate}
+\item \tb{Initialization:} Units, processors, boundary conditions, atom\_style, pair\_style
+\item \tb{Atom definition:} Either from input file (restart/data) or making a lattice or region and create a box and atoms. 
+\item \tb{Settings:} 
+\item \tb{Run:}	
+\end{enumerate}
+
+Most properties are already set with a standard value, which means that only non-standard properties has to be set. 
+
+\paragraph{atom\_style}
+atom\_style decides what kinds of interactions are possible to implement.
+
+\paragraph{pair\_style}
+The pair\_style interaction is somewhat misleading. What it actually means is that bonds and angles are not predefined. 
+
+All commands ar available from the LAMMPS documentation \cite{lammps:input_commands}. A very good beginners guide for LAMMPS \cite{lammps:guide:pittsburg}
