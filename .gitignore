@@ -30,3 +30,4 @@
 *.vrb
 *.xdy
 *.tdo
+*lammps_input_files*

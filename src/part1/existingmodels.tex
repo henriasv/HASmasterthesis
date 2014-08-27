@@ -1,3 +1,67 @@
 \chapter{Existing Models}
+%\bibliography{../../bib/master_bibliography}
+\section{TIP4P-ICE water model}
+The TIP4P-ICE was developed by \cite{Abascal2005}, and was used by \cite{Walsh2009} in the first successful simulation of spontaneous methane hydrate growth. 
 
-\cite{cygan2004molecular}
+\subsection{Overview}
+The TIP4P-ICE water model is a rigid water model with 4 sites for each water molecule: One O-site, two H-sites, and a site commonly referred to as the M-site. The M-site is supposed to slightly move the oxygen charge, and it is situated on the bisector of the H-O-H angle. The parameters for the arrangement as well as the masses of hydrogen and oxygen are taken from experimental observations, and were listed in table \ref{tb:intro:h2odata}.
+
+\begin{table}[h!tb]
+\caption{Parameters for TIP4P-ICE model as in \cite{Abascal2005}.}
+\begin{center}
+\begin{tabular}{c|c|c}
+Description & Symbol & Value \\ 
+\hline
+Lennard-Jones energy & $\varepsilon/k$ & \SI{100.5}{\kelvin} \\
+Lennard-Jones characteristic distance & $\sigma_{OO}$ & \SI{3.155}{\angstrom} \\
+Distance O-site to M-site along bisector & $d_{OM}$ & \SI{0.157}{\angstrom} \\
+Hydrogen charge & $q_H$ & \SI{0.5676}{\elementarycharge} \\
+\end{tabular}
+\end{center}
+\end{table}
+
+\subsection{Interactions}
+There are two interaction potentials for TIP4P-ICE: electrostatic interactions and Lennard-Jones (LJ) interactions, with the following functional forms:
+
+\begin{align}
+	U_{LJ} & = 4\varepsilon\left[\left(\frac{\sigma}{r_{OO}}\right)^{12} - \left(\frac{\sigma}{r_{OO}}\right)^{6}\right]
+	\label{eq:part1:lennardjonespotential}
+	\\
+	U_{\si{\elementarycharge}} & = \frac{\si{\elementarycharge\squared}}{4\pi\varepsilon_0} \sum_{a, b} \frac{q_aq_b}{r_{ab}}
+	\label{eq:part1:electrostaticpotential}
+\end{align}
+
+Since the molecules are treated as rigid, interactions are only between sites on different molecules. 
+
+\section{United Atom Methane}
+United atom methane is the united atom model for methane, and is effectively a single Lennard-Jones interaction site for each methane molecule. 
+\begin{equation}
+	U_{LJ} = 4\varepsilon\left[\left(\frac{\sigma}{r_{MM}}\right)^{12} - \left(\frac{\sigma}{r_{MM}}\right)^{6}\right]
+	\label{eq:part1:lennardjonespotentialmethane}
+\end{equation}
+A parameter set for this methane representation can for example be taken from \cite{Martin1998}, and are listed in \ref{tb:parameters_unitedatommethane}. 
+
+\begin{table}
+\caption{Lennard-Jones parameters for united atom methane.}
+\label{tb:parameters_unitedatommethane}
+\begin{center}
+\begin{tabular}{c|c|c}
+Description & Symbol & Value \\
+\hline
+Lennard-Jones energy & $\varepsilon/k_B$ & \SI{147.9}{\kelvin} \\
+Lennard-Jones characteristic distance & $\sigma_{MM}$ & \SI{3.73}{\angstrom}
+\end{tabular}
+\end{center}
+\end{table}
+
+\section{Combining particles of different species in a model}
+Having different potentials, for different aggregate particles (such as TIP4P/ICE), we want a way to combine them in a model containing both species. For electrostatic interactions, the combination rules are straightforward, as they follow from Coulombs law. For Lennard-Jones interactions, there is not such a simple combination law, and in principle, one has to fit parameters for each unique pair of particles. Luckily, it is possible to make rules that combine particles without going into an extensive parameter fitting exercise. 
+
+\subsection{Lorentz-Berthelot combination rules}
+Perhaps the simplest way to combine two species Lennard-Jones particles, is to use the following rules from two sets of parameters ($\varepsilon_{ii}$, $\sigma_{ii}$) and ($\varepsilon_{jj}$, $\sigma_{jj}$) for interactions between two particles of the same species i or j, on to a set of parameters ($\varepsilon_{ij}$, $\sigma_{ij}$) for interactions between one particle of each species:
+\begin{align}
+\varepsilon_{ij} = \sqrt{\varepsilon_{ii}\varepsilon_{jj}} \\
+\sigma_{ij} = \frac{1}{2} \left(\sigma_{ii}+\sigma_{jj}\right)
+\end{align}
+
+

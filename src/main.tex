@@ -1,11 +1,8 @@
-
 \documentclass[twoside, english, a4paper]{uiofysmaster}
 
 \usepackage{HASstyle}
 
-%\includeonly{existingmodels}
-
-\title{myMaster}
+\title{wt: Molecular modeling of gas hydrate disassociation}
 \author{Henrik Andersen Sveinsson}
 
 \begin{document}
@@ -18,12 +15,13 @@
 \include{intro/introduction}
 
 \part{State of the science}
+\include{part1/gas_hydrate_theory}
 \include{part1/existingmodels}
-\part{}
+\part{Numerical models}
+\include{part2/lammpsverification}
 \include{part2/tools}
 \part{}
-
-\bibliographystyle{plain}
-\bibliography{../bib/bibliography}
+\bibliographystyle{naturemag}
+\bibliography{../bib/master_bibliography}
 
 \end{document}
