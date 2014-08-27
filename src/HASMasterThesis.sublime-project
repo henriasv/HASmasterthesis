@@ -1,0 +1,16 @@
+{
+	"folders":
+	[
+		{
+			"path": "../src"
+		},
+		{
+			"path": "../bib"
+		}
+	],
+	"options":
+	{
+		"pdf": "HASMasterThesis.pdf",
+		"root": "main.tex"
+	}
+}
