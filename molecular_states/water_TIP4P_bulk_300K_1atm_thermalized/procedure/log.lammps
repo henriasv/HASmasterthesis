@@ -1,0 +1,213 @@
+LAMMPS (11 Nov 2013)
+WARNING: OMP_NUM_THREADS environment is not set. (../comm.cpp:100)
+  using 1 OpenMP thread(s) per MPI task
+# ----- Initialize simulation ------
+clear
+WARNING: OMP_NUM_THREADS environment is not set. (../comm.cpp:100)
+  using 1 OpenMP thread(s) per MPI task
+units real
+dimension 3
+boundary p p p
+atom_style full
+
+# ------ Create atoms -------------------
+read_data data.tip4p_single
+  2 = max bonds/atom
+  1 = max angles/atom
+  orthogonal box = (0 0 0) to (3.1 3.1 3.1)
+  1 by 1 by 1 MPI processor grid
+  3 atoms
+  2 bonds
+  1 angles
+  2 = max # of 1-2 neighbors
+  1 = max # of 1-3 neighbors
+  1 = max # of 1-4 neighbors
+  2 = max # of special neighbors
+replicate 15 15 15
+  orthogonal box = (0 0 0) to (46.5 46.5 46.5)
+  1 by 1 by 1 MPI processor grid
+  10125 atoms
+  6750 bonds
+  3375 angles
+  2 = max # of 1-2 neighbors
+  1 = max # of 1-3 neighbors
+  1 = max # of 1-4 neighbors
+  2 = max # of special neighbors
+
+# -------- Define interatomic potential ----
+# Original model from Horn et al, J Chem Phys 120: 9665 (2004)
+# Charges and geometry are specified in the "data." file.
+
+mass 1 1.00794 # H
+mass 2 15.9994 # O
+
+pair_style lj/cut/tip4p/long 2 1 1 1 0.125 10.0
+kspace_style pppm/tip4p 1.0e-5
+
+pair_coeff 1 1 0.0 0.0
+pair_coeff 1 2 0.0 0.0
+pair_coeff 2 2 0.16275 3.16435
+
+bond_style harmonic
+bond_coeff 1 0.0 0.9572
+
+angle_style harmonic
+angle_coeff 1 0.0 104.52
+
+# -------- Settings ----------------
+fix mySHAKE all shake 1.0e-4 100 0 b 1 a 1
+  0 = # of size 2 clusters
+  0 = # of size 3 clusters
+  0 = # of size 4 clusters
+  3375 = # of frozen angles
+fix myTemp all npt temp 100.0 400.0 50.0 iso 1.0 1.0 100.0
+
+#fix myInfoPrint all print 100 "Timestep $step"
+dump myDump all custom 100 output.lammpstrj id element x y z vx vy vz
+dump_modify myDump element H O
+write_data ../../molecular_states/water_tip4p_bulk_startstate.molecules pair ij
+PPPM initialization ...
+  G vector (1/distance) = 0.31275
+  grid = 45 45 45
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.00292369
+  estimated relative force accuracy = 8.8046e-06
+  using double precision FFTs
+  3d grid and FFT values/proc = 140608 91125
+run 2000
+PPPM initialization ...
+  G vector (1/distance) = 0.31275
+  grid = 45 45 45
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.00292369
+  estimated relative force accuracy = 8.8046e-06
+  using double precision FFTs
+  3d grid and FFT values/proc = 140608 91125
+Memory usage per processor = 48.7604 Mbytes
+Step Temp E_pair E_mol TotEng Press Volume 
+       0            0   -418.39531            0   -418.39531    21044.005    100544.62 
+    2000    394.12022   -33251.809            0   -25323.101   -159.50697    107389.01 
+Loop time of 355.127 on 1 procs (1 MPI x 1 OpenMP) for 2000 steps with 10125 atoms
+
+Pair  time (%) = 270.191 (76.083)
+Bond  time (%) = 0.00319791 (0.000900497)
+Kspce time (%) = 30.3646 (8.55035)
+Neigh time (%) = 9.43452 (2.65666)
+Comm  time (%) = 0.432935 (0.12191)
+Outpt time (%) = 0.419074 (0.118007)
+Other time (%) = 44.2812 (12.4691)
+
+FFT time (% of Kspce) = 17.0636 (56.1956)
+FFT Gflps 3d (1d only) = 2.43946 4.81232
+
+Nlocal:    10125 ave 10125 max 10125 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:    25010 ave 25010 max 25010 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    3.67274e+06 ave 3.67274e+06 max 3.67274e+06 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 3672735
+Ave neighs/atom = 362.739
+Ave special neighs/atom = 2
+Neighbor list builds = 117
+Dangerous builds = 23
+
+fix myTemp all npt temp 400.0 300.0 50.0 iso 1.0 1.0 100.0
+run 3000
+PPPM initialization ...
+  G vector (1/distance) = 0.311187
+  grid = 45 45 45
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.00312036
+  estimated relative force accuracy = 9.39686e-06
+  using double precision FFTs
+  3d grid and FFT values/proc = 140608 91125
+Memory usage per processor = 50.6698 Mbytes
+Step Temp E_pair E_mol TotEng Press Volume 
+    2000    394.12022   -33251.819            0   -25323.111   -161.29111    107389.01 
+    5000    304.25931   -36694.452            0   -30573.519    283.18532    101917.82 
+Loop time of 550.008 on 1 procs (1 MPI x 1 OpenMP) for 3000 steps with 10125 atoms
+
+Pair  time (%) = 421.109 (76.5641)
+Bond  time (%) = 0.00439978 (0.000799948)
+Kspce time (%) = 46.0163 (8.36649)
+Neigh time (%) = 15.3136 (2.78424)
+Comm  time (%) = 0.650762 (0.118319)
+Outpt time (%) = 0.622831 (0.11324)
+Other time (%) = 66.2913 (12.0528)
+
+FFT time (% of Kspce) = 25.568 (55.563)
+FFT Gflps 3d (1d only) = 2.44206 4.81455
+
+Nlocal:    10125 ave 10125 max 10125 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:    25719 ave 25719 max 25719 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    3.86874e+06 ave 3.86874e+06 max 3.86874e+06 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 3868743
+Ave neighs/atom = 382.098
+Ave special neighs/atom = 2
+Neighbor list builds = 177
+Dangerous builds = 0
+
+fix myTemp all npt temp 300.0 300.0 100.0 iso 1.0 1.0 100.0
+run 10000
+PPPM initialization ...
+  G vector (1/distance) = 0.312429
+  grid = 45 45 45
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.00296311
+  estimated relative force accuracy = 8.92331e-06
+  using double precision FFTs
+  3d grid and FFT values/proc = 140608 91125
+Memory usage per processor = 50.6698 Mbytes
+Step Temp E_pair E_mol TotEng Press Volume 
+    5000    304.25931   -36694.447            0   -30573.515    282.36532    101917.82 
+   15000    298.73933   -37201.774            0   -31191.889    144.60246    102240.37 
+Loop time of 1916.03 on 1 procs (1 MPI x 1 OpenMP) for 10000 steps with 10125 atoms
+
+Pair  time (%) = 1483.05 (77.402)
+Bond  time (%) = 0.012655 (0.000660481)
+Kspce time (%) = 157.837 (8.23771)
+Neigh time (%) = 46.1081 (2.40644)
+Comm  time (%) = 2.22872 (0.116319)
+Outpt time (%) = 2.15965 (0.112715)
+Other time (%) = 224.639 (11.7242)
+
+FFT time (% of Kspce) = 86.1739 (54.5967)
+FFT Gflps 3d (1d only) = 2.41522 4.74435
+
+Nlocal:    10125 ave 10125 max 10125 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:    25676 ave 25676 max 25676 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:    3.85301e+06 ave 3.85301e+06 max 3.85301e+06 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 3853014
+Ave neighs/atom = 380.545
+Ave special neighs/atom = 2
+Neighbor list builds = 522
+Dangerous builds = 0
+
+write_data water_TIP4P_bulk_300K_1atm_thermalized.molecules pair ij
+PPPM initialization ...
+  G vector (1/distance) = 0.312354
+  grid = 45 45 45
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.00297237
+  estimated relative force accuracy = 8.9512e-06
+  using double precision FFTs
+  3d grid and FFT values/proc = 140608 91125
+write_data ../../molecular_states/water_TIP4P_bulk_300K_1atm_thermalized.molecules pair ij
+PPPM initialization ...
+  G vector (1/distance) = 0.312354
+  grid = 45 45 45
+  stencil order = 5
+  estimated absolute RMS force accuracy = 0.00297237
+  estimated relative force accuracy = 8.9512e-06
+  using double precision FFTs
+  3d grid and FFT values/proc = 140608 91125
