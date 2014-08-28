@@ -1,6 +1,9 @@
 \chapter{Simulation tools}
 
 \section{LAMMPS}
+Lammps, Large-scale Atomic/Molecular Massively Parallel Simulator, is a tool for (possibly) large particle-style simulations - mainly molecular dynamics. Lammps is a massive open source project, and its main features are developed and maintained at Sandia National Laboratories in the United States. 
+
+From here follows a short introduction to practical use of Lammps. This section was written as memory notes to myself during the first month of using Lammps. 
 
 \subsection{Input files}
 Lammps input files are a set of commands to be executed. Some commands are only valid in the right order. The structure of such a file is:
@@ -8,16 +11,122 @@ Lammps input files are a set of commands to be executed. Some commands are only 
 \begin{enumerate}
 \item \tb{Initialization:} Units, processors, boundary conditions, atom\_style, pair\_style
 \item \tb{Atom definition:} Either from input file (restart/data) or making a lattice or region and create a box and atoms. 
-\item \tb{Settings:} 
-\item \tb{Run:}	
+\item \tb{Settings:} Typically thermostat and file dump information.
+\item \tb{Run:} Choose number of timesteps.
 \end{enumerate}
+
 
 Most properties are already set with a standard value, which means that only non-standard properties has to be set. 
 
 \paragraph{atom\_style}
-atom\_style decides what kinds of interactions are possible to implement.
+Atom style limits what kinds of interactions are possible to implement. For full flexibility, it is possible to set it to all.
 
 \paragraph{pair\_style}
-The pair\_style interaction is somewhat misleading. What it actually means is that bonds and angles are not predefined. 
+Pair style is the kind of interaction that are applied to all possible pairs of atoms. In practice, pair\_style sets all interations that are not part of specific bonded or angle interactions. 
+
+\paragraph{bond\_style}
+
+\paragraph{angle\_style}
+
+\paragraph{pair\_coeff}
+
+\paragraph{bond\_coeff}
+
+\paragraph{angle\_coeff}
+
+
+\subsubsection{Data files}
+It is usually a good idea to have all atom input information i a file separate from the input file, and read it with the data\_read command. An atom data file shall contain positions and velocities for all particles. In addition, if some atoms are parts of specific molecules, this is decleared. All bonds and angles (and dihedrals and so on ..) that are meant to support interactions between specific particles must be decleared. In addition, it is possible to insert coefficients for the different interactions. However, it is not possible to declare atom\_style, pair\_style or any other style in the data files. This has to be done in the input file, and it is important that the number of coefficients in the data file is compatible with the interaction potential chosen in the input file. 
+
+Below are some extractions from an input file for bulk water with bonded O-H interactions, and angular H-O-H interactions. I have used this file to simulate TIP4P water, by keeping the bonds and angles rigid with the shake-algorithm. 
+
+\begin{lstlisting}
+LAMMPS data file via write_data, version 11 Nov 2013, timestep = 15000
+
+10125 atoms
+2 atom types
+6750 bonds
+1 bond types
+3375 angles
+1 angle types
+
+-1.2998053548485800e-01 4.6629980535484322e+01 xlo xhi
+-1.2998053548485800e-01 4.6629980535484322e+01 ylo yhi
+-1.2998053548485800e-01 4.6629980535484322e+01 zlo zhi
+
+Masses
+
+1 1.00794
+2 15.9994
+
+PairIJ Coeffs
+
+1 1 0 0 10
+1 2 0 0 10
+2 2 0.16275 3.16435 10
+
+Bond Coeffs
+
+1 0 0.9572
+
+Angle Coeffs
+
+1 0 104.52
+
+Atoms
+
+721 241 2 -1.0484400000000000e+00 -6.2221407531032169e-02 1.5159166496011423e+00 5.3069458514672112e+00 0 0 0
+1396 466 2 -1.0484400000000000e+00 4.0240333910499935e+00 4.2356159167994916e+00 1.7598269969646658e+00 0 0 0
+1398 466 1 5.2422000000000002e-01 4.7736723529825049e+00 3.6734646891601108e+00 1.9555433512796152e+00 0 0 0
+718 240 2 -1.0484400000000000e+00 1.6591102071344288e+00 1.3108233273533909e-01 3.7368290353832792e+00 1 0 0
+2115 705 1 5.2422000000000002e-01 2.6288644528128606e+00 1.8244264320027685e+00 3.9483095929557672e+00 1 0 0
+.
+.
+.
+
+Velocities
+
+721 -5.0354515315883175e-04 5.3167587742950842e-03 3.3571203451087726e-03
+1396 2.9628128063741773e-04 -3.6999987020118080e-03 -6.2672614595795321e-03
+1398 1.9834410211762494e-03 -4.5261896434727186e-04 -3.5219356644226700e-03
+718 6.4570329589514993e-04 -1.2753082693010263e-03 5.5441917429848477e-03
+2115 1.9812407347396029e-03 -1.4861789372548064e-03 2.0816584325493676e-02
+143 -7.7275724561505395e-03 1.4979358537740204e-03 1.9557938914574084e-02
+720 -8.5445971109074596e-03 -1.7755485312369985e-02 1.4432539996760280e-02
+2114 8.2504630257354671e-03 -1.5862538887645005e-02 1.1754578049979690e-02
+722 1.8121516439040641e-02 -5.4646869701048756e-03 2.3672874162716955e-03
+767 -7.7201655772992407e-03 -5.5203125867209482e-03 -1.2033511911111539e-02
+
+.
+.
+.
+
+Bonds
+
+1 1 721 722
+2 1 721 723
+3 1 1396 1397
+4 1 1396 1398
+5 1 718 719
+6 1 718 720
+
+.
+.
+.
+
+Angles
+
+1 1 722 721 723
+2 1 1397 1396 1398
+3 1 719 718 720
+4 1 9452 9451 9453
+5 1 767 766 768
+6 1 2114 2113 2115
+7 1 53 52 54
+8 1 143 142 144
+
+\end{lstlisting}
+
+This requires some explanation. The first lines are ignored by Lammps, so the first line to be interpreted is line 3. The first section, line 3-8, contains information about wat is supposed to be contained in this file. The next section defines the bounds on the simulation domain. Then comes a definition of the masses for the two atom types that were decleared in the first section. In the section called PairIJ Coeffs, parameters for pair\_style interactions are set. The last line in this section tells that pair\_style interactions between particles of type 2 and 2 in this simulations have parameters 0.16275, 3.1643 and 10. The first two parameters in the 1 1 and 1 2 interactions have value 0, which tells us that these don't interact pair\_style. The bond coefficient section decleares a bond with id 1. If there were to be additional types of bonded interactions, they would be numbered from 2 and so on. If the bond\_style is set to harmonic, the parameters for the first bond tells that the equilibrium distance in this harmonic bond is 0.9572, but that the coefficient for the harmonic force is 0. The reason for the coefficient to be zero in this specific case, is that the bond is to be rigid, and rigidity is handled later, by a fix-command. The angle coeffs section follows the same pattern as the bond coeffs. Th contents of the Atoms section can vary, depending on the atom\_style used in the simulation. This setup is for atom\_style full. Line 35 tells that atom number 721 belongs to molecule number 241. It is of type 2 (oxygen in this case), and has charge -1.04844. Then comes xyz positions, and an nx ny nz counter telling how many times the atom has passed each periodic wall. Velocities are self-explanatory. The bonds section lists all the bonds that are defined in the simulation. In this case it is O-H-bonds in water. line 63 tells that the first such bond is of type 1 (as defined in bond coeffs), and that it creates a bonded interaction between atoms 721 and 722. The angles section is similar, but it takes three atoms to make an angle, with the vertex in the middle. This type of declaration is quite powerful. We have only defined that we have some water molecules, and that they support bonded and angular interactions, as well as pair\_style interactions. That means we can use any potential (supported by lammps) that have these restrictions. The only thing that has to be changed, are the coefficients for the different interactions. If one wishes to change potentials regularly, it can be a good idea to put coefficients in a file together with the declaration of potentials, using the *_coeff commands. 
 
 All commands ar available from the LAMMPS documentation \cite{lammps:input_commands}. A very good beginners guide for LAMMPS \cite{lammps:guide:pittsburg}
