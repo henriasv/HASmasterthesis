@@ -2,4 +2,13 @@
 In this chapter, i verify that my LAMMPS setup reproduces known results from the literature. This is necessary to trust the model to go further with modifications. 
 \section{TIP4P/ICE}
 \section{United atom methane}
+\section{Stabilizing methane hydrates}
+The TIP4P/ICE potential should be able to stabilize a methane hydrate stucture. Therefore, I prepared an S1 hydrate using positions from \cite{Takeuchi2013}. These positions were derived using the TIP4P potential, so this configuration is not expected to be an equilibrium configuration for TIP4P/ICE. The hydrate equilibrated nicely, using a Nosé-Hoover npt thermostat with a temperature rising from 0 to 30 Kelvin. 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{../snapshots/first_stable_hydrate.pdf}
+\caption{Methane hydrate at low temperature. Rendered with VMD}
+\label{fig:part2:first_hydrate}
+\end{figure}
+
 \section{Nucleation of methane hydrates}
