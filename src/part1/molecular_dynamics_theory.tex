@@ -1,0 +1,68 @@
+\chapter{Molecular dynamics}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction to molecular dynamics}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Verlet integration}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Rigid molecules - The SETTLE algorithm}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+There are several ways to keep a group of atoms constrained as a rigid molecule. Generally, one can use the SHAKE or the RATTLE algorithm. For the particular case of three rigid atoms, the SETTLE algorithm might be preferred. The SETTLE algorithm \cite{Miyamoto1992} is an analytical solution to the 3-particle constraint problem when integrating numerically the newtonian equations of motion. It implements the contraint by changing the positions and velocities of the constrained particles after each integration step.
+
+The basic idea of the SETTLE algorithm is to use the positions on a triangle before, $\Delta A_0 B_0 C_0$, and after, $\Delta A_1 B_1 C_1$, an unconstrained integration step to determine rotation operations to perform on $\Delta A_0 B_0 C_0$ to achieve a triangle $\Delta A_3 B_3 C_3$ corresponding to a constrained integration step. When we know the rotation operations, we also know the positions $(A_3, B_3, C_3)$ which are what we want for an implementation of the algorithm.
+
+Let us look at the water molecule as a triangle placed in the $X'Y'$ plane of an orthogonal coordinate system $X'Y'Z'$	with the center of mass in the origin, and the oxygen atom placed on the positive y-axis. We denote the triangle $\Delta abc$ beginning with $a$ being the position of oxygen, and $b$ and $c$ the hydrogen positions in the positive direction of rotation around the origin.  In this coordinate system, the triangle is uniquely defined by three numbers: $(r_a, r_b, r_c)$ being the position components $a_y$, $-b_y$ and $c_x$. Triangles denoted by lowercase letters are the canonical water molecule, or the equilibrium configuration. $\Delta ABC$ is a triangle with possibly any positions of the corners, on which we want to perform the contrain operation to get back to the canonical triangle. 
+
+The main derivation of the settle algorithm involve four planes, $\pi_0, \pi_A, \pi_B, \pi_C$ and the assumption that displacement vector for each apex from the unconstrained to the constrained triangle should be parallell to the plane $\pi_0$ of the triangle before the integration step. 
+
+The actual steps to perform in the SETTLE algorithm are (in primed coordinates):
+\paragraph{Positions}
+\begin{enumerate}
+\item Calculate $\phi$ and $\psi$: \\
+$\phi$ and $\psi$ can be calculated without any knowledge of forces.
+\begin{equation}
+\sin\phi = \frac{Z_{A_1}'}{r_a}
+\end{equation}
+\begin{equation}
+\sin\psi = \frac{Z_{B_1}' - Z_{C_1}'}{2r_c\cos\phi}
+\end{equation}
+
+\item Obtain intermidiate coordinates
+\begin{align}
+(X_{a_2}', Y_{a_2}',Z_{a_2}') &= (0, r_c\cos\phi, r_c\sin\phi)\\
+(X_{b_2}', Y_{b_2}',Z_{b_2}') &= (-r_c\cos\psi, -r_b\cos\phi - r_c\sin\psi\sin\phi, -r_b\sin\phi + r_c\sin\psi\cos\phi)\\
+(X_{c_2}', Y_{c_2}',Z_{c_2}') &= (r_c\cos\psi, -r_b\cos\phi + r_c\sin\psi\sin\phi, -r_b\sin\phi - r_c\sin\psi\cos\phi)
+\end{align}
+
+\item Calculate $\theta$ from assumption on forces, positions and velocities: \\
+\begin{align}
+	\alpha &= X'_{b_2} ( X'_{B_0}  -X'_{C_0})  +
+	Y'_{b_2}( Y'_{B_0}  -Y'_{A_0}) 	+
+		Y'_{c_2}( Y'_{C_0}  -Y'_{A_0}) \\
+	\beta &= X'_{b_2} ( Y'_{C_0}  -Y'_{B_0})
+		 		+Y'_{b_2}( X'_{B_0}  -X'_{A_0}) 	+
+		 		Y'_{c_2}( X'_{C_0}  -X'_{A_0}) \\
+	\gamma &= Y'_{B_1} ( X'_{B_0}  -X'_{A_0})
+			-X'_{B_1}( Y'_{B_0}  -Y'_{A_0}) 	+
+			Y'_{C_1}( X'_{C_0}  -X'_{A_0}) 	-
+			X'_{C_1}( Y'_{C_0} - Y'_{A_0})
+\end{align}
+\begin{equation}
+\sin \theta = \frac{\alpha\gamma - \beta \sqrt{\alpha^2 + \beta^2 - \gamma^2 )}}{\alpha^2 + \beta^2}
+\end{equation}
+
+\item Obtain final coordinates
+\begin{align}
+(X_{a_3}', Y_{a_3}',Z_{a_3}') &= 	(X_{a_2}' \cos\theta - Y_{a_2}'\sin\theta,
+									 X_{a_2}' \sin\theta + Y_{a_2}'\cos\theta, Z_{a_2}')\\
+(X_{b_3}', Y_{b_3}',Z_{b_3}') &= 	(X_{b_2}' \cos\theta - Y_{b_2}'\sin\theta, 
+									 X_{b_2}' \sin\theta + Y_{b_2}'\cos\theta, Z_{b_2}')\\
+(X_{c_3}', Y_{c_3}',Z_{c_3}') &=	(X_{c_2}' \cos\theta - Y_{c_2}'\sin\theta, 
+									 X_{c_2}' \sin\theta + Y_{c_2}'\cos\theta, Z_{c_2}')
+\end{align}
+\end{enumerate}
+
+\paragraph{Velocities}
+The following is only valid within the velocity verlet algorithm.

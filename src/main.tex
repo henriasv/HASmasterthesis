@@ -1,26 +1,28 @@
 \documentclass[twoside, english, a4paper]{uiofysmaster}
-
+\includeonly{part1/molecular_dynamics_theory}
 \usepackage{HASstyle}
 
 \title{Molecular modeling of gas hydrate disassociation}
 \author{Henrik Andersen Sveinsson}
 
 \begin{document}
-\maketitle
+%\maketitle
 \include{intro/abstract}
 \include{intro/acknowledgements}
+\include{intro/preface}
 
-\tableofcontents
+%\tableofcontents
 
 \include{intro/introduction}
 
-\part{State of the science}
+%\part{State of the science}
 \include{part1/gas_hydrate_theory}
+\include{part1/molecular_dynamics_theory}
 \include{part1/existingmodels}
-\part{Numerical models}
+%\part{Numerical models}
 \include{part2/lammpsverification}
 \include{part2/tools}
-\part{}
+%\part{}
 \bibliographystyle{naturemag}
 \bibliography{../bib/master_bibliography}
 
