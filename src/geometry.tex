@@ -1,0 +1,11 @@
+\chapter{3D geometry}
+
+\section{Rotation matrix for the SETTLE algorithm}
+Here, I present a method for obtaining the matrix transforming from global to rotated cartesian coordinates for use with the SETTLE algorithm. We consider transformations from a canonical triangle in non-primed to primed coordinates. This corresponds to going from $\Delta A_0B_0C_0$ to $\Delta A_0' B_0' C_0'$. The mass center of the triangle is still denoted $D$.
+\begin{align}
+[\mb{e}_{y'}] &= \frac{\overrightarrow{DO}}{|\overrightarrow{DO}|} \\
+[\mb{e}_{z'}] &= \frac{\overrightarrow{OH_1} \times \overrightarrow{OH_2} }{ | \overrightarrow{OH_1} \times \overrightarrow{OH_2}|} \\
+[\mb{e}_{x'}] &= [\mb{e}_{y'}] \times [\mb{e}_{z'}]
+\end{align}
+
+The transformation matrix is now the matrix $( [\mb{e}_{x'}], [\mb{e}_{y'}],  [\mb{e}_{z'}] )$ where the unit vectors are inserted as columns.
