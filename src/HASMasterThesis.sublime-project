@@ -2,7 +2,10 @@
 	"folders":
 	[
 		{
-			"path": "../src"
+			"path": "../src",
+			"file_exclude_patterns": ["*.aux", "*.fls", "*.synctex.gz", "*.out", "*.fdb_latexmk",
+			"*.blg", "*.log"],
+			"folder_exclude_patterns": ["Output"]
 		},
 		{
 			"path": "../bib"
