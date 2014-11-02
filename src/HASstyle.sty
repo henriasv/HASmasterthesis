@@ -4,7 +4,7 @@
 \usepackage{url}
 \usepackage{siunitx}
 \usepackage[utf8x]{inputenc}
-\usepackage{courier}
+%\usepackage{courier}
 \usepackage{listings}
 \usepackage[usenames,dvipsnames]{xcolor}
 
@@ -25,28 +25,122 @@
 \definecolor{cyan}{HTML}{2AA198}
 \definecolor{green}{HTML}{859900}
 
+\lstdefinelanguage{LammpsData}{
+  keywords={
+    atom,
+    atoms,
+    bond,
+    bonds,
+    angle,
+    angles,
+    dihedral,
+    dihedrals
+  }
+  ndkeywords={type}
+}
+
+\lstdefinelanguage{LammpsInput}{
+  morekeywords={
+  log, 
+  write_restart, 
+  restart, 
+  dump, 
+  undump, 
+  thermo, 
+  thermo_modify, 
+  thermo_style, 
+  print, 
+  include, 
+  read, 
+  read_restart, 
+  read_data, 
+  boundary, 
+  units, 
+  atom_style, 
+  lattice, 
+  region, 
+  create_box, 
+  create_atoms, 
+  dielectric, 
+  delete_atoms, 
+  change_box, 
+  dimension, 
+  replicate, 
+  pair_coeff, 
+  pair_style, 
+  pair_modify, 
+  mass, 
+  velocity, 
+  angle_coeff, 
+  angle_style, 
+  atom_modify, 
+  atom_style, 
+  bond_coeff, 
+  bond_style, 
+  delete_bonds, 
+  kspace_style, 
+  kspace_modify, 
+  dihedral_style, 
+  dihedral_coeff, 
+  improper_style, 
+  improper_coeff, 
+  min_style, 
+  fix_modify, 
+  run_style, 
+  timestep, 
+  neighbor, 
+  neigh_modify, 
+  fix, 
+  unfix, 
+  communicate, 
+  newton, 
+  nthreads, 
+  processors, 
+  reset_timestep, 
+  minimize, 
+  run, 
+  variable, 
+  group, 
+  compute
+  },
+  morecomment=[l]{\#}
+}
+
 \lstset{
+  upquote=true,
+  columns=fixed,
+  extendedchars=true,
+  language=LammpsInput,
 	numbers=left,
-	numbersep=15pt,
+	numbersep=12pt,
 	stepnumber=1,
-	basicstyle=\footnotesize\ttfamily,
 	showstringspaces=false,
 	showspaces=false,
-  	showtabs=false,
-  	breaklines=true,
-  	breakatwhitespace=true,
-  	tabsize=2,
-  	frame=l,
-  	framesep=10mm,
-  	framexleftmargin=2.5mm,
-  	framexrightmargin=2.5mm,
-  	fillcolor=\color{base2},
-  	rulecolor=\color{base2},
-  	numberstyle=\color{base1},
-  	backgroundcolor=\color{base3},
-  	aboveskip=10pt,
-  	belowskip=10pt
+  showtabs=false,
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=2,
+	frame=l,
+	framesep=8mm,
+	framexleftmargin=2.5mm,
+	framexrightmargin=2.5mm,
+	fillcolor=\color{base2},
+	rulecolor=\color{base2},
+	numberstyle=\color{base1},
+	backgroundcolor=\color{base3},
+	aboveskip=10pt,
+	belowskip=10pt,
+  rulesepcolor=\color{base03},
+  numberstyle=\tiny\color{base01},
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{green},
+  stringstyle=\color{cyan}\ttfamily,
+  identifierstyle=\color{blue},
+  commentstyle=\color{base01},
+  emphstyle=\color{red}
 }
+
+
 
 \newcommand{\tb}{\textbf}
 \newcommand{\mb}{\mathbf}
