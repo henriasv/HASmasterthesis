@@ -1,0 +1,3 @@
+[submodule "utils/uiofysmaster"]
+	path = utils/uiofysmaster
+	url = git@github.com:ComputationalPhysics/uiofysmaster.git
