@@ -9,7 +9,11 @@
 		},
 		{
 			"path": "../bib"
+		},
+		{	
+			"path": "../utils/uiofysmaster"
 		}
+
 	],
 	"options":
 	{
