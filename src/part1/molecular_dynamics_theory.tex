@@ -1,15 +1,21 @@
 \chapter{Molecular dynamics}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction to molecular dynamics}
+\section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Potentials}
+
+\subsection{Lennard-Jones}
+
+\subsection{ReaxFF}
 
 \subsection{Verlet integration}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Rigid molecules - The SETTLE algorithm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-There are several ways to keep a group of atoms constrained as a rigid molecule. Generally, one can use the SHAKE or the RATTLE algorithm. For the particular case of three rigid atoms, the SETTLE algorithm might be preferred. The SETTLE algorithm \cite{Miyamoto1992} is an analytical solution to the 3-particle constraint problem when integrating numerically the newtonian equations of motion. It implements the contraint by changing the positions and velocities of the constrained particles after each integration step.
+There are several ways to keep a group of atoms constrained as a rigid molecule. The goal is to obtain the sme result as if the equation was integrated using holonomic constraints, but integrating the angular movement of rigid particles instead of ...***. Generally, one can use the SHAKE or the RATTLE algorithm. For the particular case of three rigid atoms, the SETTLE algorithm might be preferred. The SETTLE algorithm \cite{Miyamoto1992} is an analytical solution to the 3-particle constraint problem when integrating numerically the newtonian equations of motion. It implements the contraint by changing the positions and velocities of the constrained particles after each integration step.
 
 The basic idea of the SETTLE algorithm is to use the positions on a triangle before, $\Delta A_0 B_0 C_0$, and after, $\Delta A_1 B_1 C_1$, an unconstrained integration step to determine rotation operations to perform on $\Delta A_0 B_0 C_0$ to achieve a triangle $\Delta A_3 B_3 C_3$ corresponding to a constrained integration step. When we know the rotation operations, we also know the positions $(A_3, B_3, C_3)$ which are what we want for an implementation of the algorithm.
 
