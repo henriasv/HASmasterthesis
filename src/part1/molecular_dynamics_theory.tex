@@ -3,14 +3,44 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+We are not interested in trajectories, we are interested in statistically correct behavior. 
 
 \section{Potentials}
 
 \subsection{Lennard-Jones}
+Perhaps the simplest potential widely used in molecular dynamics is the Lennard-Jones potential. For two particles separated with a distance $r$, it looks like:
+\begin{equation}
+	U_{LJ} = 4\varepsilon\left[\left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^{6}\right]
+\end{equation}
 
-\subsection{ReaxFF}
+\subsection{Coulombic potentials}
+Coulombic potentials are used for charges particles, and is equivalent to Coulombs law:
+\begin{equation}
+	U_e = k\frac{q_iq_j}{r_{ij}}
+\end{equation}
 
-\subsection{Verlet integration}
+
+\subsection{Bonded and angular potentials}
+
+\subsection{Reactive potentials}
+Reactive potentials are potentials that allow for chemical reactions.
+
+\section{Integration}
+
+\section{Thermostats}
+Thermostats are applied to control temperature of a system. Some thermostats can be shown to make the system sample some thermodynamic ensemble. Thermostatting can be closely intertwined with integration in the sense that thermostatting represents a change in the integration scheme. 
+\subsection{Berendsen thermostat}
+\subsection{Andersen thermostat}
+\subsection{Nosé-Hoover thermostat}
+
+\section{Barostats}
+
+
+\section{Long range corrections}
+For slowly decaying potentials, such as Coulombic potentials, it is not advisible to use a cutoff distance, as this might result in severe inaccuracies. However, there are techniques that allows compensation withoud doing a full pairwise computation. 
+\subsection{Ewald summation}
+\subsection{Particle mesh}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Rigid molecules - The SETTLE algorithm}
