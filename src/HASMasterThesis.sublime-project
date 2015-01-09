@@ -12,6 +12,9 @@
 		},
 		{	
 			"path": "../utils/uiofysmaster"
+		},
+		{
+			"path": "../figures"
 		}
 
 	],
