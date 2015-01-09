@@ -2,7 +2,7 @@
 %\includeonly{part1/molecular_dynamics_theory, geometry}
 \usepackage{HASstyle}
 
-\title{Molecular modeling of gas hydrate dissociation}
+\title{Molecular modeling of methane hydrate dissociation}
 \author{Henrik Andersen Sveinsson}
 
 \begin{document}
@@ -17,9 +17,10 @@
 
 \part{State of the science}
 \include{part1/gas_hydrate_theory}
+\include{part1/experiments}
 \include{part1/molecular_dynamics_theory}
-\include{part1/existingmodels}
 \part{Numerical models}
+\include{part2/models}
 \include{part2/lammpsverification}
 \include{part2/tools}
 \include{part2/modeledsystems}
@@ -28,6 +29,7 @@
 \part{Appendices}
 \appendix
 \include{appendices/geometry}
+\include{appendices/abel_setup}
 \include{appendices/build_lammps}
 
 \bibliographystyle{naturemag}
