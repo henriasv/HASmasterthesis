@@ -3,6 +3,8 @@
 \chapter{Modeled systems}
 The goal of this thesis is to study fracture of methane hydrates. In order to do that, I need to know the mechanical properties of the model I study. Since studies of mechanical properties of methane hydrates modeled with TIP4P/ICE+UAM are scarce, I start this chapter by working out even the basic mechanical properties such as Poissons ratio and Youngs modulus. In order to be sure that the methods I use to estimate the mechanical properties work, I first check them with known values for a Lennard-Jones crystal. 
 
+\section{Shear viscosity and diffusivity}
+I have not been successful in finding values for the shear viscosity and diffusivity of bulk liquid water modeled with TIP4P. To measure these properties, I run a simulation like the one I ran to calculate the same properties for the TIP4P/2005 potential. Figure @ref shows the auto-correlation function of the non-diagonal pressure components. The shear viscosity is estimated to @value. 
 
 \section{Measuring elastic properties with a constand strain rate}
 A naive approach, which i will use for crude estimates, is to subject a system to a constant strain rate by expanding the simulation box in one of the coordinate directions, and rescale all atom positions accordingly. An anisotropic thermo-barostat should be applied along the other axes, to keep the environment pressure and temperature constant. Since the barostat scales the simulation box, strains along the two axes perpendicular to the applied strain can be measured as the contraction of the simulation box in these directions:

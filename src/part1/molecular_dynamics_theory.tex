@@ -25,15 +25,12 @@ Coulombic potentials are used for charges particles, and is equivalent to Coulom
 \subsection{Reactive potentials}
 Reactive potentials are potentials that allow for chemical reactions.
 
-\section{Integration}
+\section{Integration, thermostats, barostats}
 
 \section{Thermostats}
 Thermostats are applied to control temperature of a system. Some thermostats can be shown to make the system sample some thermodynamic ensemble. Thermostatting can be closely intertwined with integration in the sense that thermostatting represents a change in the integration scheme. 
 \subsection{Berendsen thermostat}
-\subsection{Andersen thermostat}
 \subsection{Nosé-Hoover thermostat}
-
-\section{Barostats}
 
 
 \section{Long range corrections}
@@ -41,11 +38,35 @@ For slowly decaying potentials, such as Coulombic potentials, it is not advisibl
 \subsection{Ewald summation}
 \subsection{Particle mesh}
 
+\section{Thermodynamic measurements}
+\subsection{Temperature}
+\subsection{Pressure}
+\subsection{Thermal Diffusivity}
+Thermal diffusivity can be measured with the Einstein relation:
+\begin{equation}
+	D_E = \lim_{t\to\infty} \frac{1}{6} \frac{\dd \langle \left|\rvec(t) - \rvec(0)\right|^2\rangle}{\dd t}
+	\label{eq:Einstein_diffusivity}
+\end{equation}
+Where `E' means that $D$ was estimated using the Einstein relation. It was shown in \cite{Yeh2004} that the diffusion coefficients in periodic simulations depend on the system size, and goes like $L^{-1}$. Thus, a reference diffusivity $D_0$, corresponding to an infinite system and which can be compared with experimental results, can be found by extrapolation.
+
+
+\section{Other properties}
+\subsection{Viscosity}
+For calculating the viscosity, I use the Green-Kubo relation:
+\begin{equation}
+	\eta_{GK} = \frac{V}{k_B T} \int_0^\infty \langle p_{xy}(t) p_{xy}(0) \rangle\ \dd t
+	\label{eq:GK_shear_viscosity}
+\end{equation}
+% http://www.nyu.edu/classes/tuckerman/stat.mech/lectures/lecture_21/node6.html
+The expectation value inside the integral assumes that a large number of systems are investigated. In practice, we apply the ergodic hypothesis and do a time average of a single simulation instead of an ensemble average. 
+
+Following \cite{Yeh2004}, it would also be possible to calculate the viscosity using the finite size effect on the thermal diffusivity.
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Rigid molecules - The SETTLE algorithm}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-There are several ways to keep a group of atoms constrained as a rigid molecule. The goal is to obtain the sme result as if the equation was integrated using holonomic constraints, but integrating the angular movement of rigid particles instead of ...***. Generally, one can use the SHAKE or the RATTLE algorithm. For the particular case of three rigid atoms, the SETTLE algorithm might be preferred. The SETTLE algorithm \cite{Miyamoto1992} is an analytical solution to the 3-particle constraint problem when integrating numerically the newtonian equations of motion. It implements the contraint by changing the positions and velocities of the constrained particles after each integration step.
+There are several ways to keep a group of atoms constrained as a rigid molecule. The goal is to obtain the same result as if the equation was integrated using holonomic constraints, but integrating the angular movement of rigid particles instead of ...***. Generally, one can use the SHAKE or the RATTLE algorithm. For the particular case of three rigid atoms, the SETTLE algorithm might be preferred. The SETTLE algorithm \cite{Miyamoto1992} is an analytical solution to the 3-particle constraint problem when integrating numerically the newtonian equations of motion. It implements the contraint by changing the positions and velocities of the constrained particles after each integration step.
 
 The basic idea of the SETTLE algorithm is to use the positions on a triangle before, $\Delta A_0 B_0 C_0$, and after, $\Delta A_1 B_1 C_1$, an unconstrained integration step to determine rotation operations to perform on $\Delta A_0 B_0 C_0$ to achieve a triangle $\Delta A_3 B_3 C_3$ corresponding to a constrained integration step. When we know the rotation operations, we also know the positions $(A_3, B_3, C_3)$ which are what we want for an implementation of the algorithm.
 

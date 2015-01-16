@@ -172,7 +172,15 @@ This requires some explanation. The first lines are ignored by Lammps, so the fi
 \subsection{Interaction Potentials}
 
 \subsection{Settings}
-	\subsubsection{The fix command}
+\subsubsection{The fix command}
+
+\subsection{Computes in lammps}
+\subsubsection{Pressure}
+LAMMPS calculates the symmetric stress tensor for the system during each timestep, and stores it as a 6-element vector. The formula used for caculation is:
+\begin{equation}
+	P_{ij} = \frac{\sum_k^N  m_k v_{ki} v_{kj}}{V} + \frac{\sum_k^N r_{ki} f_{kj}}{V}
+\end{equation}
+Rigid sets of atoms with the SHAKE algorith are accounted in this calculation. In practice, fix SHAKE adds forces to the atoms before integration to account for their holonomic constraints. These forces are included in the virial when calculating the pressure. 
 
 
 All commands ar available from the LAMMPS documentation \cite{lammps:input_commands}. A very good beginners guide for LAMMPS \cite{lammps:guide:pittsburg}

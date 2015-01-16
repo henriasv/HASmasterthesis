@@ -34,6 +34,22 @@ There are two interaction potentials for TIP4P-ICE: electrostatic interactions a
 
 Since the molecules are treated as rigid, interactions are only between sites on different molecules. 
 
+\subsection{Parameters for the TIP4P family}
+TIP4P is a family of potentials, of which TIP4P/ICE is one member. The TIP4P potentials differ only in the values of their parameters. TIP4P/ICE has not been thoroughly investigated, and therefore, several simple properties such as the shear viscosity are unknown. To be able to verify my use of the TIP4P/ICE, i will do simulations with parameters from other TIP4P models for verification, and then I will work out properties for the TIP4P model. For this I need parametes for additional members of the TIP4P family. I these parameters in table \ref{tbl:tip4p_parameters}.
+
+\begin{table}
+\caption{Parameters for the different parametrizations in the TIP4P family.}
+\label{tbl:tip4p_parameters}
+\begin{tabular}{c|c|c|c}
+Description & Symbol & TIP4P & TIP4P/2005 \\ 
+\hline
+Lennard-Jones energy & $\varepsilon/k$ & \SI{78.0}{\kelvin} & \SI{93.2}{\kelvin} \\
+Lennard-Jones characteristic distance & $\sigma_{OO}$ & \SI{3.154}{\angstrom} & \SI{3.1589}{\angstrom} \\
+Distance O-site to M-site along bisector & $d_{OM}$ & \SI{0.150}{\angstrom} & \SI{0.1546}{\angstrom} \\
+Hydrogen charge & $q_H$ & \SI{0.520}{\elementarycharge} & \SI{0.5564}{\elementarycharge} \\
+\end{tabular}
+\end{table}
+
 \section{United Atom Methane}
 United atom methane is the united atom model for methane, and is effectively a single Lennard-Jones interaction site for each methane molecule. 
 \begin{equation}
