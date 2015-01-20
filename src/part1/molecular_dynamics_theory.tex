@@ -58,7 +58,12 @@ For calculating the viscosity, I use the Green-Kubo relation:
 	\label{eq:GK_shear_viscosity}
 \end{equation}
 % http://www.nyu.edu/classes/tuckerman/stat.mech/lectures/lecture_21/node6.html
-The expectation value inside the integral assumes that a large number of systems are investigated. In practice, we apply the ergodic hypothesis and do a time average of a single simulation instead of an ensemble average. 
+The expectation value inside the integral assumes that a large number of systems are investigated. Through the ergodic hypothesis, we can transform the autocorrelation function to a time integral. Also, since infinite time series are not available in practice, I introduce finite bounds on the integrals. 
+\begin{equation}
+	\eta_{GK}(t, T) = \frac{V}{k_B T} \int_0^t \int_0^T p_{xy}(\tau+t) p_{xy}(\tau)\ \dd \tau\ \dd t  
+\end{equation}
+For the purpose of estimationg viscosities, the autocorrelation function is only well sampled for $t <<< \tau$. Luckily, the autocorrelation function is essentially zero for times larger that some system-specific characteristic time, which is usually in the order of picoseconds, at least for water. That means $\eta_{GK}(t, T)$ can provide good estimates of the viscosity of a molecular dynamics system if the simulation duration is of the order of nanoseconds. 
+
 
 Following \cite{Yeh2004}, it would also be possible to calculate the viscosity using the finite size effect on the thermal diffusivity.
 
