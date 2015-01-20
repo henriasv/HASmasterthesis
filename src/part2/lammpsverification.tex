@@ -24,11 +24,12 @@ Expt. 		& 273.15 	& 0.999
 \end{table}
 
 \subsection{Diffusivity and shear viscosity}
-To find the shear viscosity $\eta$, I apply equation \ref{eq:GK_shear_viscosity}. Since i do not have access to infinite time series, i plot $\eta(t)$, and use the value it takes when it stabilizes as my estimate. To check that my LAMMPS implementation is correct, I use TIP4P/2005 parameters.  Figure \ref{fig:shear_viscosity_tip4p/2005} shows the estimated shear viscosity from an NVT simulation during \SI{1}{\nano\second} with 216 water molecules. $T=\text{\SI{300}{\kelvin}}$ and $\rho = @value$. Reference values for shear stress and diffusivity are $\eta = \text{\SI{0.83 \pm 0.05}{\milli\pascal\second}}$ and $D_0 = \text{\SI{2.49 \pm 0.06d-9}{\metre\squared\per\second}}$ from \cite{tazi2012} @beSureToHaveSameDensity.
+To find the shear viscosity $\eta$, I apply equation \ref{eq:GK_shear_viscosity}. Since i do not have access to infinite time series, i plot $\eta(t)$, and use the value it takes when it stabilizes as my estimate. To check that my LAMMPS implementation is correct, I use TIP4P/2005 parameters.  Figure \ref{fig:shear_viscosity_tip4p/2005} shows the estimated shear viscosity from several NVT simulations of \SI{2}{\nano\second} with a density of $\rho = \text{\SI{0.98}{\gram\per\cubic\cm}}$ and temperature $T=\text{\SI{300}{\kelvin}}$. $\eta$ is estimated at \SI{8}{\pico\second} where the variation between the simulations is significantly larger than the fluctuations in the mean. Reference values for shear stress and diffusivity are $\eta = \text{\SI{0.83 \pm 0.05}{\milli\pascal\second}}$ and $D_0 = \text{\SI{2.49 \pm 0.06d-9}{\metre\squared\per\second}}$ from \cite{tazi2012}.
 
 \begin{figure}
-
-\caption{Shear viscosity for ...}
+\centering
+\includegraphics[width=10cm]{../figures/thesis/viscosity_green_kubo_tip4p_2005.pdf}
+\caption{Shear viscosity for TIP4P/2005 at \SI{300}{\kelvin} and $\rho = \text{\SI{0.98}{\gram\per\cubic\cm}}$. The viscosity is estimated to $\eta_{GK} = \text{\SI{0.89\pm0.03}{\milli\pascal\second}}$}
 \label{fig:shear_viscosity_tip4p/2005}
 \end{figure}
 
