@@ -36,18 +36,32 @@ Thermostats are applied to control temperature of a system. Some thermostats can
 \section{Long range corrections}
 For slowly decaying potentials, such as Coulombic potentials, it is not advisible to use a cutoff distance, as this might result in severe inaccuracies. However, there are techniques that allows compensation withoud doing a full pairwise computation. 
 \subsection{Ewald summation}
-\subsection{Particle mesh}
+\subsection{Particle-particle-particle-mesh (PPPM)}
 
 \section{Thermodynamic measurements}
 \subsection{Temperature}
-\subsection{Pressure}
+\subsection{Virial pressure and virial stress}
+The pressure in a general classical N-body system can be expressed based on the virial equation for the pressure.
+
+A precise formulation of the stress tensor is given in \cite{Thompson2009}.
+The virial of a system consiting of N interacting particles is defined as:
+\begin{equation}
+	W(\rvec^N) \equiv -3V\frac{\dd U(\rvec^N)}{\dd V}
+\end{equation}
+Where $U$ is the potential energy of the system, which in molecular dynamics is only a function of the postitions of the particles and their interaction potentials.
+
+
+\paragraph{Long-range contributions to the virial}
+Since we needed to introduce the PPPM calculation to deal with long-range forces, we also need to know how this correction affects the virial tensor, in order to include it in the stress measurement. \cite{Sirk2013} shows how to make long-rage corrections to the virial when computing long-range forces with PPPM.
+
+
 \subsection{Thermal Diffusivity}
 Thermal diffusivity can be measured with the Einstein relation:
 \begin{equation}
 	D_E = \lim_{t\to\infty} \frac{1}{6} \frac{\dd \langle \left|\rvec(t) - \rvec(0)\right|^2\rangle}{\dd t}
 	\label{eq:Einstein_diffusivity}
 \end{equation}
-Where `E' means that $D$ was estimated using the Einstein relation. It was shown in \cite{Yeh2004} that the diffusion coefficients in periodic simulations depend on the system size, and goes like $L^{-1}$. Thus, a reference diffusivity $D_0$, corresponding to an infinite system and which can be compared with experimental results, can be found by extrapolation.
+Where `E' means that $D$ was estimated using the Einstein relation. It was shown in \cite{Yeh2004} that the diffusion coefficients in periodic simulation boxes depend on the system size, and goes like $L^{-1}$. Thus, a reference diffusivity $D_0$, corresponding to an infinite system and which can be compared with experimental results, can be found by extrapolation.
 
 
 \section{Other properties}
