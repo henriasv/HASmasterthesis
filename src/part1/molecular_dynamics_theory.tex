@@ -68,15 +68,16 @@ Where `E' means that $D$ was estimated using the Einstein relation. It was shown
 \subsection{Viscosity}
 For calculating the viscosity, I use the Green-Kubo relation:
 \begin{equation}
-	\eta_{GK} = \frac{V}{k_B T} \int_0^\infty \langle p_{xy}(t) p_{xy}(0) \rangle\ \dd t
+	\eta_{GK} = \frac{V}{k_B T} \int_0^\infty \langle \sigma_{\alpha\beta}(t) \sigma_{\alpha\beta}(0) \rangle\ \dd t
 	\label{eq:GK_shear_viscosity}
 \end{equation}
 % http://www.nyu.edu/classes/tuckerman/stat.mech/lectures/lecture_21/node6.html
-The expectation value inside the integral assumes that a large number of systems are investigated. Through the ergodic hypothesis, we can transform the autocorrelation function to a time integral. Also, since infinite time series are not available in practice, I introduce finite bounds on the integrals. 
+Where $\sigma_{\alpha\beta}$ are independent off-diagonal elements of the stress tensor of the system. These can be $\sigma_{xy}$, $\sigma_{xz}$, $\sigma_{yz}$, $(\sigma_{xx}-\sigma_{yy})/2$ and $(\sigma_{yy}-\sigma_{zz})/2$. The expectation value inside the integral assumes that a large number of systems are investigated. Through the ergodic hypothesis, we can transform the autocorrelation function to a time integral. Also, since infinite time series are not available in practice, I introduce finite bounds on the integrals. 
 \begin{equation}
-	\eta_{GK}(t, T) = \frac{V}{k_B T} \int_0^t \int_0^T p_{xy}(\tau+t) p_{xy}(\tau)\ \dd \tau\ \dd t  
+	\eta_{GK}(t, T) = \frac{V}{k_B T} \int_0^t  \frac{1}{\tau} \int_0^\tau \sigma_{\alpha\beta}(\tau'+t') \sigma_{\alpha\beta}(\tau')\ \dd \tau'\ \dd t' 
+\label{eq:GK_shear_viscosity_estimate}
 \end{equation}
-For the purpose of estimationg viscosities, the autocorrelation function is only well sampled for $t <<< \tau$. Luckily, the autocorrelation function is essentially zero for times larger that some system-specific characteristic time, which is usually in the order of picoseconds, at least for water. That means $\eta_{GK}(t, T)$ can provide good estimates of the viscosity of a molecular dynamics system if the simulation duration is of the order of nanoseconds. 
+For the purpose of estimating viscosities, the autocorrelation function is only well sampled for $t <<< \tau$. Luckily, the autocorrelation function is essentially zero for times larger that some system-specific characteristic time, which is usually in the order of picoseconds, at least for water. That means $\eta_{GK}(t, T)$ can provide good estimates of the viscosity for molecular dynamics simulations that last for nanoseconds.
 
 
 Following \cite{Yeh2004}, it would also be possible to calculate the viscosity using the finite size effect on the thermal diffusivity.
