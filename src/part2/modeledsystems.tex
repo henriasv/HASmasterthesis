@@ -1,15 +1,23 @@
 % file: modeledsystems.tex
 
 \chapter{Modeled systems}
-The goal of this thesis is to study fracture of methane hydrates. In order to do that, I need to know the mechanical properties of the model I study. Since studies of mechanical properties of methane hydrates modeled with TIP4P/ICE+UAM are scarce, I start this chapter by working out even the basic mechanical properties such as Poissons ratio and Youngs modulus. In order to be sure that the methods I use to estimate the mechanical properties work, I first check them with known values for a Lennard-Jones crystal. 
+The goal of this thesis is to study fracture of methane hydrates. In order to do that, I need to know the mechanical properties of the model I study. Since studies of mechanical properties of methane hydrates modeled with TIP4P/ICE+UAM are scarce, I start this chapter by working out even the basic properties of the model, such as Poissons ratio and Youngs modulus. In order to be sure that the methods I use to estimate the mechanical properties work, I first check them with known values for a Lennard-Jones crystal. 
 
-\section{Shear viscosity and diffusivity}
-I have not been successful in finding values for the shear viscosity and diffusivity of bulk liquid water modeled with TIP4P/ICE. To measure these properties, I run a simulation like the one I ran to calculate verify the same properties for the TIP4P/2005 potential. Figure @ref shows the Green-Kubo relation for the viscosity using 5 independent pressure components. The shear viscosity is estimated to $\eta_{GK} = \text{\SI{1.63\pm 0.05}{\milli\pascal\second}}$. 
+\section{Shear viscosity and diffusivity of the water model}
+I have not been successful in finding values for the shear viscosity and diffusivity of bulk liquid water modeled with TIP4P/ICE. To measure these properties, I run a simulation like the one I ran to calculate verify the same properties for the TIP4P/2005 potential. Figure \ref{fig:viscosity_green_kubo_tip4p_ice} shows the Green-Kubo relation for the viscosity using 5 independent pressure components from 4 indepentent simulations with different simulation box sizes. Based on these data, I estimate the shear viscosity of TIP4P/ICE to $\eta_{GK} = \text{\SI{1.63\pm 0.05}{\milli\pascal\second}}$. 
 
 \begin{figure}
 \centering
 \includegraphics[width=10cm]{../figures/thesis/viscosity_green_kubo_tip4p_ice.pdf}
-\caption{Shear viscosity for TIP4P/ICE at \SI{300}{\kelvin} and $\rho = \text{\SI{0.98}{\gram\per\cubic\cm}}$. The viscosity is estimated to $\eta_{GK} = \text{\SI{1.63\pm0.05}{\milli\pascal\second}}$}
+\caption{Shear viscosity for TIP4P/ICE at \SI{300}{\kelvin} and $\rho = \text{\SI{0.98}{\gram\per\cubic\cm}}$. Each thin line shows the average of the 5 independent pressure component. The thich line is the average of 4 independent simulations. The viscosity is estimated to $\eta_{GK} = \text{\SI{1.63\pm0.05}{\milli\pascal\second}}$}
+\label{fig:viscosity_green_kubo_tip4p_ice}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{../figures/thesis/diffusivity_comparison_tip4p_ice_2005.pdf}
+\caption{Linear regression of self diffusion coefficients as a function of inverse simulation box length. Results for TIP4P/2005 were already reported in the verification section. The self-diffusion coefficient for TIP4P/ICE is estimated to $D_0 = \SI{4.0 \pm 0.1 d-9}{\meter\squared\per\second}$}
+\label{fig:diffusivity_comparison_tip4p_ice_2005}
 \end{figure}
 
 \section{Measuring elastic properties with a constand strain rate}
