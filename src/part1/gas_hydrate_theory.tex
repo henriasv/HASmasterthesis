@@ -1,5 +1,5 @@
 \chapter{The science of Methane Hydrates}
-Methane hydrates are clathrate compounds, which means they consist of host molecules forming a lattice that traps guest molecules. In the particular case of methane hydrates, water molecules form cages that host methane molecules. Ther cage structure is mainly comprised by pentagonal and hexagonal faces, and they can form regular cage stuctures.
+Methane hydrates are clathrate compounds, which means they consist of host molecules forming a lattice that traps guest molecules. In the particular case of methane hydrates, water molecules form cages that host methane molecules. Ther cage structure is mainly comprised by pentagonal and hexagonal faces, and they can form regular cage stuctures. The presentation here will focus on methane hydrates, but since other clathrate hydrates have also been researched - and are relevant - they may also appear.
 
 
 
@@ -18,7 +18,30 @@ Distance O-H & $d_{OH}$ & \SI{0.9572}{\angstrom} \\
 \end{table}
 
 
-\section{Elastic properties, strength and toughness of methane hydrates}
+\section{Mechanical properties from experiments}
+Since methane hydrates come in many forms, it is hard to say someting general about elastic properties, strength and toughness. A review paper from 2012 \cite{Ning2012} states:
+\begin{quotation}
+Few mechanical properties are reported , and their measurements are difficult, partly because it is almost impossible to obtain pure hydrate samples.
+\end{quotation}
+
+This must be taken into account when going through the experimental results on mechanical properties of methane hydrates. For my particular project, this means that I expect experimental results not to be directly comparable to my models, because I model pure hydrate samples, which are not available experimentally. 
+
+\subsection{Typical experimental setup}
+The initial challenge when doing experiments on methane hydrates is that samples of methane hydrate are not stable in room temperature and atmospheric pressure.
+
+The group of William B. Durham at MIT has built an ice creep apparatus, which is what they call a ``standard triaxial gas deformation rig''. In this device, pressure and temperature can be controlled within a range of $T \in \{\SI{77}{\kelvin}, \text{room temperature}\}$ and $P \in \{\text{room pressure}, \SI{1}{\giga\pascal}\}$. In addition to the confining pressure, deformation of a sample is controlled with a piston of which the velocity can be controlled over 5 orders of magnitude.
+
+@Illustration
+
+\subsection{Experimental results}
+Even though we cannot guarantee the purity of methane hydrate samples used in experiments, there are still robust findings that are valuable pointers for numerical investigations. 
+
+The most striking observation, is that methane hydrates can withstand high strains compared to regular water ice. It actually seems to exhibit strain-hardening up to a strain of almost 0.2 \cite{Durham2003, Stern1998}. \cite{Durham2003} investigates methane hydrates in the framework of rheology, suggesting that the deformations are creep-like and permanent, which is not surprising given their extent. @ReadCarefully 
+
+Characteristics/surprising observations
+\begin{itemize}
+\item Strain-hardening (to about 0.2 strain)
+\end{itemize}
 
 \section{Molecular Modeling of Methane Hydrates}
 
@@ -27,5 +50,5 @@ Distance O-H & $d_{OH}$ & \SI{0.9572}{\angstrom} \\
 \section{Research questions}
 \begin{itemize}
 \item What is the fracture toughness of methane hydrate?
-\item What characterizes sub-critical fractures in methane hydrates? 
+\item What characterizes failure in methane hydrates, is it ductile or brittle? Are there sub-critical fractures, and are they available on the timescale of molecular dynamics?
 \end{itemize}
