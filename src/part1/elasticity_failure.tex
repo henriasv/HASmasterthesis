@@ -1,0 +1,95 @@
+ % Theory of elasticity and failure
+ \chapter{Elasticity and failure}
+ To have a framework upon which to discuss failure and fracture in methane hydrates, we need some theory of elasticity and failure of elastic materials. This will also be needed in order to be explicit about how stresses and strains are imposed on model systems.
+
+ \section{Linear elasticity}
+Since I will deal with possibly anisotropic matrials, I start with the general tensor form of Hooke's law, and then provide the simplifications resulting from an isotropic material.
+The generalized Hooke's law	is:
+\begin{equation}
+	\sigma_{ij} = c_{ijkl}\epsilon_{kl}
+\end{equation}
+This law relates the Cauchy stress tensor $\sigma_{ij}$ to the strain tensor $\epsilon_{kl}$ in a linearly elastic material. All material properties are contained in the stiffnes tensor $c_{ijkl}$.
+In this form, Hooke's law basically states that ``each component of the cauchy stress tensor depends linearly on all components of the strain tensor''. 
+
+Hooke's law contains two tensors of rank 2 with 9 components each, and one tensor of rank 4 with 81 componens. Luckily, there are symmetries to be exploited. First, the Cauchy stress tensor is symmetric, which leads to $c_{ijkl} = c_{jikl}$. Second, the strain tensor is symmetric, so $c_{ijkl} = c_{ijlk}$. This means we are left with 6 independent combination of each of $ij$ and $kl$, and a total of 36 components. 
+
+Using the rank reduction method of Voigt, the stess and strain matrices can be written as vectors:
+\begin{equation}
+	\uuline{\sigma} = 
+	\begin{pmatrix}
+	\sigma_{11} & \sigma_{12} & \sigma_{13} \\
+	\sigma_{21} & \sigma_{22} & \sigma_{23} \\
+	\sigma_{31} & \sigma_{32} & \sigma_{33} \\ 
+	\end{pmatrix}
+	\to 
+	\vec{\sigma} = 
+	\begin{pmatrix}
+	\sigma_{11} \\ \sigma_{22} \\ \sigma_{33} \\ \sigma_{23} \\ \sigma_{13} \\ \sigma_{12}
+	\end{pmatrix}
+	\equiv
+	\begin{pmatrix}
+	\sigma_{1} \\ \sigma_{2} \\ \sigma_{3} \\ \sigma_{4} \\ \sigma_{5} \\ \sigma_{6}
+	\end{pmatrix}
+\end{equation}
+
+\begin{equation}
+	\uuline{\epsilon} = 
+	\begin{pmatrix}
+	\epsilon_{11} & \epsilon_{12} & \epsilon_{13} \\
+	\epsilon_{21} & \epsilon_{22} & \epsilon_{23} \\
+	\epsilon_{31} & \epsilon_{32} & \epsilon_{33} \\ 
+	\end{pmatrix}
+	\to 
+	\vec{\epsilon} = 
+	\begin{pmatrix}
+	\epsilon_{11} \\ \epsilon_{22} \\ \epsilon_{33} \\ \epsilon_{23} \\ \epsilon_{13} \\ \epsilon_{12}
+	\end{pmatrix}
+	\equiv
+	\begin{pmatrix}
+	\epsilon_{1} \\ \epsilon_{2} \\ \epsilon_{3} \\ \epsilon_{4} \\ \epsilon_{5} \\ \epsilon_{6}
+	\end{pmatrix}
+\end{equation}
+
+For the same reasons, the stiffness tensor can be recuced to rank 2 (I choose not to write out the complete stiffness tensor, only the reduced one):
+\begin{equation}
+	\vec{C} =
+	\begin{pmatrix}
+	C_{11} & C_{12} & C_{13} & C_{14} & C_{15} & C_{16} \\
+	C_{21} & C_{22} & C_{23} & C_{24} & C_{25} & C_{26} \\
+	C_{31} & C_{31} & C_{33} & C_{34} & C_{35} & C_{36} \\
+	C_{41} & C_{42} & C_{43} & C_{44} & C_{45} & C_{46} \\
+	C_{51} & C_{52} & C_{53} & C_{54} & C_{55} & C_{56} \\
+	C_{61} & C_{62} & C_{63} & C_{64} & C_{65} & C_{66}
+	\end{pmatrix}
+\end{equation}
+Hooke's law can now be written as a matrix equation:
+\begin{equation}
+	\vec{\sigma} = \vec{C}\vec{\epsilon}
+\end{equation}
+
+It actually turns out that the stiffness matrix is symmetric, because stress and strain are work-conjugates:
+\begin{equation}
+	\sigma_i = \frac{\partial u}{\partial \epsilon_i}
+\end{equation}
+Where $u$ is the energy density associated with the stress-strain configuration.
+Insering this into Hooke's law gives:
+\begin{equation}
+	C_{ij}=\frac{\partial^2 u}{\partial \epsilon_i \partial \epsilon_j} = \frac{1}{V} \frac{\partial^2 U}{\partial \epsilon_i \partial \epsilon_j} 
+\end{equation}
+This latter relation is useful for estimating the stiffness matrix from molecular simulation, as strains are easy to impose, and energy is trivial to measure. 
+
+\section{Simple theory of failure}
+In linear elastic fracture mechanics (LEFM), there are two quantities that govern failure: The stress intensity factor $K$, and the energy release rate $G$. For the case of linear elastic materials, these are uniquely related.
+
+\section{Modes of loading}
+There are 3 loading modes: I =`opening', II = `sliding', III = `tearing'. 
+@insertFigure
+
+\section{Stress intensity factors in anisotropic materials}
+The ``official'' fracture toughness measure is the critical stress intensity factor for mode I loading, so I need a procedure to obtain that from molecular dynamics simulations. Having obtained the fracture area and the energy release rate, I can use the generalized irwin formula @citation to calculate the stress intensity factor. 
+
+\begin{equation}
+	G = \pi \vec{K}^T [\vec{H}] \vec{K} 
+\end{equation}
+
+In fact, to find the stress intensity factor for mode I loading, I only need to ensure a pure mode I loading situation, and obtain the element $H_{11}$. Then I have a relation from the energy release rate to the stress intensity factor. 
