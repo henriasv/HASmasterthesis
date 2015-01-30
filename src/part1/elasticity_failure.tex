@@ -92,4 +92,11 @@ The ``official'' fracture toughness measure is the critical stress intensity fac
 	G = \pi \vec{K}^T [\vec{H}] \vec{K} 
 \end{equation}
 
-In fact, to find the stress intensity factor for mode I loading, I only need to ensure a pure mode I loading situation, and obtain the element $H_{11}$. Then I have a relation from the energy release rate to the stress intensity factor. 
+Where $\vec{H}$ is a matrix that depends on the elastic properties of the material. This expression is valid for a plane crack propagating in two opposite directions with symmetric load with respect to the two directions of crack propagation.
+To find the stress intensity factor for mode I loading, I only need to ensure a pure mode I loading situation, and obtain the element $H_{11}$. This matix element was worked out by \cite{Laubie2014}, and is:
+
+\begin{equation}
+	H_{11} = \frac{1}{2\pi} \sqrt{\frac{C_{11}}{C_{11}C_{33}-C^2_{13}}\left( \frac{1}{C_{44}} + \frac{2}{C_{13} + \sqrt{C_{11} C_{33}}}\right)}
+\end{equation}
+
+The stress intensity factor for mode I loading is the \emph{de facto} standard for fracture toughness measures. @ElegantClosingSentence
