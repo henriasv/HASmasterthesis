@@ -107,4 +107,18 @@ However there are problems here: The waiting time when waiting for failure must 
 
 From the latter discussion, I propose to exploit the possible time problem, and investigate the dependence on strain and temperature on the crack velocity and the waiting time before fracture occurs. The latter is possibly computationally expensive to get sufficient statistic to make any confident statements. 
 
-A simpler solution is to subject the sample to a constant, probably low one, strain rate, and wait for a crack to propagate. This is simple to do, and is also close to experimental conditions. The downside is that the loading is varying during fracture, disturbing measurements of properties like crack velocity at constant loading. It is, however, reasonable to believe that at low strain rates, these effects will be small, if not negligible.
+A simpler protocol -- and I believe this to be a good way to study this particular system -- is to subject the sample to a constant strain rate, then wait for a crack to propagate. This is simple to do, and is also close to experimental conditions. The downside is that the loading is varying during fracture, disturbing measurements of properties like crack velocity at constant loading. It is, however, reasonable to believe that at low strain rates, these effects will be small, if not negligible. This can also be solved by setting the strain rate to zero at some predefined strain level, which is estimated from experience, and can be systematically varied. 
+
+
+\subsection{Proof-of-concept run}
+Figure @ref shows the strain, total energy, potential energy and temperature for a simulation where an s1 methane hydrate of 33x33x1 unit cells was gradually subjected to a strain of 0.05 over $10^5$ timesteps fo \SI{1}{\femto\second}. The temperature was kept at \SI{260}{\kelvin} using an NVT thermostat with a characteristic time of \SI{100}{\femto\second}. Then, the system was left on its own. A crack started propagating @time after the strain rate was set to zero. Using the change of internal energy from before to after crack propagation as an estimate of the surface energy, and the area of the box face parallell to the crack as an estimate of the crack area, I can estimate the critical energy release rate:
+
+\begin{equation}
+	G_c \approx \frac{\Delta U}{L_yL_z}
+\end{equation}
+
+@Result from full crack.
+
+@ValueFromNoTFullyPropagating: \SI{0.086}{\mega\pascal\meter@@}
+
+\subsection{Results on failure}
