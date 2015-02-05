@@ -42,7 +42,7 @@ Using the rank reduction method of Voigt, the stess and strain matrices can be w
 	\to 
 	\vec{\epsilon} = 
 	\begin{pmatrix}
-	\epsilon_{11} \\ \epsilon_{22} \\ \epsilon_{33} \\ \epsilon_{23} \\ \epsilon_{13} \\ \epsilon_{12}
+	\epsilon_{11} \\ \epsilon_{22} \\ \epsilon_{33} \\ 2\epsilon_{23} \\ 2\epsilon_{13} \\ 2\epsilon_{12}
 	\end{pmatrix}
 	\equiv
 	\begin{pmatrix}
@@ -76,7 +76,22 @@ Insering this into Hooke's law gives:
 \begin{equation}
 	C_{ij}=\frac{\partial^2 u}{\partial \epsilon_i \partial \epsilon_j} = \frac{1}{V} \frac{\partial^2 U}{\partial \epsilon_i \partial \epsilon_j} 
 \end{equation}
-This latter relation is useful for estimating the stiffness matrix from molecular simulation, as strains are easy to impose, and energy is trivial to measure. 
+This latter relation is useful for estimating the stiffness matrix from molecular simulation, as strains are easy to impose, and energy is trivial to measure.
+
+\subsection{Isotropic materials}
+Isotropic materials can be described by two parameters: Youngs modulus $E$ and poissons ratio $\nu$. The nature of the definition of these quantities leads to the stiffness matrix for isotropic materials:
+\begin{equation}
+	\vec{C} = 
+   	\frac{E}{(1+\nu)(1-2\nu)}
+   	\begin{pmatrix}
+		1-\nu & \nu & \nu & 0 & 0 & 0 \\
+		\nu & 1-\nu & \nu & 0 & 0 & 0 \\
+		   \nu & \nu & 1-\nu & 0 & 0 & 0 \\
+		   0 & 0 & 0 & (1-2\nu)/2 & 0 & 0 \\
+		   0 & 0 & 0 & 0 & (1-2\nu)/2 & 0 \\
+		   0 & 0 & 0 & 0 & 0 & (1-2\nu)/2
+	\end{pmatrix}
+\end{equation}
 
 \section{Simple theory of failure}
 In linear elastic fracture mechanics (LEFM), there are two quantities that govern failure: The stress intensity factor $K$, and the energy release rate $G$. For the case of linear elastic materials, these are uniquely related.
@@ -100,3 +115,9 @@ To find the stress intensity factor for mode I loading, I only need to ensure a 
 \end{equation}
 
 The stress intensity factor for mode I loading is the \emph{de facto} standard for fracture toughness measures. @ElegantClosingSentence
+
+For the special case of isotropic materials under mode I loading, we recover a more familiar expression, Irwins formula for plane strains:
+
+\begin{equation}
+	K_c = \sqrt{\frac{EG_c}{1-\nu^2}}
+\end{equation}

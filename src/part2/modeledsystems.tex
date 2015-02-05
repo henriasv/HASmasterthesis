@@ -78,24 +78,31 @@ Figure \ref{fig:strain_strain_11_11_11_y_z_poisson_tip4p_ice_uam} shows the rela
 \section{Fracture and fracture toughness}
 
 \subsection{Determining the critical stress intensity factor}
-As described in the section about fracture mechanics, the stress intensity factor is commonly used to calculate the fracture toughness of a material. I will follow the method of \cite{Hantal2014} to calculate the critical stress intensity factor:
-
-The 
-
-
-The critical energy release rate is usually defined as:
+As described in the section about fracture mechanics, the stress intensity factor is commonly used to calculate the fracture toughness of a material. The critical energy release rate is usually defined as:
 \begin{equation}
 	G_C = -\left(\frac{\partial P}{\partial A_{\text{crack}}}\right)_{T, \text{loading}}
 	\label{eq:def_critical_energy_release_rate}
 \end{equation}
 
-Equation from @CiteHantal:
-\begin{equation}
+I will follow the method of \cite{Hantal2014} to calculate the critical stress intensity factor (This method was used for illite with ClayFF and ReaxFF):\begin{equation}
 	G_C = V \frac{\int_0^{E_{\text{final}}}\uuline{\Sigma}(E) : \dd \uuline{E}}{\int_0^{E_{\text{final}}} \dd A_{crack}}
 	\label{eq:hantal_critical_energy_release_rate}
 \end{equation}
 
 This is in principle sufficient to determine the critical energy release rate for any mode of loading, provided that the conditions for using Equation \ref{eq:hantal_critical_energy_release_rate} to estimate the critical energy release rate are met.
 
+\subsection{Simulation details}
+It is not at all obvious how to perform simulations to determine the fracture toughness. In \cite{Hantal2014} they performed NVT simulations and performed a series of small deformations to their sample. After each deformation, they minimized the system, and then ran molecular dynamics for \SI{10}{\pico\second}. I have tried to use the same protocol, but find that for my system, the impact on the energy distribution among the degrees of freedom is too large when performing minimizations between the deformations. this results in a system farther out of equlilibrium that the deformed but not minimized system. Therefore, the protocol I want is as follows:
 
-\section{Vega 2010}
+\begin{enumerate}
+\item Equilibrate the system NVT (Molecular dynamics)
+\item Perform small deformation
+\item Reequilibrate the system NVT (Molecular dynamics)
+\item If the strain i low: Return to 2. If the strain is high: continue.
+\item Molecular dynamics run to wait for failure
+\item If failure does not occur, or crack length stabilizes: Return to 2. 
+\end{enumerate}
+
+There are of course problems here: The waiting time when waiting for failure must be carefully chosen, and if it turns out that critical and sub-critical failure are hard to distinguish, or even impossible to define, then waiting times can be arbitrarly long. 
+
+From the latter discussion, I propose to exploit the possible time problem, and investigate the dependence on strain and temperature on the crack velocity and the waiting time before fracture occurs. The latter is possibly computationally expensive to get sufficient statistic to make any confident statements. 
