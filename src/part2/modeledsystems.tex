@@ -92,7 +92,7 @@ I will follow the method of \cite{Hantal2014} to calculate the critical stress i
 This is in principle sufficient to determine the critical energy release rate for any mode of loading, provided that the conditions for using Equation \ref{eq:hantal_critical_energy_release_rate} to estimate the critical energy release rate are met.
 
 \subsection{Simulation details}
-It is not at all obvious how to perform simulations to determine the fracture toughness. In \cite{Hantal2014} they performed NVT simulations and performed a series of small deformations to their sample. After each deformation, they minimized the system, and then ran molecular dynamics for \SI{10}{\pico\second}. I have tried to use the same protocol, but find that for my system, the impact on the energy distribution among the degrees of freedom is too large when performing minimizations between the deformations. this results in a system farther out of equlilibrium that the deformed but not minimized system. Therefore, the protocol I want is as follows:
+It is not at all obvious how to perform simulations to determine the fracture toughness. In \cite{Hantal2014} they performed NVT simulations and performed a series of small deformations to their sample. After each deformation, they minimized the system, and then ran molecular dynamics for \SI{10}{\pico\second}. I have tried to use the same protocol, but find that for my system, the impact on the energy distribution among the degrees of freedom is too large when performing minimizations between the deformations. this results in a system farther out of equlilibrium that the deformed but not minimized system. Therefore, a possible protocol:
 
 \begin{enumerate}
 \item Equilibrate the system NVT (Molecular dynamics)
@@ -103,6 +103,8 @@ It is not at all obvious how to perform simulations to determine the fracture to
 \item If failure does not occur, or crack length stabilizes: Return to 2. 
 \end{enumerate}
 
-There are of course problems here: The waiting time when waiting for failure must be carefully chosen, and if it turns out that critical and sub-critical failure are hard to distinguish, or even impossible to define, then waiting times can be arbitrarly long. 
+However there are problems here: The waiting time when waiting for failure must be carefully chosen, and if it turns out that critical and sub-critical failure are hard to distinguish, or even impossible to define, then waiting times can be arbitrarly long. 
 
 From the latter discussion, I propose to exploit the possible time problem, and investigate the dependence on strain and temperature on the crack velocity and the waiting time before fracture occurs. The latter is possibly computationally expensive to get sufficient statistic to make any confident statements. 
+
+A simpler solution is to subject the sample to a constant, probably low one, strain rate, and wait for a crack to propagate. This is simple to do, and is also close to experimental conditions. The downside is that the loading is varying during fracture, disturbing measurements of properties like crack velocity at constant loading. It is, however, reasonable to believe that at low strain rates, these effects will be small, if not negligible.
