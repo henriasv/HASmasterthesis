@@ -1,0 +1,12 @@
+\chapter{Input file templates}
+To be able to do many simulations of the same kind, but with either different paramenters of different random seed (to collect statistics), I have defined a way to make simulation templates. I have also made a (small) Python module {\tt template\_expander} that can be used to efficiently create systematic series of simulations from a template. My workflow has been: 
+
+\begin{enumerate}
+\item Write a LAMMPS input script and check that it runs.
+\item Substitute some commands and variables with custom identifiers.
+\item Apply {\tt template\_expander} to create a series of simulations.
+\end{enumerate}
+
+\section{Template format}
+
+\section{Python implementation}
