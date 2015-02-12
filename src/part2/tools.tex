@@ -183,13 +183,14 @@ LAMMPS calculates the symmetric stress tensor for the system during each timeste
 Rigid sets of atoms with the SHAKE algorith are accounted in this calculation. In practice, fix SHAKE adds forces to the atoms before integration to account for their holonomic constraints. These forces are included in the virial when calculating the pressure. 
 
 
-All commands ar available from the LAMMPS documentation \cite{lammps:input_commands}. A very good beginners guide for LAMMPS \cite{lammps:guide:pittsburg}
+All commands are available from the LAMMPS documentation \cite{lammps:input_commands}. A very good beginners guide for LAMMPS \cite{lammps:guide:pittsburg}
 
 \section{Optimizations in LAMMPS}
 \subsection{OpenMP}
 OpenMP support is implemented in the USER-OMP package. 
 \subsection{Processor layout and partitions}
 {\tt run\_style verlet/split} distributes force calculations over two partitions of processors. These partitions must be defined either using the {\tt processor} command or the {\tt partition} command. {\tt verlet\_split} depends on the REPLICA package. 
+
 
 \section{Moltemplate - LAMMPS input script generator}
 \subsection{Creating atom configurations - Hierarchical configuration}

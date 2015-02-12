@@ -81,3 +81,27 @@ Three-phase equilibrium simulations have been performed to check whether the mod
 
 \section{Nucleation of methane hydrates?}
 Nucleation of methane hydrates in a solution of water and methane is a rare event, and microsectond-simulations are required. 
+
+
+\section{A selection of problems I have experienced in LAMMPS}
+
+Since dealing with technical problems is a huge part of computational physics, I thick it is necessary with a section describing some of the problems I have experienced.
+
+\subsection{Neighbor list rebuild rate}
+LAMMPS defaults to reduilding neighbor lists every 10 timesteps. In some cases this is not sufficient when using TIP4P with PPPM, LAMMPS crashes with the following error message:
+
+\begin{verbatim}
+ERROR: Out of range atoms - cannot compute PPPM (../pppm_tip4p_omp.cpp:385)
+\end{verbatim}
+
+This is painful to debug. It typically shows up in large simulations after a long time, and with no clear reason. Molecular dynamics simulations expensive and time consuming, and each attempt on a solution to this problem typically requires hours even on a supercomputer. 
+
+The standard solution to this is to force more frequent neighbor list builds:
+
+\begin{lstlisting}[language=LammpsInput]
+neigh_modify delay 0 every 1 check yes
+\end{lstlisting}
+
+However, this did not help me when i got the message. The next thing I tried was to half the timestep.
+
+The feeling I get from this error, is that it is about being unlucky. The system seems to behave well and to be in equilibrium, and then suddenly the simulation craches.
