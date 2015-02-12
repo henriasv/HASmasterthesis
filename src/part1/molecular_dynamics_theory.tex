@@ -3,34 +3,91 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Molecular dynamics is ...
-We are not interested in trajectories, we are interested in statistically correct behavior. 
+Molecular dynamics is a method for simulating systems of particles. It is assumed that the particles behave classically -- each particle obeys Newtons second law $\sum \mb{F} = m\ddot{\rvec}$. The forces are calculated using interaction potentials, and each particle can in priciple interact with all other particles in the system:
+\begin{equation}
+	\mb{F}_i = -\nabla U_i(\rvec^N)
+\end{equation}
+Where $\rvec^N = \rvec_1, \dots, \rvec_N$ are the positions of all the particles in the system. In the simple case of two-particle interactions of one type we get:
+\begin{equation}
+	\mb{F}_i = \sum_{j=1}^N -\frac{\partial U(\rvec_{ij})}{\partial \rvec_{ij}}
+\end{equation}
+
+This is in principle all that is needed to do molecular dynamics (if we have a potential $U$). However, many details arise when implementing specific potentials, and when we want to control simulations. In order to get results that are relevant to the real world, we often have to apply complicated potentials. It is also common that we want to control thermodynamic properties such as temperature and pressure. While complicated potential are just rules that we impose within the framework presented above, details concerning controlling thermodynamic properties will actually alter the fundamental equations. 
+
+There are also details concerning computational efficiency. To be able to simulate large systems over long periods of time -- large and long is relative to molecular scales -- we need methods that ignore the negligible parts of the potentials, but at the same time capture the important parts to sufficient accuracy. Usually this is done by setting a cutoff radius beyond which interactions are ignored. 
 
 \section{Potentials}
 
-\subsection{Lennard-Jones}
-Perhaps the simplest potential widely used in molecular dynamics is the Lennard-Jones potential. For two particles separated with a distance $r$, it looks like:
+In molecular dynamics, it is natural to define two types of interactions -- and therefore two types of potentials -- based on how they relate groups of atoms. Non-bonding interactions depend on the spatial configurations of each possible set of a specific kind, for example all triplets of Si-atoms. Bonding interactions depend on the spatial configuration of specific predfined sets of particles. The total potential is the sum of the contributions from these potentials: 
+
+\begin{equation}
+	U_{\text{tot}} = U_{\text{non-bonding}} + U_{\text{bonding}} 
+\end{equation}
+
+These definitions should not be confused with the distiction between covalent and non-covalent bonds i chemistry, even though it is common that bonding interactions in molecular dynamics represent covalent bonds.
+
+\subsection{Non-bonding potentials}
+I will use two non-bonding potentials in this thesis: Lennard-Jones and Coulomb.
+A simple and widely used potential is the Lennard-Jones potential. For two particles separated by a distance $r$, the Lennard-Jones potential is:
 \begin{equation}
 	U_{LJ} = 4\varepsilon\left[\left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^{6}\right]
 \end{equation}
+The first term represents Pauli repulsion, and the second represents van der Waals attraction. $\sigma$ is a characteristic length which is of the same order of magnitude as the distance at which the inter-particle force is zero. $\varepsilon$ is the depth of the potentiall well -- a measure of the strength of the interaction. The Lennard-Jones potential is computationally attractive as there is no need to calculate the square roots of the distances between the particles.
 
-\subsection{Coulombic potentials}
-Coulombic potentials are used for charges particles, and is equivalent to Coulombs law:
+The Coulomb potential -- a potential for static charges -- is used for charges particles, and is equivalent to Coulombs law:
 \begin{equation}
 	U_e = k\frac{q_iq_j}{r_{ij}}
 \end{equation}
 
+As an example of a simple three-particle non-bonding potential, I include the Stillinger-Weber potential @citeStillingerWeber1985:
+\begin{equation}
+	U_{SW} = \sum_i \sum_{j>i} \phi_2(r_{ij}) + \sum_i \sum_{j\neq i} \sum_{k>j} \phi_3(r_{ij}, r_{ik}, \theta_{ijk})
+\end{equation}
+\begin{equation}
+	\phi_2(r_{ij}) = A\varepsilon\left[ B \left( \frac{\sigma}{r_{ij}}\right)^p-\left(\frac{\sigma}{r_{ij}}\right)^q\right]\exp\left(\frac{\sigma}{r_{ij}-a\sigma}\right)
+\end{equation}
+\begin{equation}
+	\phi_3(r_{ij}, r_{ik}, \theta_{ijk}) = \lambda\varepsilon\left[ \cos{\theta_{ijk}} - \cos{\theta_0}\right]^2 \exp\left( \frac{\gamma\sigma}{r_{ij}-a\sigma}\right) \exp\left(\frac{\gamma \sigma}{r_{ik}-a\sigma} \right)
+\end{equation}
 
-\subsection{Bonded and angular potentials}
+Note the exponential tails on the potential, resulting in the potential and its derivative going to zero when $r_{ij}$ gets large.
 
-\subsection{Reactive potentials}
-Reactive potentials are potentials that allow for chemical reactions.
+\subsection{Bonding potentials}
+Bonded potentials only apply for a specific group of particles. I give the expression for the potential energy of single groups below.
+A simple two-particle bonding potential is the harmonic bond potential:
+\begin{equation}
+	U_{HB} = k(r_{12} - r_0)^2
+\end{equation}
+
+A simple three-particle bonding potential, which is often used in combination with the harmonic bond potential is the harmonic angle potential:
+\begin{equation}
+	U_{HA} = k(\theta_{123} - \theta_0)^2
+\end{equation}
+
+The latter potentials are common for creating small molecules that will not take part in chemical reactions, such as water in ice simulations. I my simulations, I will use rigid water, which effectively means that $k\to\infty$ for the harmonic bond and angle potentials. In practice the rigidity will be treated with dedicated algorithms.
 
 \section{Integration, thermostats, barostats}
+In order to solve the newtonian equations of motion numerically, a numerical scheme is needed. For particles in conservative fields -- fields in classical molecular dynamics are conservative -- the velocity Verlet scheme is usually preferred @CiteFrenkelSmit.p.69. 
+
+\subsection{Velocity Verlet}
+The velocity Verlet algorithm is:
+\begin{align}
+	r(t+\Delta t) &=& r(t) + v(t)\Delta t + \frac{1}{2}\frac{F(t)}{m}\Delta t^2 \\
+	v(t + \Delta t) &=& v(t) + \frac{1}{2} \frac{F(t) + F(t+\Delta t)}{m}\Delta t
+\end{align}
+The velocity Verlet integrator is symplectic. Being symplectic can be defined in a very strict mathematical way, but for the purposes of this work, it is sufficient to note that a symplectic integrator conserves a Hamiltonian that is only slightly perturbed relative to the Hamiltonian from which it tries to solve Hamiltons equations. This in turn means that in practice it conserves energy. Therefore the velocity Verlet algorithm can be used to sample the microcanonical ensemble (NVE).
 
 \section{Thermostats}
-Thermostats are applied to control temperature of a system. Some thermostats can be shown to make the system sample some thermodynamic ensemble. Thermostatting can be closely intertwined with integration in the sense that thermostatting represents a change in the integration scheme. 
+Thermostats are applied to control temperature of a system. Some thermostats can be shown to make the system sample some thermodynamic ensemble. Thermostatting can be closely intertwined with integration in the sense that thermostatting represents a change in the integration scheme. To be able to do thermostatting, we first need a way to calculate the temperatute of the system. I will use the standard definition relating the kinetic energy to the instantaneous temperature:
+
+\begin{equation}
+	E_k = \frac{3}{2} Nk_B T'
+\end{equation}
+
+The simplest way of controlling the temperature is to rescale all velocities such that the above equation yields the correct value for the temperature. However, that results in unrealistic dynamics, and it does not represent any ensemble.
+
 \subsection{Berendsen thermostat}
+The simplest thermostat, apart from just rescaling all velocities to the Boltzmann 
 \subsection{Nosé-Hoover thermostat}
 
 
@@ -65,7 +122,7 @@ Thermal diffusivity can be measured with the Einstein relation:
 Where `E' means that $D$ was estimated using the Einstein relation. It was shown in \cite{Yeh2004} that the diffusion coefficients in periodic simulation boxes depend on the system size, and goes like $L^{-1}$. Thus, a reference diffusivity $D_0$, corresponding to an infinite system and which can be compared with experimental results, can be found by extrapolation.
 
 
-\section{Other properties}
+\section{Other Measurements}
 \subsection{Viscosity}
 For calculating the viscosity, I use the Green-Kubo relation:
 \begin{equation}
@@ -75,10 +132,10 @@ For calculating the viscosity, I use the Green-Kubo relation:
 % http://www.nyu.edu/classes/tuckerman/stat.mech/lectures/lecture_21/node6.html
 Where $\sigma_{\alpha\beta}$ are independent off-diagonal elements of the stress tensor of the system. These can be $\sigma_{xy}$, $\sigma_{xz}$, $\sigma_{yz}$, $(\sigma_{xx}-\sigma_{yy})/2$ and $(\sigma_{yy}-\sigma_{zz})/2$. The expectation value inside the integral assumes that a large number of systems are investigated. Through the ergodic hypothesis, we can transform the autocorrelation function to a time integral. Also, since infinite time series are not available in practice, I introduce finite bounds on the integrals. 
 \begin{equation}
-	\eta_{GK}(t, T) = \frac{V}{k_B T} \int_0^t  \frac{1}{\tau} \int_0^\tau \sigma_{\alpha\beta}(\tau'+t') \sigma_{\alpha\beta}(\tau')\ \dd \tau'\ \dd t' 
+	\eta_{GK}(t, \tau) = \frac{V}{k_B T} \int_0^t  \frac{1}{\tau} \int_0^\tau \sigma_{\alpha\beta}(\tau'+t') \sigma_{\alpha\beta}(\tau')\ \dd \tau'\ \dd t' 
 \label{eq:GK_shear_viscosity_estimate}
 \end{equation}
-For the purpose of estimating viscosities, the autocorrelation function is only well sampled for $t <<< \tau$. Luckily, the autocorrelation function is essentially zero for times larger that some system-specific characteristic time, which is usually in the order of picoseconds, at least for water. That means $\eta_{GK}(t, T)$ can provide good estimates of the viscosity for molecular dynamics simulations that last for nanoseconds.
+For the purpose of estimating viscosities, the autocorrelation function is only well sampled for $t <<< \tau$. Luckily, the autocorrelation function is essentially zero for times larger that some system-specific characteristic time, which is usually in the order of picoseconds, at least for water. That means $\eta_{GK}(t, \tau)$ can provide good estimates of the viscosity for molecular dynamics simulations that last for nanoseconds.
 
 
 Following \cite{Yeh2004}, it would also be possible to calculate the viscosity using the finite size effect on the thermal diffusivity.
