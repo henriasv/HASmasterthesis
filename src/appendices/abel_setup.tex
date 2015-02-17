@@ -40,3 +40,13 @@ mpirun -np 18 lmp_intel_cpu -package omp 15 -suffix omp -in s1_hydrate_crack.in
 \end{lstlisting}
 
 This job script starts LAMMPS in a hybrid MPI and OpenMP mode with 18 mpi processes, each with 15 cpu's. Note the {\tt -suffix omp} which tells LAMMPS to use the OpenMP version of any potential and function in LAMMPS. If features that do not support OpenMP are used, then the simulation might run slowly, and resources might remain unused (idle cpu's).
+
+Note: since it turned out that I could not use the OpenMP package, the scripts I actually used does not contain the OpenMP commands, and {\tt --cpus-per-task} is set to 1.
+
+I have made a small python module that lets me submit a job for each subdirectory containing a file {\tt lmp\_slurm\_job.sh}:
+
+\begin{lstlisting}[language=Bash]
+python -m sbatch_tree $PWD
+\end{lstlisting}
+
+@InsertModuleCode

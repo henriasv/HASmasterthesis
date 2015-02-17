@@ -87,8 +87,9 @@ Nucleation of methane hydrates in a solution of water and methane is a rare even
 
 Since dealing with technical problems is a huge part of computational physics, I thick it is necessary with a section describing some of the problems I have experienced.
 
-\subsection{Neighbor list rebuild rate}
-LAMMPS defaults to reduilding neighbor lists every 10 timesteps. In some cases this is not sufficient when using TIP4P with PPPM, LAMMPS crashes with the following error message:
+\subsection{Atoms out of range - USER-OMP}
+The most painful error that I experienced after getting rid of the beginnes mistakes, was the following:
+
 
 \begin{verbatim}
 ERROR: Out of range atoms - cannot compute PPPM (../pppm_tip4p_omp.cpp:385)
@@ -96,12 +97,16 @@ ERROR: Out of range atoms - cannot compute PPPM (../pppm_tip4p_omp.cpp:385)
 
 This is painful to debug. It typically shows up in large simulations after a long time, and with no clear reason. Molecular dynamics simulations expensive and time consuming, and each attempt on a solution to this problem typically requires hours even on a supercomputer. 
 
-The standard solution to this is to force more frequent neighbor list builds:
+LAMMPS defaults to reduilding neighbor lists every 10 timesteps. In some cases this is not sufficient when using TIP4P with PPPM, so the standard solution to this is to force more frequent neighbor list builds:
 
 \begin{lstlisting}[language=LammpsInput]
 neigh_modify delay 0 every 1 check yes
 \end{lstlisting}
 
-However, this did not help me when i got the message. The next thing I tried was to half the timestep.
+However, this did not help me when i got the message. The next thing I tried was to half the timestep, which did not work either.
 
-The feeling I get from this error, is that it is about being unlucky. The system seems to behave well and to be in equilibrium, and then suddenly the simulation craches.
+The next approach is to try to increase the dampting time of the thermostat, as thermostats with a low characteristic time are known to cause trouble. But this did not help eiter. Then I realized that I did not experience this problem when I did not change from NPT to NVT during the simulation. Something ugly may happen when this is done.
+
+To avoid doing NPT and NVT in the same simulation, I can start by creating an equilibrated system containing a crack, and use the simulation box size and particle positions from that simulation as input in my crack simulations. This of course also introduces the advantage of not having to equilibrate the system for every simulation. However, it also introduces the disadvantage of needing a separate file for each initial crack size.
+
+It turned out that the problem was related to the OpenMP package bundled with LAMMPS. Some bug is introduced when using NPT and the OpenMP package. The OpenMP package did not give vital efficiency imporvements, so I choose not to use the OpenMP package rather than resolving the error.

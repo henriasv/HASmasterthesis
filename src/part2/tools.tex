@@ -187,9 +187,17 @@ All commands are available from the LAMMPS documentation \cite{lammps:input_comm
 
 \section{Optimizations in LAMMPS}
 \subsection{OpenMP}
-OpenMP support is implemented in the USER-OMP package. 
+OpenMP support is implemented in the USER-OMP package. This has turned out not to be entirely stable. (Random crashes with cannot compute pppm)
 \subsection{Processor layout and partitions}
 {\tt run\_style verlet/split} distributes force calculations over two partitions of processors. These partitions must be defined either using the {\tt processor} command or the {\tt partition} command. {\tt verlet\_split} depends on the REPLICA package. 
+
+
+\section{Extending LAMMPS}
+LAMMPS was designed to be easily extendable, and in my opinion that turns out to be true.
+
+I have made @number extension to LAMMPS.
+
+\subsection{Region {\tt eprism} -- elliptical prism}
 
 
 \section{Moltemplate - LAMMPS input script generator}
