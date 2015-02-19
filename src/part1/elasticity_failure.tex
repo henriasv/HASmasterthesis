@@ -93,15 +93,16 @@ Isotropic materials can be described by two parameters: Youngs modulus $E$ and p
 	\end{pmatrix}
 \end{equation}
 
-\section{Simple theory of failure}
-In linear elastic fracture mechanics (LEFM), there are two quantities that govern failure: The stress intensity factor $K$, and the energy release rate $G$. For the case of linear elastic materials, these are uniquely related.
 
-\section{Modes of loading}
+\section{Simple fracture mechanics}
+In linear elastic fracture mechanics (LEFM), there are essentially two quantities that govern failure: The stress intensity factor $K$, and the energy release rate $G$. For the case of linear elastic materials, these are uniquely related.
+
+\subsection{Modes of loading}
 There are 3 loading modes: I =`opening', II = `sliding', III = `tearing'. 
 @insertFigure
 
-\section{Stress intensity factors in anisotropic materials}
-The ``official'' fracture toughness measure is the critical stress intensity factor for mode I loading, so I need a procedure to obtain that from molecular dynamics simulations. Having obtained the fracture area and the energy release rate, I can use the generalized irwin formula @citation to calculate the stress intensity factor. 
+\subsection{Stress intensity factors in anisotropic materials}
+Simple fracture theory assumes that one only need one parameter to describe the fracture properties of a material, the critical stress intensity factor under tensile loading -- the fracture toughness. I will need a procedure to obtain that from molecular dynamics simulations. Having obtained the fracture area and the energy release rate, I can use the generalized irwin formula @citation to calculate the stress intensity factor. 
 
 \begin{equation}
 	G = \pi \vec{K}^T [\vec{H}] \vec{K} 
@@ -114,10 +115,20 @@ To find the stress intensity factor for mode I loading, I only need to ensure a 
 	H_{11} = \frac{1}{2\pi} \sqrt{\frac{C_{11}}{C_{11}C_{33}-C^2_{13}}\left( \frac{1}{C_{44}} + \frac{2}{C_{13} + \sqrt{C_{11} C_{33}}}\right)}
 \end{equation}
 
-The stress intensity factor for mode I loading is the \emph{de facto} standard for fracture toughness measures. @ElegantClosingSentence
+The stress intensity factor for mode I loading is the standard for fracture toughness measures. @ElegantClosingSentence
 
 For the special case of isotropic materials under mode I loading, we recover a more familiar expression, Irwins formula for plane strains:
 
 \begin{equation}
 	K_c = \sqrt{\frac{EG_c}{1-\nu^2}}
 \end{equation}
+
+
+\subsection{Brittle and ductile materials}
+In materials science, it is common to distinguish between brittle and ductile materials. According to Wikipedia, a material i brittle if it ``breaks without significant strain'', whereas ductility is ``a solids material's ability to deform under tensile stress''. Deformation in this context is plastic. It is actually hard to come along a more satisfying definition -- ductility and brittleness seems to be the kind of knowledge that everyone in the field feels they have, but no one dares to write down as an equation. Throughout this thesis, I will use the term brittle -- by which i will be meaning ideally brittle -- about failure where the 
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{../figures/thesis/idealized_fracture_e_pot.pdf}
+\caption{Potential energy as a function of applied strain for systems held at a constant temperature. The figure shows three idealized examples of failure. (a) and (b) are brittle, and (c) is ductile. In (a), the system reaches a stress state where $G_c = 2\gamma_s$ and breaks. No energy is lost to plastic deformation or heat. In (b), the system breaks at $G_c > 2\gamma_s$ and energy is lost to heat, but not to plastic deformation. In (c), the system is continously deforming plastically through the straining process -- the material is very ductile. The plateau in all figures represents a state where a crack propagated through the whole system -- the system is divided into two parts -- so additional straining does not contribute potential energy. }
+\end{figure}

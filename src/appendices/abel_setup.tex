@@ -45,8 +45,32 @@ Note: since it turned out that I could not use the OpenMP package, the scripts I
 
 I have made a small python module that lets me submit a job for each subdirectory containing a file {\tt lmp\_slurm\_job.sh}:
 
+\begin{lstlisting}[language=Python]
+# File: sbatch_tree.py
+import subprocess
+import argparse
+import os.path as op
+import os
+
+def walkfunc(arg, dirname, names):
+	job_script = op.join(dirname, 'lmp_slurm_job.sh')
+	if op.isfile(job_script):
+		if op.isfile(op.join(dirname,'log.lammps')):
+			print "Seems like simulaton is running or has been run since there are output files in the folder"
+			print dirname
+		else:
+			os.chdir(dirname)
+			subprocess.call(['sbatch', 'lmp_slurm_job.sh'])
+			print "Submitted from", job_script 
+
+if __name__=='__main__':
+	parser = argparse.ArgumentParser()
+	parser.add_argument('sim_root_folder', type=str)
+	args = parser.parse_args()
+	op.walk(args.sim_root_folder, walkfunc, None)
+\end{lstlisting}
+
+Usage:
 \begin{lstlisting}[language=Bash]
 python -m sbatch_tree $PWD
 \end{lstlisting}
-
-@InsertModuleCode

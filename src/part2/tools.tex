@@ -198,10 +198,29 @@ LAMMPS was designed to be easily extendable, and in my opinion that turns out to
 I have made @number extension to LAMMPS.
 
 \subsection{Region {\tt eprism} -- elliptical prism}
+I have written a simple extension to LAMMPS, which enables med to define regions formed like elliptical prisms. This is needed to carve out elliptical holes for my simulations. 
 
+The main contents of this extension is:
 
-\section{Moltemplate - LAMMPS input script generator}
-\subsection{Creating atom configurations - Hierarchical configuration}
-Atoms can be nested into greater structures. For the purpose of methane hydrate simulations, I have created templates for S-I and S-II hydrates. It is possible to create quite complicated geometries using the available operations in moltemplate. 
+\begin{lstlisting}[language=c++]
+int RegEprism::inside(double x, double y, double z) 
+{
+	double dx = x-xmid;
+	double dy = y-ymid;
+	return ( (dx/a)*(dx/a)+(dy/b)*(dy/b) ) < 1.0;
+}
+\end{lstlisting}
+
+The extension is a class that inherits from {\tt class Region}. 
+From the class definition of class region it can be seen that its subclasses are required to implement three functions:
+
+\begin{lstlisting}[language=c++]
+virtual int inside(double, double, double) = 0;
+virtual int surface_interior(double *, double) = 0;
+virtual int surface_exterior(double *, double) = 0;
+\end{lstlisting}
+
+I was not going to use the surface functions, so I only needed to implement {\tt inside(...)}. I left the other two as dummy functions returning {\tt false}. Using this region with LAMMPS functionality that requires knowledge of the region surface can result in undefined behavior.
+
 
 \section{General Utility Lattice Program}

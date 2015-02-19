@@ -3,8 +3,11 @@ I now have the theoretical framework of molecular dynamics, and it is time to in
 
 In this chapter, I describe a well known molecular model which is capable of stabilizing a methane hydrate. 
 
+\section{Criteria for a sufficient model}
+I will model dissociation of methane hydrates. As long as the methane hydrates are pure, i.e. no sediments nearby, it is reasonable to assume that noe chemical reactions will take place @cite. Therefore a TIP-model @WhatDoesTipMean should be sufficient. Since I will model fracture, the mechanical properties should be reasonably represented. Since I lack experience with water models, I end up using a model that other people have shown to work. Specifically, I choose a model that was able to spontaneously nucleate methane hydrates in molecular dynamics simulations. 
+
 \section{TIP4P-ICE water model}
-The TIP4P-ICE was developed by \cite{Abascal2005}, and was used by \cite{Walsh2009} in the first successful simulation of spontaneous methane hydrate growth. 
+The TIP4P-ICE was developed by \cite{Abascal2005}, and was used by \cite{Walsh2009} in the first successful simulation of spontaneous methane hydrate growth.
 
 \subsection{Overview}
 The TIP4P-ICE water model is a rigid water model with 4 sites for each water molecule: One O-site, two H-sites, and a site commonly referred to as the M-site. The M-site is supposed to slightly move the oxygen charge, and it is situated on the bisector of the H-O-H angle. The parameters for the arrangement as well as the masses of hydrogen and oxygen are taken from experimental observations, and were listed in table \ref{tb:intro:h2odata}.
@@ -52,7 +55,8 @@ Hydrogen charge & $q_H$ & \SI{0.520}{\elementarycharge} & \SI{0.5564}{\elementar
 \end{tabular}
 \end{table}
 
-\section{United Atom Methane}
+\section{OPLS methane}
+OPLS-UA and OPLS-AA. I will choose OPLS-UA for simplicity. Another potential might be used in the future. 
 United atom methane is the united atom model for methane, and is effectively a single Lennard-Jones interaction site for each methane molecule. 
 \begin{equation}
 	U_{LJ} = 4\varepsilon\left[\left(\frac{\sigma}{r_{MM}}\right)^{12} - \left(\frac{\sigma}{r_{MM}}\right)^{6}\right]
@@ -83,6 +87,6 @@ Perhaps the simplest way to combine two species Lennard-Jones particles, is to u
 \sigma_{ij} = \frac{1}{2} \left(\sigma_{ii}+\sigma_{jj}\right)
 \end{align}
 
-\section{TIP4P-ICE + United atom methane}
+\section{TIP4P-ICE + OPLS-UA methane}
 We now have all the ingredients we need to model a methane hydrates: A water model, a methane model, and a way to make the water and the methane interact with each other. This model is essentially a description of the total energy of a system consisting of particles with known positions and momenta. The next step is to use molecular dynamics to explore the properties of this model, and to see if we can use this model to learn something about methane hydrate. 
 
