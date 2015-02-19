@@ -99,7 +99,11 @@ In linear elastic fracture mechanics (LEFM), there are essentially two quantitie
 
 \subsection{Modes of loading}
 There are 3 loading modes: I =`opening', II = `sliding', III = `tearing'. 
-@insertFigure
+
+\begin{figure}
+\includegraphics[width=\textwidth]{../figures/thesis/Fracture_modes_v2.pdf}
+\caption{Three modes of crack separation. (``Fracture modes v2'' by Twisp - This vector image was created with Inkscape. Licensed under Public Domain via Wikimedia Commons)}
+\end{figure}
 
 \subsection{Stress intensity factors in anisotropic materials}
 Simple fracture theory assumes that one only need one parameter to describe the fracture properties of a material, the critical stress intensity factor under tensile loading -- the fracture toughness. I will need a procedure to obtain that from molecular dynamics simulations. Having obtained the fracture area and the energy release rate, I can use the generalized irwin formula @citation to calculate the stress intensity factor. 
@@ -125,10 +129,10 @@ For the special case of isotropic materials under mode I loading, we recover a m
 
 
 \subsection{Brittle and ductile materials}
-In materials science, it is common to distinguish between brittle and ductile materials. According to Wikipedia, a material i brittle if it ``breaks without significant strain'', whereas ductility is ``a solids material's ability to deform under tensile stress''. Deformation in this context is plastic. It is actually hard to come along a more satisfying definition -- ductility and brittleness seems to be the kind of knowledge that everyone in the field feels they have, but no one dares to write down as an equation. Throughout this thesis, I will use the term brittle -- by which i will be meaning ideally brittle -- about failure where the 
+In materials science, it is common to distinguish between brittle and ductile materials. According to Wikipedia, a material i brittle if it ``breaks without significant strain'', whereas ductility is ``a solid material's ability to deform under tensile stress''. Deformation in this context is plastic. It is actually hard to come along a more satisfying definition -- ductility and brittleness seems to be the kind of knowledge that everyone in the field have, but no one writes down as an equation. Throughout this thesis, I will use the term brittle -- by which i will be meaning ideally brittle -- about failure where the material acts completely elastic when subected to strain, until it suddenly breaks over essentialy no change in the strain.
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{../figures/thesis/idealized_fracture_e_pot.pdf}
-\caption{Potential energy as a function of applied strain for systems held at a constant temperature. The figure shows three idealized examples of failure. (a) and (b) are brittle, and (c) is ductile. In (a), the system reaches a stress state where $G_c = 2\gamma_s$ and breaks. No energy is lost to plastic deformation or heat. In (b), the system breaks at $G_c > 2\gamma_s$ and energy is lost to heat, but not to plastic deformation. In (c), the system is continously deforming plastically through the straining process -- the material is very ductile. The plateau in all figures represents a state where a crack propagated through the whole system -- the system is divided into two parts -- so additional straining does not contribute potential energy. }
+\caption{Potential energy as a function of applied strain for systems held at a constant temperature. The figure shows three idealized examples of failure. (a) and (b) are brittle, (c) is ductile. In (a), the system reaches a stress state where $G_c = 2\gamma_s$ and breaks. No energy is lost to plastic deformation or heat. In (b), the system breaks at $G_c > 2\gamma_s$ and energy is lost to heat, but not to plastic deformation. In (c), the system is continously deforming plastically through the straining process -- the material is very ductile. Note that it is not possible to see the amount of energy lost to plastic deformation from (c). The plateau in all figures represents a state where a crack propagated through the whole system -- the system is divided into two parts -- so additional straining does not contribute potential energy. }
 \end{figure}

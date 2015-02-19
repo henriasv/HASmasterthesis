@@ -110,18 +110,30 @@ From the latter discussion, I propose to exploit the possible time problem, and 
 A simpler protocol -- and I believe this to be a good way to study this particular system -- is to subject the sample to a constant strain rate, then wait for a crack to propagate. This is simple to do, and is also close to experimental conditions. The downside is that the loading is varying during fracture, disturbing measurements of properties like crack velocity at constant loading. It is, however, reasonable to believe that at low strain rates, these effects will be small, if not negligible. This can also be solved by setting the strain rate to zero at some predefined strain level, which is estimated from experience, and can be systematically varied. 
 
 
-\subsection{Proof-of-concept run}
-Figure @ref shows the strain, total energy, potential energy and temperature for a simulation where an s1 methane hydrate of 33x33x1 unit cells was gradually subjected to a strain of 0.05 over $10^5$ timesteps fo \SI{1}{\femto\second}. The temperature was kept at \SI{260}{\kelvin} using an NVT thermostat with a characteristic time of \SI{100}{\femto\second}. Then, the system was left on its own. A crack started propagating @time after the strain rate was set to zero. Using the change of internal energy from before to after crack propagation as an estimate of the surface energy, and the area of the box face parallell to the crack as an estimate of the crack area, I can estimate the critical energy release rate:
+\subsection{Proof-of-concept runs}
+Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain for four simulations where S1 methane hydrates of 24x24x1 unit cells were gradually subjected to a strain of between 0.045 and 0.1 (see figure caption for simulation details). Then, the system was left on its own. For three of the systems, a crack started propagating, for two of them after the strain rate was set to zero. Using the change of internal energy from before to after crack propagation as an estimate of the surface energy, and the area of the box face parallell to the crack as an estimate of the crack area, I can estimate the critical energy release rate. I can also use the change in energy from the initial thermalized system to the split system after crack propagation to estimate the surface energy. Whatever energy change $\Delta U$ I use, the formula for $G_c$ reads:
 
 \begin{equation}
 	G_c \approx \frac{\Delta U}{L_yL_z}
 \end{equation}
 
-Note that this is a very crude estimate. The only thing I measure here is the energy that was removed from the system by the thermostat.
+\begin{equation}
+	\gamma_s \approx \frac{\Delta U}{2 L_y L_z}
+\end{equation}
+
+The thermalization for all four of the simulations are equal, with an average potential energy of $\SI{-2.8112}{\femto\joule}$ on the plateau (40--100 \si{\pico\second}. The average potential energy after crack propagation was $\SI{-2.7970}{\femto\joule}$, with almost no difference between the simulations. This yields an energy difference of \SI{1.42d-17}{\joule}. Using the simulation box side face area (measured values: $L_y = \SI{288.8}{\angstrom}$, $L_z = \SI{12.04}{\angstrom}$) as an estimate of the crack size, I get an estimated surface energy of $\gamma_s = \SI{204}{\milli\joule\per\meter\squared}$
+
 
 @Result from full crack.
 
 @ValueFromNoTFullyPropagating: \SI{0.086}{\mega\pascal\meter@@}
+
+
+\begin{figure}
+\includegraphics[width=\textwidth]{../figures/thesis/proof_of_concept_poteng_strain.pdf}
+\caption{Potential energy (upper panel) and strain (lower panel) for a series of simulations where systems of 24x24x1 unit cells S1 hydrate are subjected to tensile strain. The systems were initiated with an elliptic crack of $6.0 \times 40.0 \si{\angstrom}$. The system was allowed to equilibrate NPT during \SI{100}{\pico\second}. Then the simulations were NVT (but with imposed volume change due to straining). The thermostat and barostat damping times were \SI{1000}{\pico\second}. $T=\SI{260}{\kelvin}$. Falling potential energies correspond to crack opening (in these specific simulations).}
+\label{fig:proof_of_concept_crack}
+\end{figure}
 
 The results from this initial simulation indicate that methane hydrate under these conditions are very brittle, in the sense that they do not at all plastcally deform to withstand strain. They either deform elastically, or they fail. 
 
