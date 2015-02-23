@@ -20,7 +20,7 @@ I have not been successful in finding values for the shear viscosity and diffusi
 \label{fig:diffusivity_comparison_tip4p_ice_2005}
 \end{figure}
 
-\section{Measuring elastic properties with a constand strain rate}
+\section{Measuring elastic properties with a constant strain rate}
 A naive approach, which i will use for crude estimates, is to subject a system to a constant strain rate by expanding the simulation box in one of the coordinate directions, and rescale all atom positions accordingly. An anisotropic thermo-barostat should be applied along the other axes, to keep the environment pressure and temperature constant. Since the barostat scales the simulation box, strains along the two axes perpendicular to the applied strain can be measured as the contraction of the simulation box in these directions:
 
 \begin{equation}
@@ -92,6 +92,7 @@ I will follow the method of \cite{Hantal2014} to calculate the critical stress i
 This is in principle sufficient to determine the critical energy release rate for any mode of loading, provided that the conditions for using Equation \ref{eq:hantal_critical_energy_release_rate} to estimate the critical energy release rate are met.
 
 \subsection{Simulation details}
+@VerifyThatThisIsADescriptionOfHantal2014
 It is not at all obvious how to perform simulations to determine the fracture toughness. In \cite{Hantal2014} they performed NVT simulations and performed a series of small deformations to their sample. After each deformation, they minimized the system, and then ran molecular dynamics for \SI{10}{\pico\second}. I have tried to use the same protocol, but find that for my system, the impact on the energy distribution among the degrees of freedom is too large when performing minimizations between the deformations. this results in a system farther out of equlilibrium that the deformed but not minimized system. Therefore, a possible protocol:
 
 \begin{enumerate}
@@ -111,7 +112,9 @@ A simpler protocol -- and I believe this to be a good way to study this particul
 
 
 \subsection{Proof-of-concept runs}
-Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain for four simulations where S1 methane hydrates of 24x24x1 unit cells were gradually subjected to a strain of between 0.045 and 0.1 (see figure caption for simulation details). Then, the system was left on its own. For three of the systems, a crack started propagating, for two of them after the strain rate was set to zero. Using the change of internal energy from before to after crack propagation as an estimate of the surface energy, and the area of the box face parallell to the crack as an estimate of the crack area, I can estimate the critical energy release rate. I can also use the change in energy from the initial thermalized system to the split system after crack propagation to estimate the surface energy. Whatever energy change $\Delta U$ I use, the formula for $G_c$ reads:
+Before performing serious simulations, I do preliminary simulations to find out whether the protocol proposed in the latter section can produce interesting results. I do simulations on a relatively small and quasi 2-dimensional system -- the system is only one unit cell thick -- to keep computational costs down. The total computational cost for tuning in on parameters and getting rid of bugs and blunders was about $10^4$ cpu hours.
+
+Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain for four simulations where S1 methane hydrates of 24x24x1 unit cells were gradually subjected to a strain of between 0.045 and 0.1 (see figure caption for simulation details). Then, the system was left on its own. For three of the systems, a crack started propagating, for two of them after the strain rate was set to zero. Using the change of internal energy from before to after crack propagation as an estimate of the surface energy, and the area of the box face parallell to the crack as an estimate of the crack area, I can estimate the critical energy release rate. I can also use the change in energy from the initial thermalized system to the split system after crack propagation to estimate the surface energy. Whatever energy change $\Delta U$ I use, the formula for $G_c/\gamma_s$ reads:
 
 \begin{equation}
 	G_c \approx \frac{\Delta U}{L_yL_z}
@@ -121,13 +124,8 @@ Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain fo
 	\gamma_s \approx \frac{\Delta U}{2 L_y L_z}
 \end{equation}
 
-The thermalization for all four of the simulations are equal, with an average potential energy of $\SI{-2.8112}{\femto\joule}$ on the plateau (40--100 \si{\pico\second}. The average potential energy after crack propagation was $\SI{-2.7970}{\femto\joule}$, with almost no difference between the simulations. This yields an energy difference of \SI{1.42d-17}{\joule}. Using the simulation box side face area (measured values: $L_y = \SI{288.8}{\angstrom}$, $L_z = \SI{12.04}{\angstrom}$) as an estimate of the crack size, I get an estimated surface energy of $\gamma_s = \SI{204}{\milli\joule\per\meter\squared}$
-
-
-@Result from full crack.
-
-@ValueFromNoTFullyPropagating: \SI{0.086}{\mega\pascal\meter@@}
-
+Where the $\frac{1}{2}$ factor is because the crack opens two surfaces. The thermalization for all four of the simulations are equal, with an average potential energy of $\SI{-2.8112}{\femto\joule}$ on the plateau (40--100 \si{\pico\second}). The average potential energy after crack propagation was $\SI{-2.7970}{\femto\joule}$, with almost no variation among the simulations. This yields an energy difference of \SI{1.42d-17}{\joule}. Using the simulation box side face area (measured values: $L_y = \SI{288.8}{\angstrom}$, $L_z = \SI{12.04}{\angstrom}$) as an estimate of the crack size, I get an estimated surface energy of $\gamma_s = \SI{0.204}{\joule\per\meter\squared}.$
+@FindFractureToughnessFromGammaAndFromMaxEnergy
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/proof_of_concept_poteng_strain.pdf}
@@ -135,6 +133,4 @@ The thermalization for all four of the simulations are equal, with an average po
 \label{fig:proof_of_concept_crack}
 \end{figure}
 
-The results from this initial simulation indicate that methane hydrate under these conditions are very brittle, in the sense that they do not at all plastcally deform to withstand strain. They either deform elastically, or they fail. 
-
-\subsection{Results on failure}
+The results from this initial simulation indicate that methane hydrate under these conditions are very brittle on the tens-of-picoseconds scale, in the sense that they do not at all plastcally deform to withstand strain. They either deform elastically, or they fail. There is also indications that the time before fracture depends on the applied strain in a systematic way. A close look at the potential energy curve of the simulation that did not end in rupture reveals that the potentail energy is actually slowly decreasing. Whether this is a sign of a coming fracture, strengthening rearrangements of particles -- which could imply some ductility -- or something else remains to be investigated.
