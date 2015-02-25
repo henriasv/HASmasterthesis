@@ -93,7 +93,7 @@ This is in principle sufficient to determine the critical energy release rate fo
 
 \subsection{Simulation details}
 @VerifyThatThisIsADescriptionOfHantal2014
-It is not at all obvious how to perform simulations to determine the fracture toughness. In \cite{Hantal2014} they performed NVT simulations and performed a series of small deformations to their sample. After each deformation, they minimized the system, and then ran molecular dynamics for \SI{10}{\pico\second}. I have tried to use the same protocol, but find that for my system, the impact on the energy distribution among the degrees of freedom is too large when performing minimizations between the deformations. this results in a system farther out of equlilibrium that the deformed but not minimized system. Therefore, a possible protocol:
+It is not at all obvious how to perform simulations to determine the fracture toughness. \citet{Hantal2014} performed NVT simulations and imposed a series of small deformations to their sample. After each deformation, they minimized the system, and then ran molecular dynamics for \SI{10}{\pico\second}. I have tried to use the same protocol, but find that for my system, the impact on the energy distribution among the degrees of freedom is too large when performing minimizations between the deformations. this results in a system farther out of equlilibrium that the deformed but not minimized system. Therefore, a possible protocol:
 
 \begin{enumerate}
 \item Equilibrate the system NVT (Molecular dynamics)
@@ -111,10 +111,10 @@ From the latter discussion, I propose to exploit the possible time problem, and 
 A simpler protocol -- and I believe this to be a good way to study this particular system -- is to subject the sample to a constant strain rate, then wait for a crack to propagate. This is simple to do, and is also close to experimental conditions. The downside is that the loading is varying during fracture, disturbing measurements of properties like crack velocity at constant loading. It is, however, reasonable to believe that at low strain rates, these effects will be small, if not negligible. This can also be solved by setting the strain rate to zero at some predefined strain level, which is estimated from experience, and can be systematically varied. 
 
 
-\subsection{Proof-of-concept runs}
+\subsection{Proof-of-concept simulations}
 Before performing serious simulations, I do preliminary simulations to find out whether the protocol proposed in the latter section can produce interesting results. I do simulations on a relatively small and quasi 2-dimensional system -- the system is only one unit cell thick -- to keep computational costs down. The total computational cost for tuning in on parameters and getting rid of bugs and blunders was about $10^4$ cpu hours.
 
-Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain for four simulations where S1 methane hydrates of 24x24x1 unit cells were gradually subjected to a strain of between 0.045 and 0.1 (see figure caption for simulation details). Then, the system was left on its own. For three of the systems, a crack started propagating, for two of them after the strain rate was set to zero. Using the change of internal energy from before to after crack propagation as an estimate of the surface energy, and the area of the box face parallell to the crack as an estimate of the crack area, I can estimate the critical energy release rate. I can also use the change in energy from the initial thermalized system to the split system after crack propagation to estimate the surface energy. Whatever energy change $\Delta U$ I use, the formula for $G_c/\gamma_s$ reads:
+Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain for four simulations where S1 methane hydrates of 24x24x1 unit cells were gradually subjected to a strain of between 0.045 and 0.1 (see figure caption for simulation details). Then, the system was left on its own. For three of the systems, a crack started propagating, for two of them after the strain rate was set to zero. Using the change of internal energy from before to after crack propagation as an estimate of the surface energy, and the area of the box face parallell to the crack as an estimate of the crack area, I can estimate the critical energy release rate. I can also use the change in energy from the initial thermalized system to the split system after crack propagation to estimate the surface energy. Whatever energy change $\Delta U$ I use, the formulas for $G_c$ and $\gamma_s$ reads:
 
 \begin{equation}
 	G_c \approx \frac{\Delta U}{L_yL_z}
@@ -129,8 +129,18 @@ Where the $\frac{1}{2}$ factor is because the crack opens two surfaces. The ther
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/proof_of_concept_poteng_strain.pdf}
-\caption{Potential energy (upper panel) and strain (lower panel) for a series of simulations where systems of 24x24x1 unit cells S1 hydrate are subjected to tensile strain. The systems were initiated with an elliptic crack of $6.0 \times 40.0 \si{\angstrom}$. The system was allowed to equilibrate NPT during \SI{100}{\pico\second}. Then the simulations were NVT (but with imposed volume change due to straining). The thermostat and barostat damping times were \SI{1000}{\pico\second}. $T=\SI{260}{\kelvin}$. Falling potential energies correspond to crack opening (in these specific simulations).}
+\caption{Potential energy (upper panel) and strain (lower panel) for a series of simulations where systems of 24x24x1 unit cells S1 hydrate are subjected to tensile strain. The systems were initiated with an elliptic crack of $6.0 \times 40.0 \si{\angstrom}$. The system was allowed to equilibrate NPT during \SI{100}{\pico\second}, which can be seen from the small fluctuations in strain in this timeframe. Then the simulations were NVT (but with imposed volume change due to straining). The thermostat and barostat damping times were \SI{1000}{\pico\second}. $T=\SI{260}{\kelvin}$. Falling potential energies correspond to crack opening (in these specific simulations). The systems that crack show oscillating potential energy after crack propagation, which is due to global oscillations of the system. The oscillations are damped out by a drag term in the thermostat.}
 \label{fig:proof_of_concept_crack}
 \end{figure}
 
-The results from this initial simulation indicate that methane hydrate under these conditions are very brittle on the tens-of-picoseconds scale, in the sense that they do not at all plastcally deform to withstand strain. They either deform elastically, or they fail. There is also indications that the time before fracture depends on the applied strain in a systematic way. A close look at the potential energy curve of the simulation that did not end in rupture reveals that the potentail energy is actually slowly decreasing. Whether this is a sign of a coming fracture, strengthening rearrangements of particles -- which could imply some ductility -- or something else remains to be investigated.
+\paragraph{Detailed crack analysis}
+This is the point at which I developed my code to measure the crack area. Hopefully, that estimate will be better than the estimate solely based on the simulation box dimensions. The code also lets me follow the crack area in time, which makes it possible to measure the crack speed. I choose to define the crack speed as the change of crack area divided by the crack width, since the crack width is well defined – it is $L_z$ of the simulation box. Keeping in mind that my cracks travel in two directions, the crack velocity for a crack initiated as a hole parallell to the z-axis is:
+
+\begin{equation}
+v_c = \frac{1}{2L_z}\frac{\dd A_c}{\dd t}
+\end{equation}
+
+@MeasureCrackInTimeForTheseSimulations
+
+\paragraph{Summary of concept simulations} The results from this initial simulation indicate that methane hydrate under these conditions are very brittle on the tens-of-picoseconds scale, in the sense that they do not at all plastcally deform to withstand strain. They either deform elastically, or they fail. There is also indications that the time before fracture depends on the applied strain in a systematic way. A close look at the potential energy curve of the simulation that did not end in rupture reveals that the potentail energy is actually slowly decreasing. Whether this is a sign of a coming fracture, strengthening rearrangements of particles -- which could imply some ductility -- or something else remains to be investigated.
+

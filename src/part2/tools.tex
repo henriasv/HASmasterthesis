@@ -1,4 +1,15 @@
-\chapter{Simulation tools}
+\chapter{Simulation and analysis tools}
+The molecular dynamics workflow can be usefully divided as follows: 
+\begin{enumerate}
+\item Create initial condition
+\item Run molecular dynamics
+\item Analyze results
+\end{enumerate}
+Usually, step 3 will give experince that influence how steps 1 and 2 are done during the next iteration. It is important to have tools in place to accomodate this workflow. Most importantly, the tools have to be directly compatible when iterating $1 \to 2\to 3$. Otherwise, it is impossible to work efficiently. Second, it is convenient with compatibility $2\to 1$ if a simulation needs to be run furter in time. Third, it is convenient with compatibility $3 \to 1$, but the nature of such a compatibility is not as clear as the others. 
+
+
+
+First choice is wheter to program the molecular dynamics simulator myself or to use a program made by someone else. I have implemented my own molecular dynamisc program before, and the experience from that tells me to use a package. It is quite easy to implement a simple molecular dynamics solver for Lennard-Jones particles in NVE and Berendsen NVT, but more complex potentials and barostatic ensembles are more challenging to implement and test. 
 
 \section{LAMMPS}
 Lammps, Large-scale Atomic/Molecular Massively Parallel Simulator, is a tool for (possibly) large particle-style simulations - mainly molecular dynamics. Lammps is a massive open source project, and its main features are developed and maintained at Sandia National Laboratories in the United States. 
@@ -227,4 +238,22 @@ I was not going to use the surface functions, so I only needed to implement {\tt
 It is cumbersome to calculate stiffness paramenters using molecular dynamics. Therefore I use a dedicated program -- General Utility Lattice Program (GULP) -- to caculate these parameters.
 
 \section{Crack tracer}
-I have implemented my own crack tracer based on the idea from \cite{Hantal2014}.
+Measuring the area of a crack surface is far from a trivial task. Due to the fractal-like interface between a molecular surface and the ``void'', at least one adjustable parameters must be included in a method for calculating the surface are of a crack in a molecular system. One possibility is to measure the solvent-accessible area, which has \emph{one} free parameter: The radius of a trial particle rolling over the molecular surface. 
+
+
+\subsection{Algorithm}
+I have implemented a Monte-Carlo crack tracer based on the theory of @cite1970isj to measure the solvent-accessible area of a system of particles. The basic idea is that every point in space is defined as either part of the \emph{void} or part of the \emph{wall} based on the following definition: A void point is a point for which there exist no particles within a distance $r_p$. Points that are not part of the void are parts of the wall. The Monte-Carlo method I employ is as follows: $N$ line segments of length $\Delta l$ and uniformly random orientation and position in space are drawn. A surface point is detected if one of the edges is in the void while the other is in the wall, and is identified as the midpoint of the line segment. The solvent-accessible surface area of the system is then, based on @cite1971:
+
+\begin{equation}
+A_{ss}(r_p) = 2V\frac{n_s(r_p)}{N\Delta l}
+\end{equation}
+
+Where $n_s$ is the number of surface points detected amond $N$ line segments. $V$ is the volume of the system. The length $\Delta l$ is the only numerical resolution parameter for this measure, and has to be small compared to $r_p$ in order to capture the surface structure. 
+
+\subsection{Implementation}
+\paragraph{Cell lists}
+The system is divided into a maximum number of equal sized cells such that that all cell dimensions $l_x, l_y, l_z$ are greater than $r_p$. When a point is checked for whether it is part of the void or the wall, only the distance to particles belonging to the same cell and the directly and diagonally adjacent cells needs to be checked. Using cell lists rather that looping over all particles in the system gives huge efficiency gains.
+\paragraph{Periodic boundaries}
+Periodic boundaries are implemented using cell lists, which means that the system must be at least $2\times 2 \times 2$ cells – each dimension in the system must be at least $2r_p$.
+\paragraph{Scaling efficiency}
+If we assume that the required number of samples to estimate the surface area of a system is proportional to the number of particles in that system, the problem scales as $\mathcal{O}(N^2)$. With cell lists the problem scales like $\mathcal{O}(N)$.
