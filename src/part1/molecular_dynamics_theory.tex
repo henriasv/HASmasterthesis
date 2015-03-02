@@ -141,12 +141,16 @@ For the purpose of estimating viscosities, the autocorrelation function is only 
 Following \cite{Yeh2004}, it would also be possible to calculate the viscosity using the finite size effect on the thermal diffusivity.
 
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Rigid molecules - The SETTLE algorithm}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Rigid groups of particles}
 There are several ways to keep a group of atoms constrained as a rigid molecule. The goal is to obtain the same result as if the equation was integrated using holonomic constraints, but integrating the angular movement of rigid particles instead of ...***. Generally, one can use the SHAKE or the RATTLE algorithm. For the particular case of three rigid atoms, the SETTLE algorithm might be preferred. The SETTLE algorithm \cite{Miyamoto1992} is an analytical solution to the 3-particle constraint problem when integrating numerically the newtonian equations of motion. It implements the contraint by changing the positions and velocities of the constrained particles after each integration step.
 
+\subsection{SHAKE}
+\label{sec:shake}
+@MentionRelationToMinimization
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{SETTLE}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 The basic idea of the SETTLE algorithm is to use the positions on a triangle before, $\Delta A_0 B_0 C_0$, and after, $\Delta A_1 B_1 C_1$, an unconstrained integration step to determine rotation operations to perform on $\Delta A_0 B_0 C_0$ to achieve a triangle $\Delta A_3 B_3 C_3$ corresponding to a constrained integration step. When we know the rotation operations, we also know the positions $(A_3, B_3, C_3)$ which are what we want for an implementation of the algorithm.
 
 Let us look at the water molecule as a triangle placed in the $X'Y'$ plane of an orthogonal coordinate system $X'Y'Z'$	with the center of mass in the origin, and the oxygen atom placed on the positive y-axis. We denote the triangle $\Delta abc$ beginning with $a$ being the position of oxygen, and $b$ and $c$ the hydrogen positions in the positive direction of rotation around the origin.  In this coordinate system, the triangle is uniquely defined by three numbers: $(r_a, r_b, r_c)$ being the position components $a_y$, $-b_y$ and $c_x$. Triangles denoted by lowercase letters are the canonical water molecule, or the equilibrium configuration. $\Delta ABC$ is a triangle with possibly any positions of the corners, on which we want to perform the contrain operation to get back to the canonical triangle. 
