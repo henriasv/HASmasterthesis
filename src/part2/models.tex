@@ -6,8 +6,8 @@ In this chapter, I describe a well known molecular model which is capable of sta
 \section{Criteria for a sufficient model}
 I will model dissociation of methane hydrates. As long as the methane hydrates are pure, i.e. no sediments nearby, it is reasonable to assume that noe chemical reactions will take place @cite. Therefore a TIP-model @WhatDoesTipMean should be sufficient. Since I will model fracture, the mechanical properties should be reasonably represented. Since I lack experience with water models, I end up using a model that other people have shown to work. Specifically, I choose a model that was able to spontaneously nucleate methane hydrates in molecular dynamics simulations. 
 
-\section{TIP4P-ICE water model}
-The TIP4P-ICE was developed by \cite{Abascal2005}, and was used by \cite{Walsh2009} in the first successful simulation of spontaneous methane hydrate growth.
+\section{TIP4P/ICE water model}
+The TIP4P/ICE was developed by \citet{Abascal2005} as a reparametrization of the TIP4P water model. TIP4P was used by \citet{Matsumoto2002} in the first successfull simulations of nucleation of ice crystals in molecular dynamics, and TIP4P/ICE was used by \citet{Walsh2009} in the first successful simulation of spontaneous methane hydrate nucleation. 
 
 \subsection{Overview}
 The TIP4P-ICE water model is a rigid water model with 4 sites for each water molecule: One O-site, two H-sites, and a site commonly referred to as the M-site. The M-site is supposed to slightly move the oxygen charge, and it is situated on the bisector of the H-O-H angle. The parameters for the arrangement as well as the masses of hydrogen and oxygen are taken from experimental observations, and were listed in table \ref{tb:intro:h2odata}.

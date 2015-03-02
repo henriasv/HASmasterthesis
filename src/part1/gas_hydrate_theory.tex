@@ -19,7 +19,7 @@ Distance O-H & $d_{OH}$ & \SI{0.9572}{\angstrom} \\
 
 
 \section{Mechanical properties from experiments}
-Since methane hydrates come in many forms, it is hard to say someting general about elastic properties, strength and toughness. A review paper from 2012 \citet{Ning2012} states:
+Since methane hydrates come in many forms, it is hard to say someting general about elastic properties, strength and toughness. In a review paper from 2012, \citet{Ning2012} state:
 \begin{quotation}
 Few mechanical properties are reported , and their measurements are difficult, partly because it is almost impossible to obtain pure hydrate samples.
 \end{quotation}
@@ -29,7 +29,7 @@ This must be taken into account when going through the experimental results on m
 \subsection{Typical experimental setup}
 The initial challenge when doing experiments on methane hydrates is that samples of methane hydrate are not stable in room temperature and atmospheric pressure.
 
-The group of William B. Durham at MIT has built an ice creep apparatus, which is what they call a ``standard triaxial gas deformation rig''. In this device, pressure and temperature can be controlled within a range of $T \in \{\SI{77}{\kelvin}, \text{room temperature}\}$ and $P \in \{\text{room pressure}, \SI{1}{\giga\pascal}\}$. In addition to the confining pressure, deformation of a sample is controlled with a piston of which the velocity can be controlled over 5 orders of magnitude.
+The group of William B. Durham at MIT has built an ice creep apparatus, which is what they call a ``standard triaxial gas deformation rig''. In this device, pressure and temperature can be controlled from \SI{77}{\kelvin} to ambient temperature and ambient pressure to \SI{1}{\giga\pascal}. In addition to the confining pressure, deformation of a sample is controlled with a piston of which the velocity can be controlled over 5 orders of magnitude.
 
 @Illustration
 
@@ -46,13 +46,16 @@ Characteristics/surprising observations
 \section{Molecular Modeling of Methane Hydrates}
 
 \section{Molecular Modeling of Fracture}
-\cite{doi:10.1142/9789812773326_0001} review some aspects of molecular modeling of fracture. 
+\citet{doi:10.1142/9789812773326_0001} review some aspects of molecular modeling of fracture. 
 
 \section{Water in molecular dynamics}
-\cite{Vega2011} reviews rigid non-polarizable models.
+\citet{Vega2011} review rigid non-polarizable models.
 
 \section{Research questions}
-\begin{itemize}
-\item What is the fracture toughness of methane hydrate?
+\begin{enumerate}
+\item What is the fracture toughness of methane hydrate? Fracture toughness of matarials are usually estimated with standardized mechanical tests. Since such tests are hard to do for methane hydrates, it is actually possible that the best estimates can come from molecular simulations. 
 \item What characterizes failure in methane hydrates, is it ductile or brittle? Are there sub-critical fractures, and are they available on the timescale of molecular dynamics?
-\end{itemize}
+\item What does the fracture surface look like?
+\item Are the fracture properties of methane hydrates predictable? It could for instance be that for a given stress or strain applied to a slab of methane hydrate, the critial stress/strain or the time it takes before it starts cracking is very predictable, and sharply peaked around some value. On the other hand, it could be that statisical processes in the material are important, and that there is a wide waiting-time distribution governing the fracture initiation or even propagation.
+\item Strain hardening to 20\% strain. How can this be explained?
+\end{enumerate}

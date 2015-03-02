@@ -129,7 +129,7 @@ Where the $\frac{1}{2}$ factor is because the crack opens two surfaces. The ther
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/proof_of_concept_poteng_strain.pdf}
-\caption{Potential energy (upper panel) and strain (lower panel) for a series of simulations where systems of 24x24x1 unit cells S1 hydrate are subjected to tensile strain. The systems were initiated with an elliptic crack of $6.0 \times 40.0 \si{\angstrom}$. The system was allowed to equilibrate NPT during \SI{100}{\pico\second}, which can be seen from the small fluctuations in strain in this timeframe. Then the simulations were NVT (but with imposed volume change due to straining). The thermostat and barostat damping times were \SI{1000}{\pico\second}. $T=\SI{260}{\kelvin}$. Falling potential energies correspond to crack opening (in these specific simulations). The systems that crack show oscillating potential energy after crack propagation, which is due to global oscillations of the system. The oscillations are damped out by a drag term in the thermostat.}
+\caption{Potential energy (upper panel) and strain (lower panel) for a series of simulations where systems of 24x24x1 unit cells S1 hydrate are subjected to tensile strain. The systems were initiated with an elliptic crack of $6.0 \times 40.0 \si{\angstrom}$. The system was allowed to equilibrate NPT during \SI{100}{\pico\second}, which can be seen from the small fluctuations in strain in this timeframe. Then the simulations were NVT, but with imposed volume change due to the application of a constant strain rate, taking the system to a predesignated stress after \SI{50}{\pico\second}. Then, a regular NVT-simulation was run for \SI{400}{\pico\second} (bright colors). The thermostat and barostat damping times were \SI{1000}{\pico\second}. $T=\SI{260}{\kelvin}$. Falling potential energies correspond to crack opening (in these specific simulations). The slope of falling potential energy is systematically steeper for higher values of the strain before crack propagation. The systems that crack show oscillating potential energy after crack propagation, which is due to global oscillations of the system. The oscillations are damped out by a drag term in the thermostat. }
 \label{fig:proof_of_concept_crack}
 \end{figure}
 
@@ -142,5 +142,19 @@ v_c = \frac{1}{2L_z}\frac{\dd A_c}{\dd t}
 
 @MeasureCrackInTimeForTheseSimulations
 
-\paragraph{Summary of concept simulations} The results from this initial simulation indicate that methane hydrate under these conditions are very brittle on the tens-of-picoseconds scale, in the sense that they do not at all plastcally deform to withstand strain. They either deform elastically, or they fail. There is also indications that the time before fracture depends on the applied strain in a systematic way. A close look at the potential energy curve of the simulation that did not end in rupture reveals that the potentail energy is actually slowly decreasing. Whether this is a sign of a coming fracture, strengthening rearrangements of particles -- which could imply some ductility -- or something else remains to be investigated.
+\paragraph{Summary of concept simulations} The results from this initial simulation indicate that methane hydrate under these conditions are very brittle on the tens-of-picoseconds scale, in the sense that they do not at all plastcally deform to withstand strain. They either deform elastically, or they fail. There is also indications that the time before fracture depends on the applied strain in a systematic way. A close look at the potential energy curve of the simulation in figure \ref{fig:proof_of_concept_crack} that did not end in rupture reveals that the potential energy is actually slowly decreasing. Whether this is a sign of a coming fracture, strengthening rearrangements of particles -- which could imply some ductility -- or something else, remains to be investigated. 
+
+\subsection{Arising questions}
+Several quiestion arise as a result of the proof-of-concept runs:
+\begin{itemize}
+\item Is there a relationship between the waiting time from straining ends till rupture starts and the slope of the potential energy curve?
+\item Is the slowly decreasing potential energy of long waiting-time events important, and can it be realted to the waiting time?
+\item What is the fracture toughness for long (infinite) waiting times, and is it possible to measure? Will the system melt before it fractures?
+\end{itemize}
+
+There are also several technical problems that can be addressed:
+\begin{itemize}
+\item What is the effect of the thermostat damping time on fracture properties?
+\item Is the strain rate important? Does the time it takes to strain the system compete with the waiting time until fracture?
+\end{itemize}
 
