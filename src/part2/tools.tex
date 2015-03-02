@@ -235,7 +235,7 @@ I was not going to use the surface functions, so I only needed to implement {\tt
 
 
 \section{General Utility Lattice Program}
-It is cumbersome to calculate stiffness paramenters using molecular dynamics. Therefore I use a dedicated program -- General Utility Lattice Program (GULP) -- to caculate these parameters.
+It is cumbersome to calculate stiffness paramenters using molecular dynamics. Therefore I use a dedicated program -- General Utility Lattice Program (GULP) -- to caculate these parameters. @IProbablyWontUseGulpForTheMaster
 
 \section{Crack tracer}
 Measuring the area of a crack surface is far from a trivial task. Due to the fractal-like interface between a molecular surface and the ``void'', at least one adjustable parameters must be included in a method for calculating the surface are of a crack in a molecular system. One possibility is to measure the solvent-accessible area, which has \emph{one} free parameter: The radius of a trial particle rolling over the molecular surface. 
@@ -257,3 +257,7 @@ The system is divided into a maximum number of equal sized cells such that that 
 Periodic boundaries are implemented using cell lists, which means that the system must be at least $2\times 2 \times 2$ cells – each dimension in the system must be at least $2r_p$.
 \paragraph{Scaling efficiency}
 If we assume that the required number of samples to estimate the surface area of a system is proportional to the number of particles in that system, the problem scales as $\mathcal{O}(N^2)$. With cell lists the problem scales like $\mathcal{O}(N)$.
+
+
+\section{Stress measurement (crude)}
+I output the stress tensor for each particle averaged over @Ndump steps. These values are put on a 2D grid, and averaged for each cell on that grid. This kind of measurement is not necessarily useful for methane hydrates, as the characteristic size is large (12 Å) so that the grid must necessarily be coarse. @IsThisTrue?
