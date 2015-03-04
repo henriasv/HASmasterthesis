@@ -93,6 +93,31 @@ Isotropic materials can be described by two parameters: Youngs modulus $E$ and p
 	\end{pmatrix}
 \end{equation}
 
+\subsection{Plane strain and plane stress}
+Plane strain and plane stress are conditions where a three-dimensional elastic problem can be analyzed as two-dimensional ones. The formal definitions of plane strain and plane stress are given in equations \ref{eq:plane_strain} and \ref{eq:plane_stress}, respectively.
+
+\begin{equation}
+\uuline \epsilon = 
+\begin{pmatrix}
+	\epsilon_{11} & \epsilon_{12} & 0 \\
+	\epsilon_{21} & \epsilon_{22} & 0 \\
+	0 & 0 & 0
+\end{pmatrix}
+\label{eq:plane_strain}
+\end{equation}
+
+\begin{equation}
+\uuline \sigma = 
+\begin{pmatrix}
+	\sigma_{11} & \sigma_{12} & 0 \\
+	\sigma_{21} & \sigma_{22} & 0 \\
+	0 & 0 & 0
+\end{pmatrix}
+\label{eq:plane_stress}
+\end{equation}
+
+For plane strain, we allow a nonzero stress component $\sigma_{33}$, and likewise, for plane stress we allow a nonzero strain component $\epsilon_{33}$. However, these components can only be results of the analysis, they shall not enter the analysis. 
+
 
 \section{Simple fracture mechanics}
 In linear elastic fracture mechanics (LEFM), there are essentially two quantities that govern failure: The stress intensity factor $K$, and the energy release rate $G$. For the case of linear elastic materials, these are uniquely related.

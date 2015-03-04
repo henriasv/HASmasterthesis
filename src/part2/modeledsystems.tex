@@ -75,7 +75,7 @@ Figure \ref{fig:strain_strain_11_11_11_y_z_poisson_tip4p_ice_uam} shows the rela
 
 \end{figure}
 
-\section{Fracture and fracture toughness}
+\section{Early results on fracture and fracture toughness}
 
 \subsection{Determining the critical stress intensity factor}
 As described in the section about fracture mechanics, the stress intensity factor is commonly used to calculate the fracture toughness of a material. The critical energy release rate is usually defined as:
@@ -158,3 +158,19 @@ There are also several technical problems that can be addressed:
 \item Is the strain rate important? Does the time it takes to strain the system compete with the waiting time until fracture?
 \end{itemize}
 
+
+\section{Large simulations of fracture}
+\subsection{Complete analysis of a single simulation}
+In this subsection, I present analysis results from using all the tools that were presented in the tools section. I analyze a single simulation, but the analyzes here will be representative of how I measure properties that will show up in later results where data from several simulations are used together to say something more general.
+
+\begin{framed} 
+\textbf{Simulation details:} A system consisting of $24 \times 24\times 12$ S1 unit cells was prepared. First, an elliptical hole in the xy-plane spanning the whole z-direction was carved out as described in section \ref{subsec:reg_eprism}. The system was then allowed to equilibrate with an anisotropic NPT thermo-barostat for \SI{100}{\pico\second}, with a barostat pressure of \SI{0.101325}{\kilo\pascal}. The system was then integrated NVT and subjected to a constant strain rate taking it to a strain level of 0.048 after \SI{50}{\pico\second}. Then straining stopped, and the system was left NVT for \SI{350}{\pico\second}. The damping time of the thermostat and barostat during the whole simulations was $t_{damp} = \SI{1}{\ps}$. The thermostat temperature was \SI{260}{\kelvin}.
+\end{framed}
+
+Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stress tensor of the system. 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{../figures/thesis/stressfield_avg_wait_for_crack.pdf}
+\caption{Stess field averaged over \SI{20}{\pico\second} just after straining was stopped, and while waiting for a crack to start. The modeled system is $24\times 24\times 12$ S1 unit cells. The four uppermost panels show features qualitatively in line with the analytical solution of the stress field around the crack tip of elliptical hole in a linearly elastic and isotropic material.}
+\label{fig:stressfield_avg_wait_for_crack}
+\end{figure}
