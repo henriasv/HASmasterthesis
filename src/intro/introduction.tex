@@ -1,16 +1,18 @@
 % -*- root: ../main.tex -*-
 \chapter{Introduction}
-\section{Models, experiments and reality}
+\section{The art of computational modeling}
 Some take the position that 
 
 ( I may want to cite George E. P. Box - ``All models are wrong, but some are useful'')
 
 \section{Methane hydrates}
-Methane hydrates are so called clathrate compunds, meaning that they are consist of host molecules forming a lattice that traps guest molecules. For the case of methane hydrates, water molecules form cages that can host single methane molecules. At first sight, a slab of methane hydrate will resemble regular ice. However, if kept at regular temperatures and pressures, the slab will release methane gas, allowing it to be set on fire; fiery ice. 
+Methane hydrates are so called clathrate compunds, meaning that they are consist of host molecules forming a lattice that traps guest molecules. For the case of methane hydrates, water molecules form cages that can host single methane molecules. At first sight, a piece of methane hydrate will resemble regular ice. However, if kept at regular temperatures and pressures, it will release methane gas, allowing it to be set on fire -- fiery ice. 
 
-(Fossil fuel industry; clogged pipelines and vast energy reserves)
-In the past, methane hydrate formation has been of great interest, because multiphase pipelines transporting oil, natural gas (methane) and water tend to get clogged by water and methane forming methane hydrates. Over the last 10-20 years however, rising prices on fossil fuels have started a revolution of research, exploration and recovery of unconventional hydrocarbon resources. Indeed, more than @percent of all natural gas recovered in the United States in @year came from unconventional sources, compared to @percent in @year @citation. 
+After multiphase piplelines were introduced in the petroleum industry, finding the physical conditions at which methane hydrates can form has been of great interest. Multiphase pipelines transporting oil, natural gas and water at the same time, are at risk of providing conditions at which methane hydrates can form and plug the pipeline. 
 
+Over the last 10-20 years, rising prices on fossil fuels have started a revolution of research, exploration and recovery of unconventional hydrocarbon resources. Indeed, more than @percent of all natural gas recovered in the United States in @year came from unconventional sources, compared to @percent in @year @citation. 
+
+Methane hydrates have not gotten nearly as much attention as the shale hydrocarbons, despite the estimated amounts of hydrocarbon residing in methane hydrates are estimated to be being significantly larger than those of shale hydrocarbons @citation. 
 (Transition to gas hydrates being difficult to exptract because we don't know the dissociation mechanisms.)
 
 Methane hydrate research has been boosted by the general hunt for unconventional sources of hydrocarbons. If methane production from methane hydrated turns out to be commercially viable, ...
@@ -21,10 +23,20 @@ The mission for my master project is to investigate dissociation mechanisms for 
 
 
 \section{My contribution}
-A master thesis by 2014 (Cite kriteriene? :P), by design, requires the student to describe rather that reference known theory. This feature of the masters thesis calls for a detailed account of what are my scientific contributions. I have investigated the TIP4P/ICE molecular water model, and worked out previously unknown properties of that model, includeing the viscosity and diffusion coefficient. I have studied fracture of methane hydrates in a molecular dynamics model, which to the best of my knowledge, no one did before.
+A master thesis by 2014 (Cite kriteriene? :P), by design, requires the student to describe rather that reference known theory. This feature of the masters thesis calls for a detailed account of what are my scientific contributions. I have investigated the TIP4P/ICE molecular water model, and worked out previously unknown properties of that model, includeing the viscosity and diffusion coefficient. I have studied fracture of methane hydrates in a molecular dynamics model, which to the best of my knowledge, no one did before. 
+
+I have developed some analysis tools, which are described in chapter \ref{ch:tools}. It should be clear what parts of that chapter are my descriptions of tools made by others, and what tools were developed by me.
+
+Most of my work has been on the properties of methane hydrates in the  TIP4P/ICE water and OPLS-UAM methane (explained in detail in chapter @reference). This model, like any molecular model of methane hydrates, is poorly investigated. I have made progress on the following:
+\begin{itemize}
+\item Mechanical properties.
+\item Fracture toughness.
+\item Fracture propagation.
+\end{itemize}
+
 
 \section{What is the master thesis?}
-This thesis is a walkthrough of how to do molecular simulations, how to apply it to methane hydrates, and how to verify and interpret the results. In part, it is also a documentation of my work during the last year. If I have been strugling with a topic, and spent a lot of time figuring it out, this should be reflected in the thesis. Therefore, these parts will be more elaborate than other parts of the thesis. The section proof-of-concept runs in the chapter about modeled systems repserents a lot of work to find the right parameters to go into the model, and it is also the part of the project where I met a bug in LAMMPS that took a lot of time to try to get aroud, before I eventually decided not to use the buggy part of LAMMPS.
+This thesis is a walkthrough of how to do molecular simulations, how to apply it to methane hydrates, and how to verify and interpret the results. In part, it is also a documentation of my work during the last year. If I have been strugling with a topic, and spent a lot of time figuring it out, this should be reflected in the thesis. Therefore, these parts will be more elaborate than other parts of the thesis. The section proof-of-concept runs in the chapter about modeled systems repserents a lot of work to find the right parameters to go into the model, and it is also the part of the project where I met a bug in LAMMPS that took a lot of time to try to get around, before I eventually decided not to use the buggy part of LAMMPS.
 
 
 \section{Structure of this thesis}
