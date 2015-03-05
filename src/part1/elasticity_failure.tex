@@ -153,6 +153,7 @@ For the special case of isotropic materials under mode I loading, we recover a m
 \end{equation}
 
 \subsection{Irwins criterion/formula @InvolvingEandGamma }
+(Crack area and surface area)
 
 \subsection{Brittle and ductile materials}
 In materials science, it is common to distinguish between brittle and ductile materials. According to Wikipedia, a material i brittle if it ``breaks without significant strain'', whereas ductility is ``a solid material's ability to deform under tensile stress''. Deformation in this context is plastic. It is actually hard to come along a more satisfying definition -- ductility and brittleness seems to be the kind of knowledge that everyone in the field have, but no one writes down as an equation. Throughout this thesis, I will use the term brittle -- by which i will be meaning ideally brittle -- about failure where the material acts completely elastic when subected to strain, until it suddenly breaks over essentialy no change in the strain.
@@ -162,3 +163,20 @@ In materials science, it is common to distinguish between brittle and ductile ma
 \includegraphics[width=\textwidth]{../figures/thesis/idealized_fracture_e_pot.pdf}
 \caption{Potential energy as a function of applied strain for systems held at a constant temperature. The figure shows three idealized examples of failure. (a) and (b) are brittle, (c) is ductile. In (a), the system reaches a stress state where $G_c = 2\gamma_s$ and breaks. No energy is lost to plastic deformation or heat. In (b), the system breaks at $G_c > 2\gamma_s$ and energy is lost to heat, but not to plastic deformation. In (c), the system is continously deforming plastically through the straining process -- the material is very ductile. Note that it is not possible to see the amount of energy lost to plastic deformation from (c). The plateau in all figures represents a state where a crack propagated through the whole system -- the system is divided into two parts -- so additional straining does not contribute potential energy. }
 \end{figure}
+
+\section{Stress consentrations around an elliptic hole}
+There are several analytical solutions for stress concentrations for isotropic materials with failures of specific geometries. A particularly interesting solution for my purposes is the stress concentration near the crack tip of an elliptic crack in an infinitely large sheet of linearly elastic and isotropic material \cite{Anderson2005}. I give the equations for a crack along the y-axis with a stress applied along the x-axis.
+
+\begin{align}
+	\sigma_{xx} & =  \frac{K_I}{\sqrt{2\pi r}} \cos\left(\frac{\theta}{2}\right) \left[ 1+\sin\left(\frac{\theta}{2} \right)\sin\left( \frac{3\theta}{2}\right)\right]\\
+	\sigma_{yy} & =  \frac{K_I}{\sqrt{2\pi r}} \cos\left(\frac{\theta}{2}\right) \left[ 1-\sin\left(\frac{\theta}{2} \right)\sin\left( \frac{3\theta}{2}\right)\right]\\	
+	\tau_{xy} & =  \frac{K_I}{\sqrt{2\pi r}} \cos\left(\frac{\theta}{2}\right)\sin\left(\frac{\theta}{2} \right)\cos\left( \frac{3\theta}{2}\right)
+\end{align}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{../figures/thesis/analytic_stress.pdf}
+\caption{Near crack-tip stress for a plane crack along the y-axis. The crack tip is located at the top center of each plot.}
+\label{fig:analytic_stress}
+\end{figure}
+

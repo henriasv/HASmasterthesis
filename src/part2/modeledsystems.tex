@@ -164,13 +164,32 @@ There are also several technical problems that can be addressed:
 In this subsection, I present analysis results from using all the tools that were presented in the tools section. I analyze a single simulation, but the analyzes here will be representative of how I measure properties that will show up in later results where data from several simulations are used together to say something more general.
 
 \begin{framed} 
-\textbf{Simulation details:} A system consisting of $24 \times 24\times 12$ S1 unit cells was prepared. First, an elliptical hole in the xy-plane spanning the whole z-direction was carved out as described in section \ref{subsec:reg_eprism}. The system was then allowed to equilibrate with an anisotropic NPT thermo-barostat for \SI{100}{\pico\second}, with a barostat pressure of \SI{0.101325}{\kilo\pascal}. The system was then integrated NVT and subjected to a constant strain rate taking it to a strain level of 0.048 after \SI{50}{\pico\second}. Then straining stopped, and the system was left NVT for \SI{350}{\pico\second}. The damping time of the thermostat and barostat during the whole simulations was $t_{damp} = \SI{1}{\ps}$. The thermostat temperature was \SI{260}{\kelvin}.
+\textbf{Simulation details:} A system consisting of $24 \times 24\times 12$ S1 unit cells was prepared. First, an elliptical hole in the xy-plane spanning the whole z-direction was carved out as described in section \ref{subsec:reg_eprism}. The system was then allowed to equilibrate with an anisotropic NPT thermo-barostat for \SI{100}{\pico\second}, with ambient barostat pressure (\SI{101325}{\pascal}). The system was then integrated NVT and subjected to a constant strain rate taking it to a strain level of 0.048 after \SI{50}{\pico\second}. Then straining stopped, and the system was left NVT for \SI{350}{\pico\second}. The damping time of the thermostat and barostat during the whole simulations was $t_{damp} = \SI{1}{\ps}$. The thermostat temperature was \SI{260}{\kelvin}.
 \end{framed}
 
 Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stress tensor of the system. 
 
 \begin{figure}
+\centering
+\includegraphics[width=10cm]{../figures/thesis/strain_pot_kin_eng_1048_24_24_12.pdf}
+\caption{Strain energy, potential energy and kinetic energy for the whole 0.048 strain simulation. The values are rebased at $t=\SI{100}{\pico\second}$ where straining starts. The kinetic energy corresponds to the temperature, and we see that the temperature slightly drops while the strain increases, and increases during crack propagation. The strain energy imposed on the system is just slightly higher than the energy difference between the unstrained system and the fractured system.}
+\end{figure}
+
+\begin{figure}
+\centering
 \includegraphics[width=\textwidth]{../figures/thesis/stressfield_avg_wait_for_crack.pdf}
-\caption{Stess field averaged over \SI{20}{\pico\second} just after straining was stopped, and while waiting for a crack to start. The modeled system is $24\times 24\times 12$ S1 unit cells. The four uppermost panels show features qualitatively in line with the analytical solution of the stress field around the crack tip of elliptical hole in a linearly elastic and isotropic material.}
+\caption{Stess field averaged over \SI{20}{\pico\second} just after straining was stopped, and while waiting for a crack to start. The modeled system is $24\times 24\times 12$ S1 unit cells. The four uppermost panels show features qualitatively in line with the analytical solution of the stress field around the crack tip of elliptical hole in a linearly elastic and isotropic material. The shear stress components ouside the xy-plane are relatively small compared to the components in the xy-plane, which means the plane strain condition is satisfied fairly well. The stress fields near the crack tips are, at least qualitatively, similar to the analytical solution for isotropic materials given in figure \ref{fig:analytic_stress}. Note also the stress $\sigma_{zz}$ it looks like $\sigma_{xx}$ due to $L_z$ being fixed, disallowing poisson contraction.}
 \label{fig:stressfield_avg_wait_for_crack}
+\end{figure}
+
+
+\begin{figure}
+\includegraphics[width=\textwidth]{../figures/thesis/stressfield_snap_propagation_180.pdf}
+\caption{Snapshot of stress field during crack propagation. Taken at $t = \SI{180}{\pico\second}$.}
+\end{figure}
+
+
+\begin{figure}
+\includegraphics[width=\textwidth]{../figures/thesis/stressfield_timelapse.pdf}
+\caption{Timelapse of the stress $\sigma_{xx}$ during crack propagation. There are clear signs of sound waves, and the shape of the waves indicate that the crack is traveling at a speen on the same order of magnitude as the shear wave speed. The color scale is kept equal among the simulations for easier comparison. For that reason, the stress near the crack tip is higher that what is available on the color scale.}
 \end{figure}

@@ -261,4 +261,9 @@ If we assume that the required number of samples to estimate the surface area of
 
 
 \section{Stress measurement (crude)}
-I output the stress tensor for each particle averaged over @Ndump steps. These values are put on a 2D grid, and averaged for each cell on that grid. This kind of measurement is not necessarily useful for methane hydrates, as the characteristic size is large (12 Å) so that the grid must necessarily be coarse. @IsThisTrue?@TurnsOutToBetrue. It actually turns out that i get the best results by using the same number of grid points as there are unit cells in each direction. This is close to averaging over each unit cell, which should give units that are comparable. Slightly lower or higher resolutions of the grid give artifacts @insertfigure and much higher resolutions results in very few atoms contributing to each grid cell, which gives bad statistics and useless results.
+I output the stress tensor for each particle averaged over @Ndump steps. These values are put on a 2D grid, and averaged for each cell on that grid. This kind of measurement is not necessarily useful for methane hydrates, as the characteristic size is large (12 Å) so that the grid must necessarily be coarse. @IsThisTrue?@TurnsOutToBetrue. It actually turns out that i get the best results by using the same number of grid points as there are unit cells in each direction. This is close to averaging over each unit cell, which should give units that are comparable. Slightly lower or higher resolutions of the grid give artifacts @insertfigure and much higher resolutions results in very few atoms contributing to each grid cell, which gives bad statistics and useless results. 
+
+\begin{figure}
+\includegraphics[width=\textwidth]{../figures/thesis/stressfield_artefacts.pdf}
+\caption{Measured stress fields in the xy-plane with different resolutions of the cell grid. The modeled system is $24\times 24\times 12$ S1 unit cells. We see that $N=24$ and $N=12$ works well. $N=48$ gives a checkered pattern, but it is possible to see the stress field. The hichest resolution available without ertefacts is the number of unit cells in each direction.}
+\end{figure}
