@@ -235,6 +235,11 @@ virtual int surface_exterior(double *, double) = 0;
 
 I was not going to use the surface functions, so I only needed to implement {\tt inside(...)}. I left the other two as dummy functions returning {\tt false}. Using this region with LAMMPS functionality that requires knowledge of the region surface can result in undefined behavior.
 
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{../snapshots/carved_crack.pdf}
+\caption{A carved out elliptic crack made with {\tt region eprism}}
+\end{figure}
 
 \section{General Utility Lattice Program}
 It is cumbersome to calculate stiffness paramenters using molecular dynamics. Therefore I use a dedicated program -- General Utility Lattice Program (GULP) -- to caculate these parameters. @IProbablyWontUseGulpForTheMaster
@@ -259,6 +264,8 @@ The system is divided into a maximum number of equal sized cells such that that 
 Periodic boundaries are implemented using cell lists, which means that the system must be at least $2\times 2 \times 2$ cells – each dimension in the system must be at least $2r_p$.
 \paragraph{Scaling efficiency}
 If we assume that the required number of samples to estimate the surface area of a system is proportional to the number of particles in that system, the problem scales as $\mathcal{O}(N^2)$. With cell lists the problem scales like $\mathcal{O}(N)$.
+
+
 
 
 \section{Stress measurement (crude)}
