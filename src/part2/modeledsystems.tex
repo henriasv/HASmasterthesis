@@ -181,7 +181,7 @@ In this subsection, I present analysis results from using all the tools that wer
 \begin{minipage}[b]{0.5\linewidth}
 \includegraphics[width=\textwidth]{../snapshots/c_4.pdf}
 \end{minipage}
-\caption{(upper left) Equilibrated system, \SI{90}{\pico\second}. (upper right) Fully strained system ($\varepsilon_{xx} = 0.048$), \SI{150}{\pico\second}. (lower left) Crack started propagating, \SI{180}{\pico\second}. (lower right) Crack fully propagated after \SI{210}{\pico\second}.}
+\caption{(upper left) Equilibrated system, \SI{90}{\pico\second}. (upper right) Fully strained system ($\varepsilon_{xx} = 0.048$), \SI{150}{\pico\second}. (lower left) Crack started propagating, \SI{180}{\pico\second}. (lower right) Crack fully propagated after \SI{210}{\pico\second}. The crack is wider near the xz-plane periodic boundary at this point in time due to global oscillations following the crack propagation.}
 \end{figure}
 
 Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stress tensor of the system. 
@@ -217,5 +217,5 @@ Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stre
 \begin{figure}
 \centering
 \includegraphics[width=10cm]{../figures/thesis/crack_area_evolution_1048.pdf}
-\caption{Crack surface area evolution in time. The upper panel shows the measured area, and the lower panel is an estimate of the crack tip speed. The derivative for the lower panel is calculated using a standard 5-point stencil for the first derivative.}
+\caption{Crack surface area evolution in time. The upper panel shows the measured area, and the lower panel is an estimate of the crack tip speed. The derivative for the lower panel is calculated using a standard 5-point stencil for the first derivative. The crack surface area was measured useing the Monte Carlo procedure described in section @ref with $N_s = 10^6$, $r_p = \SI{4.0}{\angstrom}$ and $\Delta l = \SI{1.0}{\angstrom}$. }
 \end{figure}
