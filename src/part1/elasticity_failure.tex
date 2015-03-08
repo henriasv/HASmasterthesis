@@ -120,7 +120,16 @@ For plane strain, we allow a nonzero stress component $\sigma_{33}$, and likewis
 
 
 \section{Simple fracture mechanics}
-In linear elastic fracture mechanics (LEFM), there are essentially two quantities that govern failure: The stress intensity factor $K$, and the energy release rate $G$. For the case of linear elastic materials, these are uniquely related.
+In linear elastic fracture mechanics (LEFM), there are essentially two quantities that govern failure: The stress intensity factor $K$, and the energy release rate $G$. For linear elastic materials, these are uniquely related.
+
+\subsection{Brittle and ductile materials}
+In materials science, it is common to distinguish between brittle and ductile materials. According to Wikipedia, a material i brittle if it ``breaks without significant strain'', whereas ductility is ``a solid material's ability to deform under tensile stress''. Deformation in this context is plastic. It is actually hard to come along a more satisfying definition -- ductility and brittleness seems to be the kind of knowledge that everyone in the field have, but no one writes down as an equation. Throughout this thesis, I will use the term brittle -- by which i will be meaning ideally brittle -- about failure where the material acts completely elastic when subected to strain, until it suddenly breaks over essentialy no change in the strain.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{../figures/thesis/idealized_fracture_e_pot.pdf}
+\caption{Potential energy as a function of applied strain for systems held at a constant temperature. The figure shows three idealized examples of failure. (a) and (b) are brittle, (c) is ductile. In (a), the system reaches a stress state where $G_c = 2\gamma_s$ and breaks. No energy is lost to plastic deformation or heat. In (b), the system breaks at $G_c > 2\gamma_s$ and energy is lost to heat, but not to plastic deformation. In (c), the system is continously deforming plastically through the straining process -- the material is very ductile. Note that it is not possible to see the amount of energy lost to plastic deformation from (c). The plateau in all figures represents a state where a crack propagated through the whole system -- the system is divided into two parts -- so additional straining does not contribute potential energy. }
+\end{figure}
 
 \subsection{Modes of loading}
 There are 3 loading modes: I =`opening', II = `sliding', III = `tearing'. 
@@ -129,6 +138,24 @@ There are 3 loading modes: I =`opening', II = `sliding', III = `tearing'.
 \includegraphics[width=\textwidth]{../figures/thesis/Fracture_modes_v2.pdf}
 \caption{Three modes of crack separation. (``Fracture modes v2'' by Twisp - This vector image was created with Inkscape. Licensed under Public Domain via Wikimedia Commons)}
 \end{figure}
+
+\subsection{Failure criteria.}
+As is many fields, the first recorded studies the ones of Leonardo da Vinci. Leonardo discovered that short iron wires are stronger than long steel wires. A common interpretation is that random flaws make the iron wires weaker at some points, and that a longer wire has a larger probability of a weak spot than a long one. A major goal of fracture mechanics is to be able to predict the failure of structures -- what is the pressure required to break a sample of a material? The first somewhat successful attempt to predict failure was the efforts of Griffith in 1920. He continued along the path of Leonardo, and proposed a quantitative relation between the flaws of the sample and its fracture toughness: A crack will propagate from a flaw if the strain energy released during crack growth is higher than the surface energy of the crack. This works well for ideally brittle materials. Irwin refined Griffiths approach, and introduced the \emph{energy release rate}, $\mathcal{G}$. The energy release rate is a property of the elastic state of a linearly elastic material. According to Irwin, a crack will propagate when $\mathcal{G}$ becomes larger than a material-specific value $\mathcal{G}_c$ -- the \emph{critical} energy release rate. For a crack of width $2a$ on an infinite plate subjected to tensile stress, the energy release rate is:
+
+\begin{equation}
+	\mathcal{G} = \frac{\pi \sigma^2 a}{E}
+\end{equation}
+
+This is a purely a relation concerning how a linear elastic material distributes energy during crack opening. This means that the longer the crack, the more energy is available for crack opening at a given stress.
+
+The critial value can be measured experimentally using a sample with an artificial flaw whose length is known and measure the yield pressure. 
+
+For linear elastic materials, the energy release rate is equivalent to another measure, the \emph{stress intensity factor}, $K$. The stress intensity factor is a constant of proportionality between the applied stress on a crack and the stress distribution around the crack tip. For mode I loading it is:
+\begin{equation}
+	\lim_{r \to 0} \sigma_{ij}^I = \frac{K_I}{\sqrt{2\pi r}} f_{ij}(\theta)
+\end{equation}
+Where $r$ is the distance from the crack tip and $\theta$ is the angle from the crack axis. Both the energy release rate and the stress intensity factor concern the distribution of a remote stress, but the stress intensity factor says how the stress is distributed near the crack tip, whereas the energy release rate says how much mechanical energy will released if the new crack surface opens. @FinishSection
+
 
 \subsection{Stress intensity factors in anisotropic materials}
 Simple fracture theory assumes that one only need one parameter to describe the fracture properties of a material, the critical stress intensity factor under tensile loading -- the fracture toughness. I will need a procedure to obtain that from molecular dynamics simulations. Having obtained the fracture area and the energy release rate, I can use the generalized irwin formula @citation to calculate the stress intensity factor. 
@@ -152,19 +179,7 @@ For the special case of isotropic materials under mode I loading, we recover a m
 	K_c = \sqrt{\frac{EG_c}{1-\nu^2}}
 \end{equation}
 
-\subsection{Irwins criterion/formula @InvolvingEandGamma }
-(Crack area and surface area)
-
-\subsection{Brittle and ductile materials}
-In materials science, it is common to distinguish between brittle and ductile materials. According to Wikipedia, a material i brittle if it ``breaks without significant strain'', whereas ductility is ``a solid material's ability to deform under tensile stress''. Deformation in this context is plastic. It is actually hard to come along a more satisfying definition -- ductility and brittleness seems to be the kind of knowledge that everyone in the field have, but no one writes down as an equation. Throughout this thesis, I will use the term brittle -- by which i will be meaning ideally brittle -- about failure where the material acts completely elastic when subected to strain, until it suddenly breaks over essentialy no change in the strain.
-
-\begin{figure}
-\centering
-\includegraphics[width=\textwidth]{../figures/thesis/idealized_fracture_e_pot.pdf}
-\caption{Potential energy as a function of applied strain for systems held at a constant temperature. The figure shows three idealized examples of failure. (a) and (b) are brittle, (c) is ductile. In (a), the system reaches a stress state where $G_c = 2\gamma_s$ and breaks. No energy is lost to plastic deformation or heat. In (b), the system breaks at $G_c > 2\gamma_s$ and energy is lost to heat, but not to plastic deformation. In (c), the system is continously deforming plastically through the straining process -- the material is very ductile. Note that it is not possible to see the amount of energy lost to plastic deformation from (c). The plateau in all figures represents a state where a crack propagated through the whole system -- the system is divided into two parts -- so additional straining does not contribute potential energy. }
-\end{figure}
-
-\section{Stress consentrations around an elliptic hole}
+\section{Stress consentrations around an elliptical hole}
 There are several analytical solutions for stress concentrations for isotropic materials with failures of specific geometries. A particularly interesting solution for my purposes is the stress concentration near the crack tip of an elliptic crack in an infinitely large sheet of linearly elastic and isotropic material \cite{Anderson2005}. I give the equations for a crack along the y-axis with a stress applied along the x-axis.
 
 \begin{align}

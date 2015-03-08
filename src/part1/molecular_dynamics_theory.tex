@@ -206,3 +206,37 @@ $\phi$ and $\psi$ can be calculated without any knowledge of forces.
 
 \paragraph{Velocities}
 The following is only valid within the velocity verlet algorithm.
+
+
+\section{Thermodynamic considerations}
+\subsection{Expanding the simulation box}
+Let's consider expanding the simulation box aling the x-axis. This corresponds to perform work on the system. If the process is adiabatic, then:
+
+\begin{equation}
+	W = \int_{t(L_x = L_x^0)}^{t(L_x^0 + \Delta x)} \int_{yz} \sigma_{xx} (t, y, z) \ \dd z \dd y \dd x
+\end{equation}
+
+For simulations where the particles are not allowed to have net change of velocity of angular momentum, the inner integral can be calculated from macroscopic quantities:
+\begin{equation}
+\int_{yz} \sigma_{xx} (t, y, z) \ \dd z \dd y = L_yL_z\Sigma_{xx}(t)	
+\end{equation}
+Where $\Sigma_{xx}$ is an element of $\uuline \Sigma$, which is the mean stress tensor for particles in the system. The work on the system can then be written:
+
+\begin{equation}
+	W = L_y L_z \int_{t(L_x = L_x^0)}^{t(L_x^0 + \Delta x)} \Sigma_{xx}(t) \ \dd x
+\end{equation}
+
+In the canonical ensemble (NVT), the change of internal energy will be:
+\begin{equation}
+	\Delta U = W + T\Delta S
+\end{equation}
+When expanding the system, the entropy per temperature will increase, as more microstates are available. This has to be compensated by adding heat. In molecular dynamics, the thermostat effectively adds energy as entropy during simulation box expansion. Furtermore, this energy cannot increase the kinetic energy, since N and T are kept fixed, so all the added heat must be absorbed as potential energy. This means that expanding the simulation box adds a lot of potential energy to the system, both directly through mechanical work, and indirectly through heat, and it is all absorbed by creating new available microstates. These microstates do only exist because of the strained state of the system, and will disappear if the strain disappears, for example during fracture. The entropy energy is not available for mechanical work. This is why it is better to consider Helmholtz free energy:
+
+\begin{equation}
+	F = U - TS
+\end{equation}
+
+This is exactly the energy available for mechanical work. The reason for this tedious discussion of expanding a box is that Helmholtz free energy is not directly available from molecular dynamics simulations. The change in Helmholtz free energy must be explicitly done by integrating the stress tensor of the system. When analyzing fracture, it would be tempting to use the change in total energy or potential energy to estimate the fracture toughness. But this would however be wrong -- the fracture toughness is defined using the mechanical energy. The energy release rate is the amount of Helmholtz free enegry needed per projected crack surface area, not the change in potential or total energy of the system during fracture. @FinishUpThisSection @MoveToModeledSystems?
+
+When the crack propagates, the stress in the solid methane hydtate is released, and the system consists of a piece of solig methane hydrate and some free gas in between. We don't know the entropy of this system, but it seems reasonable from the strain energy compared to the potential energy that the change in entropy from before straining to after fracture is small compared to the strain energy -- unless, of course, the system was strained significantly more than necessary.
+

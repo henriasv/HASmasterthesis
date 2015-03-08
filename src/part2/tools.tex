@@ -237,8 +237,8 @@ I was not going to use the surface functions, so I only needed to implement {\tt
 
 \begin{figure}
 \centering
-\includegraphics[width=10cm]{../snapshots/carved_crack.pdf}
-\caption{A carved out elliptic crack made with {\tt region eprism}}
+\includegraphics[width=8cm]{../snapshots/carved_crack.pdf}
+\caption{An elliptic crack carved out using {\tt region eprism}}
 \end{figure}
 
 \section{General Utility Lattice Program}
@@ -265,7 +265,15 @@ Periodic boundaries are implemented using cell lists, which means that the syste
 \paragraph{Scaling efficiency}
 If we assume that the required number of samples to estimate the surface area of a system is proportional to the number of particles in that system, the problem scales as $\mathcal{O}(N^2)$. With cell lists the problem scales like $\mathcal{O}(N)$.
 
+\subsection{Choice of parameters}
+As mentioned, there are two parameters to be chosen when applying this technique. First, $r_p$ has to be chosen to define what surface is to be measured. Different $r_p$ correspond to different solvent accessible surfaces. The resolution at which this surface is to be measured shall be chosen. A low value of $\Delta l$ will capture details of the surface, and $\Delta l$ should be significantly smaller than the characteristic size of the surface roughness. The cost of a small $\Delta l$ is bad statistics. The shorter the line segments, the smaller the portion of segments that cross the void-wall boundary. Figure \ref{fig:crack_trace_test} shows the calculated crack surface area as a function of $\Delta l$ and $r_p$ for a crack in a S1 hydrate during crack propagation. 
 
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{../figures/thesis/crack_tracer_test.pdf}
+\caption{Calculated crack surface area as a function of $\Delta l$ and $r_p$ for a crack propagating in a system of $24\times 24 \times 12$ S1 unit cells. The high values corresponding to low values of $r_p$ are because the trial particle will fit inside the methane hydrate cells -- parts of a standard unit cell will be considered void. For high $r_p$, the crack is not wide enough for a trial particle to fit in. The length of the line segments is unimportant compared to the size of the trial particle, but consistent with intuition: The measured crack surface area slightly increases when $\Delta l$ decreases.}
+\label{fig:crack_trace_test}
+\end{figure}
 
 
 \section{Stress measurement (crude)}
