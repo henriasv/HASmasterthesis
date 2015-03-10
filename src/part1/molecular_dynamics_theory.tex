@@ -77,19 +77,36 @@ The velocity Verlet algorithm is:
 \end{align}
 The velocity Verlet integrator is symplectic. Being symplectic can be defined in a very strict mathematical way, but for the purposes of this work, it is sufficient to note that a symplectic integrator conserves a Hamiltonian that is only slightly perturbed relative to the Hamiltonian from which it tries to solve Hamiltons equations. This in turn means that in practice it conserves energy. Therefore the velocity Verlet algorithm can be used to sample the microcanonical ensemble (NVE).
 
-\section{Thermostats}
-Thermostats are applied to control temperature of a system. Some thermostats can be shown to make the system sample some thermodynamic ensemble. Thermostatting can be closely intertwined with integration in the sense that thermostatting represents a change in the integration scheme. To be able to do thermostatting, we first need a way to calculate the temperatute of the system. I will use the standard definition relating the kinetic energy to the instantaneous temperature:
-
+\section{Temperature}
+\citet{Hunenberger2005} Says a lot about temperature and thermostats@
+The instantanous temperature $T$ in molecular dynamics is defined using the equipartition theorem:
 \begin{equation}
-	E_k = \frac{3}{2} Nk_B T'
+	\langle E_k \rangle = \frac{f}{2}k_B T
 \end{equation}
 
-The simplest way of controlling the temperature is to rescale all velocities such that the above equation yields the correct value for the temperature. However, that results in unrealistic dynamics, and it does not represent any ensemble.
+Where $f$ is the number of kinetic degrees of freedom and $T$ is the thermodynamic temperature defined by the differential coefficient of internal energy with respect to entropy. In 3-dimensional molecular dynamics with point mass particles, and using the instant value of the kinetic energy, the instantaneous temperature can be defined as:
+
+\begin{equation}
+	\mathcal{T} \equiv \frac{2E_k}{3 Nk_B} = \frac{1}{3 k_B} \frac{1}{N}\sum_{i=1}^{N} m_iv_i^2
+\end{equation}
+
+When a temperature measure is defined, various schemes can be applied to control the temperature of a molecular dynamics simulation. Such schemes are called thermostats. Some thermostats can be shown to make the system sample a known thermodynamic ensemble, whereas others do not correspond to any statistical ensemble. Thermostatting is closely related to integration in the sense that thermostatting represents a change in the integration scheme. Some thermostats, like the Nose-Hoover thermostat, explicitly change the equations of motion, while others, like the simpler Berendsen thermostat only implicitly change the equations of motion by introducing an artificial velocity rescaling. 
+
+The simplest way to control the temperature is to rescale all velocities such that the above equation yields the correct value for the temperature -- but that results in unrealistic dynamics, and it does not represent any ensemble.
 
 \subsection{Berendsen thermostat}
-The simplest thermostat, apart from just rescaling all velocities to the Boltzmann 
+A considerable improvement from the rescaling approach is the thermostat of \citet{Berendsen1984}. The Berendsen thermostat introduces a timescale for the velocity rescaling by adding a temperature-dependant friction term to the equations of motion. The idea is to weakly couple the system to a heat bath by gradually rescaling velocities to satisfy:
+\begin{equation}
+\frac{\dd T}{dt} = \frac{T_{\text{bath}}-\mathcal{T}}{\tau}
+\end{equation}
+Where $T_{bath}$ is the temperature of the heat bath that is coupled to the MD-system to keep the temperature constant. 
+@PutAssumptionsAndThe
+
 \subsection{Nosé-Hoover thermostat}
 
+In this section, three types of temperature were introduced: Thermodynamic temperature $T$, instant temperature $\mathcal{T}$, and heat bath temperature $T_{bath}$. From here on, I will use the symbol $T$ for all of them, unless two different temperatures appear in the same equation. It should always be clear from the context what $T$ means. For example: A temperature referred from an experiment will always be a temperature measurement, which tries to measure $T$, while a temperature specified for a thermostatted molecular dynamics simulation will be $T_{bath}$.
+
+\section{Pressure}
 
 \section{Long range corrections}
 For slowly decaying potentials, such as Coulombic potentials, it is not advisible to use a cutoff distance, as this might result in severe inaccuracies. However, there are techniques that allows compensation withoud doing a full pairwise computation. 
@@ -208,35 +225,4 @@ $\phi$ and $\psi$ can be calculated without any knowledge of forces.
 The following is only valid within the velocity verlet algorithm.
 
 
-\section{Thermodynamic considerations}
-\subsection{Expanding the simulation box}
-Let's consider expanding the simulation box aling the x-axis. This corresponds to perform work on the system. If the process is adiabatic, then:
-
-\begin{equation}
-	W = \int_{t(L_x = L_x^0)}^{t(L_x^0 + \Delta x)} \int_{yz} \sigma_{xx} (t, y, z) \ \dd z \dd y \dd x
-\end{equation}
-
-For simulations where the particles are not allowed to have net change of velocity of angular momentum, the inner integral can be calculated from macroscopic quantities:
-\begin{equation}
-\int_{yz} \sigma_{xx} (t, y, z) \ \dd z \dd y = L_yL_z\Sigma_{xx}(t)	
-\end{equation}
-Where $\Sigma_{xx}$ is an element of $\uuline \Sigma$, which is the mean stress tensor for particles in the system. The work on the system can then be written:
-
-\begin{equation}
-	W = L_y L_z \int_{t(L_x = L_x^0)}^{t(L_x^0 + \Delta x)} \Sigma_{xx}(t) \ \dd x
-\end{equation}
-
-In the canonical ensemble (NVT), the change of internal energy will be:
-\begin{equation}
-	\Delta U = W + T\Delta S
-\end{equation}
-When expanding the system, the entropy per temperature will increase, as more microstates are available. This has to be compensated by adding heat. In molecular dynamics, the thermostat effectively adds energy as entropy during simulation box expansion. Furtermore, this energy cannot increase the kinetic energy, since N and T are kept fixed, so all the added heat must be absorbed as potential energy. This means that expanding the simulation box adds a lot of potential energy to the system, both directly through mechanical work, and indirectly through heat, and it is all absorbed by creating new available microstates. These microstates do only exist because of the strained state of the system, and will disappear if the strain disappears, for example during fracture. The entropy energy is not available for mechanical work. This is why it is better to consider Helmholtz free energy:
-
-\begin{equation}
-	F = U - TS
-\end{equation}
-
-This is exactly the energy available for mechanical work. The reason for this tedious discussion of expanding a box is that Helmholtz free energy is not directly available from molecular dynamics simulations. The change in Helmholtz free energy must be explicitly done by integrating the stress tensor of the system. When analyzing fracture, it would be tempting to use the change in total energy or potential energy to estimate the fracture toughness. But this would however be wrong -- the fracture toughness is defined using the mechanical energy. The energy release rate is the amount of Helmholtz free enegry needed per projected crack surface area, not the change in potential or total energy of the system during fracture. @FinishUpThisSection @MoveToModeledSystems?
-
-When the crack propagates, the stress in the solid methane hydtate is released, and the system consists of a piece of solig methane hydrate and some free gas in between. We don't know the entropy of this system, but it seems reasonable from the strain energy compared to the potential energy that the change in entropy from before straining to after fracture is small compared to the strain energy -- unless, of course, the system was strained significantly more than necessary.
 
