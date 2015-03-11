@@ -66,7 +66,7 @@ A simple three-particle bonding potential, which is often used in combination wi
 
 The latter potentials are common for creating small molecules that will not take part in chemical reactions, such as water in ice simulations. I my simulations, I will use rigid water, which effectively means that $k\to\infty$ for the harmonic bond and angle potentials. In practice the rigidity will be treated with dedicated algorithms.
 
-\section{Integration, thermostats, barostats}
+\section{Time integration}
 In order to solve the newtonian equations of motion numerically, a numerical scheme is needed. For particles in conservative fields -- fields in classical molecular dynamics are conservative -- the velocity Verlet scheme is usually preferred @CiteFrenkelSmit.p.69. 
 
 \subsection{Velocity Verlet}
@@ -90,32 +90,66 @@ Where $f$ is the number of kinetic degrees of freedom and $T$ is the thermodynam
 	\mathcal{T} \equiv \frac{2E_k}{3 Nk_B} = \frac{1}{3 k_B} \frac{1}{N}\sum_{i=1}^{N} m_iv_i^2
 \end{equation}
 
-When a temperature measure is defined, various schemes can be applied to control the temperature of a molecular dynamics simulation. Such schemes are called thermostats. Some thermostats can be shown to make the system sample a known thermodynamic ensemble, whereas others do not correspond to any statistical ensemble. Thermostatting is closely related to integration in the sense that thermostatting represents a change in the integration scheme. Some thermostats, like the Nose-Hoover thermostat, explicitly change the equations of motion, while others, like the simpler Berendsen thermostat only implicitly change the equations of motion by introducing an artificial velocity rescaling. 
+When a temperature measure is defined, various schemes can be applied to control the temperature of a molecular dynamics simulation. Such schemes are called thermostats, and they all try to couple the MD system to an external heat bath. Some thermostats can be shown to make the system sample a known thermodynamic ensemble, whereas others do not correspond to any statistical ensemble. Thermostatting is closely related to integration in the sense that thermostatting represents a change in the integration scheme. Some thermostats, like the Nose-Hoover thermostat, explicitly change the equations of motion, while others, like the simpler Berendsen thermostat only implicitly change the equations of motion by introducing an artificial velocity rescaling. 
 
 The simplest way to control the temperature is to rescale all velocities such that the above equation yields the correct value for the temperature -- but that results in unrealistic dynamics, and it does not represent any ensemble.
 
 \subsection{Berendsen thermostat}
-A considerable improvement from the rescaling approach is the thermostat of \citet{Berendsen1984}. The Berendsen thermostat introduces a timescale for the velocity rescaling by adding a temperature-dependant friction term to the equations of motion. The idea is to weakly couple the system to a heat bath by gradually rescaling velocities to satisfy:
+A considerable improvement from the rescaling approach is the thermostat of \citet{Berendsen1984}. The Berendsen thermostat introduces a timescale for the velocity rescaling by adding a temperature-dependant friction term to the equations of motion. The idea is to weakly couple the system to a heat bath by rescaling particle velocities to satisfy:
+
 \begin{equation}
-\frac{\dd T}{dt} = \frac{T_{\text{bath}}-\mathcal{T}}{\tau}
+\frac{\dd \mathcal{T}}{dt} = \frac{T_{\text{bath}}-\mathcal{T}}{\tau}
+\label{eq:berendsen}
 \end{equation}
-Where $T_{bath}$ is the temperature of the heat bath that is coupled to the MD-system to keep the temperature constant. 
-@PutAssumptionsAndThe
+
+Where $T_{bath}$ is the temperature of the heat bath that is coupled to the MD-system to keep the temperature constant. This step is applied just after velocity calculation in the time integration scheme. Since the portion of energy belonging to respectively potential and kinetic energy vary in time as particles move according to the equaitions of motion, the actual value of $\mathcal{T}$ will not develop according to \ref{eq:berendsen}. The thermostat is just a mechanism that tries to push the system towards a kinetic energy corresponding to a given temperature $T_{bath}$.
 
 \subsection{Nosé-Hoover thermostat}
+The Nosé-Hoover thermostat represents a more complicated couplig to a heat bath than the Berendsen thermostat. A MD system propagated using the Nosé-Hoover thermostat will sample the canonical ensemble. 
+
+Les us begin by writing down the Lagrangian of the MD system with no temperature control (NVE).
+
+\begin{equation}
+	\mathcal{L}(\rvec, \dot\rvec) = \frac{1}{2} \sum_{i=1}^N m_i \dot\rvec_i^2 - \mathcal{U(\rvec)}
+\end{equation}
+
+The basic idea of the Nosé-Hoover thermostat is to introduce an extra dynamic variable to the equations of motiong, effectively creating an \emph{extended} system, which is almost equal to the original system, which we will denote the \emph{real} system. The Lagrangian of the extended system is chosen to be:
+
+\begin{equation}
+	\mathcal{L}_e(\tilde\rvec, \dot{\tilde\rvec}, \tilde{s}, \dot{\tilde s}) = \frac{1}{2}\sum_{i=1}^N m_i \tilde s^2 \dot{\tilde\rvec}_i^2 - \mathcal{U}(\tilde\rvec) + \frac{1}{2} Q \dot{\tilde s}^2 - gk_BT_0 \ln\tilde s
+\end{equation}
+
+First, note that the equation is now written in terms of new coordinates, which are the coordinates of the extended system. They are given below (extended system coordinates are marked with \textasciitilde): 
+
+\begin{equation}
+	\tilde\rvec = \rvec, \ \ \dot{\tilde\rvec} = \tilde s \dot\rvec, \ \ \tilde s = s, \ \ \dot{\tilde s} = \tilde s^{-1} \dot{s}
+\end{equation}
+
+The corresponding equations of motion are (in the extended system):
+
+\begin{align}
+	\ddot{\tilde\rvec}_i & = m_i^{-1} \tilde s^{-2} \tilde{\mathbf{F}}_i - 2\tilde s^{-1} \dot{\tilde s} \dot{\tilde\rvec}_i \\
+	\ddot{\tilde s} & =  Q^{-1} \tilde s^{-1} \left(\sum_{i=1}m_i\tilde s^2 \dot{\tilde\rvec}_i - gk_bT_0\right)
+\end{align}
+
+This is the thermostat of \citet{Nose1984}, and in the real system it samples the canonical ensemble. However, the velocity-scaling between the real and the extended system effectively leads to uneven time intervals in the real system. Hoover later overcame this problem, and showed that the equation of motion Nosé-algorithm could be equivalently formulated in the real system as:
+
+\begin{align}
+	\ddot \rvec_i & = m_i^{-1} \mathbf{F}_i -\gamma \dot\rvec_i \\
+	\dot \gamma & = -k_b f Q^{-1} \mathcal{T} \left(\frac{g}{f} \frac{T_0}{\mathcal{T}}-1\right)
+\end{align}
+
+This is known as the Nosé-Hoover thermostat \cite{PhysRevA.31.1695}. It is common to introduce a characteristic timescale for the Nosé-Hoover thermostat, since time is more intuitive than mass in MD simulations. 
+
+\begin{equation}
+	\tau_{NH} = (fk_b T_0)^{-\frac{1}{2}} Q^{\frac{1}{2}}
+\end{equation}
+
+The equations of motion listed above can be integrated using 
 
 In this section, three types of temperature were introduced: Thermodynamic temperature $T$, instant temperature $\mathcal{T}$, and heat bath temperature $T_{bath}$. From here on, I will use the symbol $T$ for all of them, unless two different temperatures appear in the same equation. It should always be clear from the context what $T$ means. For example: A temperature referred from an experiment will always be a temperature measurement, which tries to measure $T$, while a temperature specified for a thermostatted molecular dynamics simulation will be $T_{bath}$.
 
-\section{Pressure}
-
-\section{Long range corrections}
-For slowly decaying potentials, such as Coulombic potentials, it is not advisible to use a cutoff distance, as this might result in severe inaccuracies. However, there are techniques that allows compensation withoud doing a full pairwise computation. 
-\subsection{Ewald summation}
-\subsection{Particle-particle-particle-mesh (PPPM)}
-
-\section{Thermodynamic measurements}
-\subsection{Temperature}
-\subsection{Virial pressure and virial stress}
+\section{Pressure and stress tensor}
 The pressure in a general classical N-body system can be expressed based on the virial equation for the pressure.
 
 A precise formulation of the stress tensor is given in \cite{Thompson2009}.
@@ -126,9 +160,18 @@ The virial of a system consiting of N interacting particles is defined as:
 Where $U$ is the potential energy of the system, which in molecular dynamics is only a function of the postitions of the particles and their interaction potentials.
 
 
+\section{Cutoffs and Long range corrections}
+Large-scale molecular dynamics simulations ($N \sim 10^6$) are unattainable if interactions between all particles are to be calculated. Molecular dynamics simulations with only pairwise interactions require $\mathcal{O}(N^2)$ calculations to be performed. To reduce the computational complexity, a cutoff radius $r_{cut}$ is introduced: Only interactions between particles that are closer to each other than the cutoff radius can interact. Introducing a cutoff radius reduces the computational complexity of an MD simulation from $\mathcal{O}(N^2)$ to $\mathcal{O}(N)$. 
+
+Most potentials fall off quickly, so that the error introduced by $r_{cut}$ is negligible. For some potentials however, for instance the electrostatic potential, a cutoff introduces large errors, rendering simulation results useless. Luckily, there are techniques that handle long-range interactions without explicitly calculating the forces between every pair of particles. 
+
+\subsection{Ewald summation}
+\subsection{Particle-particle-particle-mesh (PPPM)}
+Described in \cite{Deserno1998}.
+\section{Measurements}
+
 \paragraph{Long-range contributions to the virial}
 Since we needed to introduce the PPPM calculation to deal with long-range forces, we also need to know how this correction affects the virial tensor, in order to include it in the stress measurement. \cite{Sirk2013} shows how to make long-rage corrections to the virial when computing long-range forces with PPPM.
-
 
 \subsection{Thermal Diffusivity}
 Thermal diffusivity can be measured with the Einstein relation:
@@ -138,8 +181,6 @@ Thermal diffusivity can be measured with the Einstein relation:
 \end{equation}
 Where `E' means that $D$ was estimated using the Einstein relation. It was shown in \cite{Yeh2004} that the diffusion coefficients in periodic simulation boxes depend on the system size, and goes like $L^{-1}$. Thus, a reference diffusivity $D_0$, corresponding to an infinite system and which can be compared with experimental results, can be found by extrapolation.
 
-
-\section{Other Measurements}
 \subsection{Viscosity}
 For calculating the viscosity, I use the Green-Kubo relation:
 \begin{equation}
