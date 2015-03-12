@@ -115,9 +115,14 @@ Les us begin by writing down the Lagrangian of the MD system with no temperature
 
 The basic idea of the Nosé-Hoover thermostat is to introduce an extra dynamic variable to the equations of motiong, effectively creating an \emph{extended} system, which is almost equal to the original system, which we will denote the \emph{real} system. The Lagrangian of the extended system is chosen to be:
 
+
 \begin{equation}
-	\mathcal{L}_e(\tilde\rvec, \dot{\tilde\rvec}, \tilde{s}, \dot{\tilde s}) = \frac{1}{2}\sum_{i=1}^N m_i \tilde s^2 \dot{\tilde\rvec}_i^2 - \mathcal{U}(\tilde\rvec) + \frac{1}{2} Q \dot{\tilde s}^2 - gk_BT_0 \ln\tilde s
+	\mathcal{L}_e(\tilde\rvec, \dot{\tilde\rvec}, \tilde{s}, \dot{\tilde s}) = \frac{1}{2}\sum_{i=1}^N m_i \tilde s^2 \dot{\tilde\rvec}_i^2 - \mathcal{U}(\tilde\rvec) 
+	\tikz[baseline] {
+		\node [fill=green!20, anchor=base] (t1) {$+ \frac{1}{2} Q \dot{\tilde s}^2 - gk_BT_0 \ln\tilde s $};
+	}
 \end{equation}
+
 
 First, note that the equation is now written in terms of new coordinates, which are the coordinates of the extended system. They are given below (extended system coordinates are marked with \textasciitilde): 
 
@@ -145,9 +150,7 @@ This is known as the Nosé-Hoover thermostat \cite{PhysRevA.31.1695}. It is comm
 	\tau_{NH} = (fk_b T_0)^{-\frac{1}{2}} Q^{\frac{1}{2}}
 \end{equation}
 
-The equations of motion listed above can be integrated using 
-
-In this section, three types of temperature were introduced: Thermodynamic temperature $T$, instant temperature $\mathcal{T}$, and heat bath temperature $T_{bath}$. From here on, I will use the symbol $T$ for all of them, unless two different temperatures appear in the same equation. It should always be clear from the context what $T$ means. For example: A temperature referred from an experiment will always be a temperature measurement, which tries to measure $T$, while a temperature specified for a thermostatted molecular dynamics simulation will be $T_{bath}$.
+Three types of temperature have now been introduced: Thermodynamic temperature $T$, instant temperature $\mathcal{T}$, and heat bath temperature $T_{bath}$. From here on, I will use the symbol $T$ for all of them, unless two different temperatures appear in the same equation. It should always be clear from the context what $T$ means. For example: A temperature referred from an experiment will always be a temperature measurement, which tries to measure $T$, while a temperature specified for a thermostatted molecular dynamics simulation will be $T_{bath}$.
 
 \section{Pressure and stress tensor}
 The pressure in a general classical N-body system can be expressed based on the virial equation for the pressure.
@@ -161,17 +164,25 @@ Where $U$ is the potential energy of the system, which in molecular dynamics is 
 
 
 \section{Cutoffs and Long range corrections}
-Large-scale molecular dynamics simulations ($N \sim 10^6$) are unattainable if interactions between all particles are to be calculated. Molecular dynamics simulations with only pairwise interactions require $\mathcal{O}(N^2)$ calculations to be performed. To reduce the computational complexity, a cutoff radius $r_{cut}$ is introduced: Only interactions between particles that are closer to each other than the cutoff radius can interact. Introducing a cutoff radius reduces the computational complexity of an MD simulation from $\mathcal{O}(N^2)$ to $\mathcal{O}(N)$. 
+Large-scale molecular dynamics simulations ($N \sim 10^6$) are unattainable if interactions between all particles are to be calculated. Molecular dynamics simulations with only pairwise interactions require $\mathcal{O}(N^2)$ calculations to be performed. To reduce the computational complexity, a cutoff radius $r_{cut}$ is introduced: Only interactions between particles that are closer to each other than the cutoff radius can interact. Introducing a cutoff radius reduces the time complexity of an MD simulation from $\mathcal{O}(N^2)$ to $\mathcal{O}(N)$. 
 
-Most potentials fall off quickly, so that the error introduced by $r_{cut}$ is negligible. For some potentials however, for instance the electrostatic potential, a cutoff introduces large errors, rendering simulation results useless. Luckily, there are techniques that handle long-range interactions without explicitly calculating the forces between every pair of particles. 
+Most potentials fall off quickly, so that the error introduced by $r_{cut}$ is negligible. For some potentials however, for instance the electrostatic potential, a cutoff introduces large errors, rendering simulation results useless. Luckily, there are techniques that handle long-range interactions without explicitly calculating the forces between every pair of particles. These methods are based on a method developed by \citet{ANDP:ANDP19213690304} to calculate the energy of ionic crystals. I will briefly describe the idea of these methods, as a thorough understanding and description is out of the scope of my project.
 
 \subsection{Ewald summation}
-\subsection{Particle-particle-particle-mesh (PPPM)}
-Described in \cite{Deserno1998}.
-\section{Measurements}
+For Coulomb point charges with periodic boundary conditions, the electrostatic energy is:
+\begin{equation}
+	E_{\text{Coulomb}} = \frac{1}{2} \sum_{i=1}^N\sum_{j=1}^N \sum_{\mb{n} \in \mathbb{Z}^3} \frac{q_iq_j}{|\rvec_{ij}+\mb{n} L|} 
+\end{equation}
 
-\paragraph{Long-range contributions to the virial}
-Since we needed to introduce the PPPM calculation to deal with long-range forces, we also need to know how this correction affects the virial tensor, in order to include it in the stress measurement. \cite{Sirk2013} shows how to make long-rage corrections to the virial when computing long-range forces with PPPM.
+Where the inner sum over $\mb{n}$ is over all periodic images of the system. The inner sum omits $\mb{n} = (0, 0, 0)$ when $i=j$. The idea of the Ewald summation is to divide this sum into a short-range part $E_{sr}$ and a long-rang part $E_{lr}$. The short-range contribution will be calculated in real space, and the long-range part will be calculated in Fourier space. The Fourier space calculation will deal with the Fourier transformed of the charge density:
+\begin{equation}
+	\tilde{\rho}(\mb{k}) = \sum_{j=1}^N q_j e^{-i\mb{k}\cdot \rvec_j}
+\end{equation}
+For the method to be effective, the variations in charge density in the part calculated in Fourier space must be sufficiently slowly varying so that its Fourier transform can be well represented by only a few $\mb{k}$-vectors.
+
+There are several methods that calculate the Ewald sum. They differ for example in how they mesh the charge distribution for fourier transforms. It is crucial for computational eficiency to be able to use the fast fourier transform (FFT), so the mesh has to support FFT. In a paper concerining different methods to cacluate Ewald sums, \citet{Deserno1998} states, in a thorough paper reviewing the accuracy of mesh routines for Ewald sums, that the partilce-particle-particle-mesh routine (P$^3$M) by \citet{Hockney:1988:CSU:62815} is the ``most accurate and versatile routine'' for Ewald sums. 
+
+\section{Measurements}
 
 \subsection{Thermal Diffusivity}
 Thermal diffusivity can be measured with the Einstein relation:
@@ -200,12 +211,11 @@ Following \cite{Yeh2004}, it would also be possible to calculate the viscosity u
 
 
 \section{Rigid groups of particles}
-There are several ways to keep a group of atoms constrained as a rigid molecule. The goal is to obtain the same result as if the equation was integrated using holonomic constraints, but integrating the angular movement of rigid particles instead of ...***. Generally, one can use the SHAKE or the RATTLE algorithm. For the particular case of three rigid atoms, the SETTLE algorithm might be preferred. The SETTLE algorithm \cite{Miyamoto1992} is an analytical solution to the 3-particle constraint problem when integrating numerically the newtonian equations of motion. It implements the contraint by changing the positions and velocities of the constrained particles after each integration step.
-
-\subsection{SHAKE}
+There are several ways to keep a group of atoms constrained as a rigid molecule. The goal of constraint algorithms is to obtain the same positions and velocities as if the equations of motion were integrated in coordinates incorporationg the holonomic constraints, but without explicitly using these coordinates. The SHAKE algorithm by \citet{Ryckaert1977} is the most common constaint algorithm. For the particular case of three rigid atoms, like a water molecule, the SETTLE algorithm \cite{Miyamoto1992} is an analytical solution when integrating numerically the equations of motion. 
 \label{sec:shake}
 @MentionRelationToMinimization
 
+\begin{comment}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{SETTLE}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -264,6 +274,4 @@ $\phi$ and $\psi$ can be calculated without any knowledge of forces.
 
 \paragraph{Velocities}
 The following is only valid within the velocity verlet algorithm.
-
-
-
+\end{comment}
