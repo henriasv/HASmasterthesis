@@ -259,7 +259,7 @@ Where $n_s$ is the number of surface points detected amond $N$ line segments. $V
 
 \subsection{Implementation}
 \paragraph{Cell lists}
-The system is divided into a maximum number of equal sized cells such that that all cell dimensions $l_x, l_y, l_z$ are greater than $r_p$. When a point is checked for whether it is part of the void or the wall, only the distance to particles belonging to the same cell and the directly and diagonally adjacent cells needs to be checked. Using cell lists rather that looping over all particles in the system gives huge efficiency gains.
+The system is divided into a maximum number of equal sized cells such that that all cell dimensions $l_x, l_y, l_z$ are greater than $r_p$. When a point is checked for whether it is part of the void or the wall, only the distance to particles belonging to the same cell and the directly and diagonally adjacent cells need to be checked. Using cell lists rather that looping over all particles in the system gives huge efficiency gains.
 \paragraph{Periodic boundaries}
 Periodic boundaries are implemented using cell lists, which means that the system must be at least $2\times 2 \times 2$ cells – each dimension in the system must be at least $2r_p$.
 \paragraph{Scaling efficiency}

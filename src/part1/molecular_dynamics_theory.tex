@@ -182,6 +182,11 @@ For the method to be effective, the variations in charge density in the part cal
 
 There are several methods that calculate the Ewald sum. They differ for example in how they mesh the charge distribution for fourier transforms. It is crucial for computational eficiency to be able to use the fast fourier transform (FFT), so the mesh has to support FFT. In a paper concerining different methods to cacluate Ewald sums, \citet{Deserno1998} states, in a thorough paper reviewing the accuracy of mesh routines for Ewald sums, that the partilce-particle-particle-mesh routine (P$^3$M) by \citet{Hockney:1988:CSU:62815} is the ``most accurate and versatile routine'' for Ewald sums. 
 
+\section{Rigid groups of particles}
+There are several ways to keep a group of atoms constrained as a rigid molecule. The goal of constraint algorithms is to obtain the same positions and velocities as if the equations of motion were integrated in coordinates incorporationg the holonomic constraints, but without explicitly using these coordinates. The SHAKE algorithm by \citet{Ryckaert1977} is the most common constaint algorithm. For the particular case of three rigid atoms, like a water molecule, the SETTLE algorithm \cite{Miyamoto1992} is an analytical solution when integrating numerically the equations of motion. 
+\label{sec:shake}
+@MentionRelationToMinimization
+
 \section{Measurements}
 
 \subsection{Thermal Diffusivity}
@@ -210,10 +215,7 @@ For the purpose of estimating viscosities, the autocorrelation function is only 
 Following \cite{Yeh2004}, it would also be possible to calculate the viscosity using the finite size effect on the thermal diffusivity.
 
 
-\section{Rigid groups of particles}
-There are several ways to keep a group of atoms constrained as a rigid molecule. The goal of constraint algorithms is to obtain the same positions and velocities as if the equations of motion were integrated in coordinates incorporationg the holonomic constraints, but without explicitly using these coordinates. The SHAKE algorithm by \citet{Ryckaert1977} is the most common constaint algorithm. For the particular case of three rigid atoms, like a water molecule, the SETTLE algorithm \cite{Miyamoto1992} is an analytical solution when integrating numerically the equations of motion. 
-\label{sec:shake}
-@MentionRelationToMinimization
+
 
 \begin{comment}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
