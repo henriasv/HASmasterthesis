@@ -3,30 +3,32 @@ Methane hydrates are clathrate compounds, which means they consist of host molec
 
 
 \section{Molecular structure}
-Different hydrate structures form based on the size of the guest molecules. These structures are characterized by what cages they can be divided into. Cages are described with compunds of the notation $x^y$ where $x$ is the number of faces of a cetain type, and $y$ describes the type of face by the number of corners on that face of that type. The most common structures for clathrates with one type of guest molecule are the so called structure I (sI) and structure II (sII). These structures, along with the cages that form them, are illustrated in figure \ref{fig:methane_hydrate_structure}. The sI structure contains $5^{12}$ and $5^{12}6^2$ cages in ratio $1:3$, the sII structure contains $5^{12}$ and $5^{12}6^4$ cages in ratio $2:1$.  
+Different hydrate structures form based on the size of the guest molecules. These structures are characterized by what kinds of cages they contain. The cages are described with the notation $x^y$ where $x$ is the number of faces of a cetain type, and $y$ describes the type of face by the number of corners on that face of that type. The most common structures for clathrates with one type of guest molecule are the so called structure I (sI) and structure II (sII). These structures, along with the cages that form them, are illustrated in figure \ref{fig:methane_hydrate_structure}. The sI structure contains $5^{12}$ and $5^{12}6^2$ cages in ratio $1:3$, the sII structure contains $5^{12}$ and $5^{12}6^4$ cages in ratio $2:1$.  
 
 Small guest molecules, such as methane and ethane, usually form sI hydrates if the conditions for hydrate formation are met \cite{Hester2009}. However, that is only certain if the hydrate is either purely methane or purely ethane. For mictures of methane and ethane forming gas hydrates, either sI or sII can be formed, depending on the relative amounts of methane and ethane \cite{Subramanian20001981}. 
 
 Not all cages need to be occupied by a guest molecule, so a pure methane hydrate sample can, in addition to its cage structure, be characterized by its cage occupancy. It is common to use the hydrate number to describe cage occupancy, which for methane hydrate looks like:
+
 \begin{equation}
 	\mathrm{CH_4} \cdot n_w \mathrm{H_2O}
 \end{equation}
-Where $n_w$ is the hydrate number. For a fully occupied sI hydrate, the hydrate number would be $n_w = 5.75$. (observed hydrate number \citet{Circone2005})
+
+Where $n_w$ is the hydrate number. For a fully occupied sI hydrate, the hydrate number would be $n_w = 5.75$. Hydrate numbers have been reported both for laboratory grown methane hydrates and for natural occuring ones. Hydrates grown in laboratory have shown high cage occypancy both with excess water and excess methane, altohugh excess methane yield the highest occupancy. \citet{Circone2005} report values within 5.9 to 6.1 for a relatively wide range of growth conditions: Pressures from 1.8 to \SI{9.6}{\mega\pascal} and temperatures from 263 to \SI{287}{\kelvin}. 
 
 \begin{figure}
 \includegraphics[width=15cm]{../pictures/hydrate_structures.png}
-\caption{Cage structures of single guest methane hydrates occuring in nature. Both structure 1 (sI) and structure 2 (sII) contain the $5^{12}$ almost spherical cage. Reprinted from \citet{Barnes2013} with permission from Elsevier.}
+\caption{Cage structures of single guest methane hydrates occuring in nature. Both structure 1 (sI) and structure 2 (sII) contain the $5^{12}$ cage. Reprinted from \citet{Barnes2013} with permission from Elsevier.}
 \label{fig:methane_hydrate_structure}
 \end{figure}
 
 
 \section{Mechanical properties from experiments}
-Since methane hydrates come in many forms, it is hard to say someting general about elastic properties, strength and toughness. In a review paper from 2012, \citet{Ning2012} state:
+Since methane hydrates come in several forms, it is hard to say someting general about the mechanical properties. In a review paper from 2012, \citet{Ning2012} state:
 \begin{quotation}
 Few mechanical properties are reported , and their measurements are difficult, partly because it is almost impossible to obtain pure hydrate samples.
 \end{quotation}
 
-This must be taken into account when going through the experimental results on mechanical properties of methane hydrates. For my particular project, this means that I expect experimental results not to be directly comparable to my models, because I model pure hydrate samples, which are not available experimentally. 
+This must be taken into account when going through the experimental results on mechanical properties of methane hydrates. It also means that experimental results probly will not be directly comparable to molecular models of pure samples.
 
 \subsection{Typical experimental setup}
 The initial challenge when doing experiments on methane hydrates is that samples of methane hydrate are not stable in room temperature and atmospheric pressure.
@@ -76,7 +78,8 @@ Distance O-H & $d_{OH}$ & \SI{0.9572}{\angstrom} \\
 @1933-model @TIP-models.  \citet{Vega2011} review rigid non-polarizable models.
 
 
-\section{Molecular Modeling of Methane Hydrates}
+\section{Molecular dynamics modeling of methane hydrates}
+Because of the lack of good experimental results, numerical modeling can be important to investigate methane hydrates. One of the ways to model them, is through molecular dynamics simulation, where trajectories of atoms are calculated with classical equations of motion.
 
 \section{Molecular Modeling of Fracture}
 \citet{doi:10.1142/9789812773326_0001} review some aspects of molecular modeling of fracture. 
