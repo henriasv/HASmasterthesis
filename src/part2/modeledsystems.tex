@@ -253,3 +253,28 @@ Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stre
 \includegraphics[width=10cm]{../figures/thesis/crack_area_evolution_1048.pdf}
 \caption{Crack surface area evolution in time. The upper panel shows the measured area, and the lower panel is an estimate of the crack tip speed. The derivative for the lower panel is calculated using a standard 5-point stencil for the first derivative. The crack surface area was measured useing the Monte Carlo procedure described in section @ref with $N_s = 10^6$, $r_p = \SI{4.0}{\angstrom}$ and $\Delta l = \SI{1.0}{\angstrom}$. }
 \end{figure}
+
+\section{A simple characterization of the crack surface: The amount of methane released.}
+It might sound farfetched, but I believe that the amount of methane released can be a valuable measure of how the crack surface looks. That is because water molecules either stay on the crack surface, or are immidiately drawn towards the crack surface in a matter of picoseconds. Methane, on the other hand, is free to move in the pore space created by the crack. A first order approach to characterize the crack surface, is therefore to look at how much of the hydrate was dissociated during fracture. A way to estimate this, is to say that the number of cages that are dissociated is the same as the number of free methane molecules in the system.  
+
+\subsection{Estimate by mean squared displacement}
+One way of estimating the amount of methane released, is to realize that the motion of the free methane is diffusive. Therefore, the mean square displacement of the methane can be compared to what it would have been if all methane molecules were free to move.
+
+Since the methane gas is purely a Lennard-Jones fluid, literature results for the diffusion coefficient should be readily available. It turns out that this approach is not straightforward. The ...
+
+\paragraph{Problems with this method:}
+\begin{itemize}
+\item Global oscillations of the system
+\item Finite size effects of the diffusivity
+\item Quasi-2D
+\item Will the method converge?
+\item Caculation of the pore volume.
+\item The density enters in the literature diffusion constant
+\item The conditions for thermal diffusion in the crack might not be present. 
+\end{itemize}
+
+\subsection{Estimate by counting}
+A more straightforward approach, which is more computationally demanding, is to go through all methane positions, and check wheter they are part of the wall or the void, like what was done when tracking cracks. A particle is considered free if it was part of the void at any time during the simulation. The reason for the ``at any time during the simulation'' is that measuring frame by frame largely underestimates the number of free methanes. Methanes that are free arent necessarily far enough from the closest water molecule to be considered void, but they \emph{are} free to move. To check the that the free methanes are indeed free, the positions of the methanes that were defined as void can be drawn at a point in time after the crack has propagated. @AddFigure
+
+\subsection{Diffusion revisited}
+Measuring the number of free methanes using the mean squared displacement turned out to be difficult, but now that the number of free methanes is measured, the diffusion inside the crack can be characterized.

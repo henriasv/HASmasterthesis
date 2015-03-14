@@ -32,7 +32,21 @@ A simple and widely used potential is the Lennard-Jones potential. For two parti
 \begin{equation}
 	U_{LJ} = 4\varepsilon\left[\left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^{6}\right]
 \end{equation}
-The first term represents Pauli repulsion, and the second represents van der Waals attraction. $\sigma$ is a characteristic length which is of the same order of magnitude as the distance at which the inter-particle force is zero. $\varepsilon$ is the depth of the potentiall well -- a measure of the strength of the interaction. The Lennard-Jones potential is computationally attractive as there is no need to calculate the square roots of the distances between the particles.
+The first term represents Pauli repulsion, and the second represents van der Waals attraction. $\sigma$ is a characteristic length which is of the same order of magnitude as the distance at which the inter-particle force is zero. $\varepsilon$ is the depth of the potentiall well -- a measure of the strength of the interaction. The Lennard-Jones potential is computationally attractive as there is no need to calculate the square roots of the distances between the particles. The Lennard-Jones potential is given in terms of reduced units. Since most studies of Lennard-Jones systems report results in these units, the equations defining the  reduced units are included in table \ref{tbl:lj_parameters}.
+
+\begin{table}
+\centering
+\caption{Definitions of some of the reduced Lennard-Jones parameters.}
+\label{tbl:lj_parameters}
+\begin{tabular}{c|c}
+\textbf{Property} & \textbf{Definition} \\
+\hline
+Length & $L^* = L/\sigma$ \\
+Energy & $E^* = E/\epsilon$ \\
+Density & $\rho^* = \rho \sigma^3$ \\
+Temperature & $T^* = k_BT/\epsilon$ \\
+\end{tabular}
+\end{table} 
 
 The Coulomb potential -- a potential for static charges -- is used for charges particles, and is equivalent to Coulombs law:
 \begin{equation}
@@ -161,7 +175,7 @@ The virial of a system consiting of N interacting particles is defined as:
 	W(\rvec^N) \equiv -3V\frac{\dd U(\rvec^N)}{\dd V}
 \end{equation}
 Where $U$ is the potential energy of the system, which in molecular dynamics is only a function of the postitions of the particles and their interaction potentials.
-
+@mentionDragCoefficient
 
 \section{Cutoffs and Long range corrections}
 Large-scale molecular dynamics simulations ($N \sim 10^6$) are unattainable if interactions between all particles are to be calculated. Molecular dynamics simulations with only pairwise interactions require $\mathcal{O}(N^2)$ calculations to be performed. To reduce the computational complexity, a cutoff radius $r_{cut}$ is introduced: Only interactions between particles that are closer to each other than the cutoff radius can interact. Introducing a cutoff radius reduces the time complexity of an MD simulation from $\mathcal{O}(N^2)$ to $\mathcal{O}(N)$. 
