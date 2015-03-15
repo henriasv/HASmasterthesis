@@ -213,14 +213,14 @@ For illustrative purposes, figure \ref{fig:system_1048} shows what the system lo
 
 Figure \ref{fig:crack_evolution} shows the evolution of the crack in time, to give an idea of what the system looks like during fracture. 
 
-Figure \ref{fig:energy_1048} shows the potential energy, the kinetic energy and the strain energy for the whole simulation. It shows that a strain of 0.048 is only a bit more than what is needed if the the criterion for a crack to propagate is $\mathcal{G}_c = 2\gamma_s$. That means the system shows brittle behavior in this particular simulation. The kinetic energy slightly increases, which means the temperature increases during fracture. This is beacuse the release of heat is faster than what can be absorbed by the thermostat. The temperature is not indicated in the figure, but the temperature is only rise with a few Kelvin. 
+Figure \ref{fig:energy_1048} shows the potential energy, the kinetic energy and the strain energy for the whole simulation. It shows that a strain of 0.048 is only a bit more than what is needed if the the criterion for a crack to propagate is $\mathcal{G}_c = 2\gamma_s$. That means the system shows brittle behavior in this particular simulation. The kinetic energy slightly increases, which means the temperature increases during fracture. This is beacuse the release of heat is faster than what can be absorbed by the thermostat. The temperature is not indicated in the figure, but the temperature change is only by a few Kelvin. 
 
-Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stress tensor of the system in space in the period where the system is fully strained, but before propagation starts. It is averaged over the z-direction in space and over \SI{20}{\pico\second} in time to get statitsics for a nice picture. 
+Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stress tensor of the system in space in the period where the system is fully strained, but before propagation starts. It is averaged over the z-direction in space and over \SI{20}{\pico\second} in time to get statitsics for a nice picture. The stress field is visually compatible with the analytical solution close to the crack tip for a homogeneous isotropic linear elastic solid. The shear components normal to the xy-plane are small, but not negligible That means the plane strain condition is only partially met. Particularly, the amplitude of $\tau_{xz}$ is about $1/5$ of that of $\tau_{xy}$. 
 
 
-Figure \ref{fig:stressfield_snap_propagation_180} is similar to figure \ref{fig:stressfield_avg_wait_for_crack}, but it now shows the stress field during crack propagation. Since tracking the crack requires higher time resolution, the stresses are only averaged over \SI{0.3}{\pico\second}. 
+Figure \ref{fig:stressfield_snap_propagation_180} is similar to figure \ref{fig:stressfield_avg_wait_for_crack}, but it now shows the stress field during crack propagation Since tracking the crack requires higher time resolution, the stresses are only averaged over \SI{0.3}{\pico\second}. As expected, the region of high stresses moves along with the crack tip.
 
-Figure \ref{fig:stressfield_timelapse} shows the stress $\sigma_{xx}$ at several points in time before, during and after crack propagation. Here also, the stresses are only averaged over \SI{0.3}{\pico\second}.
+Figure \ref{fig:stressfield_timelapse} shows the stress $\sigma_{xx}$ at several points in time before, during and after crack propagation. Here also, the stresses are only averaged over \SI{0.3}{\pico\second}. The top crack is leading the bottom crack with $\sim \SI{10}{\angstrom}$, which is probably coincidental
 
 Figure \ref{fig:crack_area_evolution_1048} shows the measured crack area in time, and its time derivative which estimates the crack tip speed. The maximum crack tip speed is around \SI{1}{\kilo\meter\per\second}. A little bump can be seen in the crack tip speed during crack propagation. This is a feature that always show up in simulations of the same system but with a different strain. My guess is that it is caused by bulk elastic waves triggered by the crack. The crack tip speed is a measure that is likely to be influenced by the strain level before fracture. 
 
@@ -267,7 +267,8 @@ Figure \ref{fig:crack_area_evolution_1048} shows the measured crack area in time
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/stressfield_timelapse.pdf}
-\caption{Timelapse of the stress $\sigma_{xx}$ during crack propagation. There are clear signs of sound waves, and the shape of the waves indicate that the crack is traveling at a speen on the same order of magnitude as the shear wave speed. The color scale is kept equal among the simulations for easier comparison. For that reason, the stress near the crack tip is higher that what is available on the color scale.}
+\caption{Timelapse of the stress $\sigma_{xx}$ during crack propagation. There are clear signs of sound waves, and the shape of the waves indicate that the crack is traveling at a speen on the same order of magnitude as the shear wave speed. The color scale is kept equal among the simulations for easier comparison. For that reason, the stress near the crack tip is higher that what is available on the color scale. Notice that the two edges of the intial hole don't crack at the same time. The upper crack is leading the lower crack 
+with $\sim \SI{10}{\angstrom}$. }
 \label{fig:stressfield_timelapse}
 \end{figure}
 
@@ -320,6 +321,9 @@ A more straightforward approach, which is more computationally demanding, is to 
 Measuring the number of free methanes using the mean squared displacement turned out to be difficult, but now that the number of free methanes is measured, the diffusion inside the crack can be characterized.
 
 \section{Some effects of the system size}
+The study of finite size effects is not given much attention in this work, but since I have performed simulations on two system sizes, where the difference is the z-direction thichness, I can report some observations of differences between the two system sizes.
+
+Most notably, the crack propagation in the big system is more predictable than that in the small system. Particularly, the crack tip in the small simulations can change direction for a short time, and then continue propagating in the y-direction but in another column of unit cells than it did before. Similar behavior has not been observed this in the large system.
 
 \section{Aggregated results}
 
