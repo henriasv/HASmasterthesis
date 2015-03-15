@@ -14,11 +14,15 @@
 			"path": "../utils/uiofysmaster"
 		},
 		{
-			"path": "../figures"
+			"path": "../figures/thesis"
 		},
 		{	
 			"path": "../utils"
+		},
+		{	
+			"path": "../pictures"
 		}
+
 
 	],
 	"options":

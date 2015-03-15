@@ -3,7 +3,8 @@
 \section{Summary of findings}
 Notes for the summary
 \begin{itemize}
-\item Methane hydrate sare brittle in my simulations, but they are quite ductile in experiments.
+\item Methane hydrates are brittle in my simulations, but they are quite ductile in experiments.
+\item Reading data from disk is a bottleneck when analyzing data post-simulation. 
 \end{itemize}
 
 \section{Conclusion}
@@ -17,6 +18,9 @@ Notes for the conclusion
 \begin{itemize}
 \item Other potentials – the problem with high poisson ratio.
 \item Less ordered structures.
-\item Other types of defects.
+\item Defects of different geomentries.
+\item Other loading modes.
 \item Experimental ductility of methane hydrates: Is there a timescale at which methane hydrates become ductile, or perhaps heterogeneities can make sure that methane hydrates can sustain a global strain comparable to the yield strain of the perfect crystal, but with pores of methane forming inside the material. 
+\item Develop a fracture analysis package for LAMMPS: Since so large amounts of data are needed for fracture analysis, it is probably a good idea to do big analyses live.
+\item Implement support for TIP4P with P$^3$M and triclinic box to control shear stress.
 \end{itemize}

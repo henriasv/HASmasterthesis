@@ -77,19 +77,7 @@ Figure \ref{fig:strain_strain_11_11_11_y_z_poisson_tip4p_ice_uam} shows the rela
 
 \section{Early results on fracture and fracture toughness}
 
-\subsection{Determining the critical stress intensity factor}
-As described in the section about fracture mechanics, the stress intensity factor is commonly used to calculate the fracture toughness of a material. The critical energy release rate is usually defined as:
-\begin{equation}
-	G_C = -\left(\frac{\partial P}{\partial A_{\text{crack}}}\right)_{T, \text{loading}}
-	\label{eq:def_critical_energy_release_rate}
-\end{equation}
 
-I will follow the method of \cite{Hantal2014} to calculate the critical stress intensity factor (This method was used for illite with ClayFF and ReaxFF):\begin{equation}
-	G_C = V \frac{\int_0^{E_{\text{final}}}\uuline{\Sigma}(E) : \dd \uuline{E}}{\int_0^{E_{\text{final}}} \dd A_{crack}}
-	\label{eq:hantal_critical_energy_release_rate}
-\end{equation}
-
-This is in principle sufficient to determine the critical energy release rate for any mode of loading, provided that the conditions for using Equation \ref{eq:hantal_critical_energy_release_rate} to estimate the critical energy release rate are met.
 
 \subsection{Simulation details}
 @VerifyThatThisIsADescriptionOfHantal2014
@@ -176,13 +164,14 @@ Where $\Sigma_{xx}$ is an element of $\uuline \Sigma$, which is the mean stress 
 
 \begin{equation}
 	W = L_y L_z \int_{t(L_x = L_x^0)}^{t(L_x^0 + \Delta x)} \Sigma_{xx}(t) \ \dd x
+	\label{eq:work_expansion}
 \end{equation}
 This expression can easily be extracted from a molecular dynamics simulation.
 In the canonical ensemble (NVT), the change of internal energy will be:
 \begin{equation}
 	\Delta U = W + T\Delta S
 \end{equation}
-When expanding the system, the entropy per temperature will increase, as more microstates are available. This has to be compensated by adding heat. In molecular dynamics, the thermostat effectively adds energy as entropy during simulation box expansion. Furtermore, this energy cannot increase the kinetic energy, since N and T are kept fixed, so all the added heat must be absorbed as potential energy. This means that expanding the simulation box adds a lot of potential energy to the system, both directly through mechanical work, and indirectly through heat. The mechanical work is stored as positional energy -- particles are positioned higher in each others potentials. The heat absorption is more subtle: The system creates more available microstates when it expands homogeneously at a constant temperature. These microstates do only exist because of the strained state of the system, and will disappear if the strain disappears, for example during fracture. The entropy energy is not available for mechanical work. This is why Helmholtz free energy should be considered:
+When expanding the system, the entropy per temperature will increase, as more microstates are available. This has to be compensated by adding heat. In molecular dynamics, the thermostat effectively adds energy as entropy during simulation box expansion. Furtermore, this energy cannot increase the kinetic energy, since N and T are kept fixed, so all the added heat must be absorbed as \emph{potential} energy. This means that expanding the simulation box adds a lot of potential energy to the system, both directly through mechanical work, and indirectly through heat. Storage of the mechanical work is in line with the intuition -- particles are positioned higher in each others potentials. The heat absorption is more subtle: The system creates more available microstates when it expands homogeneously at a constant temperature. These microstates do only exist because of the strained state of the system, and will disappear if the strain disappears, for example during fracture. The entropy energy is not available for mechanical work. This is why Helmholtz free energy should be considered:
 
 \begin{equation}
 	F = U - TS
@@ -190,17 +179,50 @@ When expanding the system, the entropy per temperature will increase, as more mi
 
 This is exactly the energy available for mechanical work. The reason for this tedious discussion of expanding a box is that Helmholtz free energy is not directly available from molecular dynamics simulations. The change in Helmholtz free energy must be explicitly done by integrating the stress tensor of the system. When analyzing fracture, it would be tempting to use the change in total energy or potential energy to estimate the fracture toughness. But this would be wrong -- the fracture toughness should be caclculated using the available mechanical energy. The energy release rate is the amount of Helmholtz free enegry needed to create projected crack surface area, not the change in potential or total energy of the system during fracture. This distinction is not easy to see when reading fracture mechanics, as fracture mechanics usually deal with elastic bodies with no temperature, but it is crucial when studying fracture in molecular dynamics.
 
-When the crack propagates, the stress in the solid methane hydtate is released, and the system consists of a piece of solig methane hydrate and some free gas in between. We don't know the entropy of this system, but it seems reasonable from the strain energy compared to the potential energy that the change in entropy from before straining to after fracture is small compared to the strain energy -- unless, of course, the system was strained significantly more than necessary.
+When the crack propagates, the stress in the methane hydrate is released, and the system consists of a piece of methane hydrate and some free gas in between. We don't know the entropy of this system, but it seems reasonable from the strain energy compared to the potential energy that the change in entropy from before straining to after fracture is small compared to the strain energy -- unless the system was strained significantly more than necessary.
 
 
+\citet{Hantal2014} proposes to calculate the critical energy release rate with the following formula (This method was used for illite with ClayFF and ReaxFF):
+\begin{equation}
+	\mathcal{G}_c = V \frac{\int_0^{E_{\text{final}}}\uuline{\Sigma}(E) : \dd \uuline{E}}{\int_0^{E_{\text{final}}} \dd A_{crack}}
+	\label{eq:hantal_critical_energy_release_rate}
+\end{equation}
+
+
+This is in principle sufficient to determine the critical energy release rate for any mode of loading, provided that the conditions for using Equation \ref{eq:hantal_critical_energy_release_rate} to estimate the critical energy release rate are met. 
+For expansion of the simulation box along the x-axis, the strain integral (nominator) is equivalent to \ref{eq:work_expansion}. The area integral (denominator) is just the crack area in time, which can be estimated using the crack tracer described in @ref. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Large simulations of fracture}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{Complete analysis of a single simulation}
-In this subsection, I present analysis results from using all the tools that were presented in the tools section. I analyze a single simulation, but the analyzes here will be representative of how I measure properties that will show up in later results where data from several simulations are used together to say something more general.
+In this subsection, I use the analysis tools that were presented in the tools section to analyze \emph{one} simulation. The analyzes here will be representative of how data is obtained when showing up in later results where data from several simulations are used together to say something more general.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{../pictures/system_1048.pdf}
+\caption{Perspective image of a representative state after fracture in a $24\times 24 \times 12$ sI unit cell simulation. The biggest green spehres are methane molecules that are considered free to move (not enclathrated). Smaller green spheres (barely visible) are enclathrated methane molecules. Water molecules are drawn as hydrogen bonds.}
+\label{fig:system_1048}
+\end{figure}
 
 \begin{framed} 
-\textbf{Simulation details:} A system consisting of $24 \times 24\times 12$ S1 unit cells was prepared. First, an elliptical hole in the xy-plane spanning the whole z-direction was carved out as described in section \ref{subsec:reg_eprism}. The system was then allowed to equilibrate with an anisotropic NPT thermo-barostat for \SI{100}{\pico\second}, with ambient barostat pressure (\SI{101325}{\pascal}). The system was then integrated NVT and subjected to a constant strain rate taking it to a strain level of 0.048 after \SI{50}{\pico\second}. Then straining stopped, and the system was left NVT for \SI{350}{\pico\second}. The damping time of the thermostat and barostat during the whole simulations was $t_{damp} = \SI{1}{\ps}$. The thermostat temperature was \SI{260}{\kelvin}.
+\textbf{Simulation details:} A system consisting of $24 \times 24\times 12$ S1 unit cells was prepared. First, an elliptical hole in the xy-plane spanning the whole z-direction was carved out as described in section \ref{subsec:reg_eprism}. The system was then allowed to equilibrate with an anisotropic NPT thermo-barostat for \SI{100}{\pico\second}, with ambient barostat pressure (\SI{101325}{\pascal}). The system was then integrated NVT, but subjected to a constant strain rate taking it to a strain level of 0.048 after \SI{50}{\pico\second}. Then straining stopped, and the system was left NVT for \SI{350}{\pico\second}. The damping time of the thermostat and barostat during the whole simulations was $t_{damp} = \SI{1}{\ps}$. The thermostat temperature was \SI{260}{\kelvin}.
 \end{framed}
 
+For illustrative purposes, figure \ref{fig:system_1048} shows what the system looks like in perspective. The other pictures are rendered with an orthographic projection, so the system will look two-dimensional. 
+
+Figure \ref{fig:crack_evolution} shows the evolution of the crack in time, to give an idea of what the system looks like during fracture. 
+
+Figure \ref{fig:energy_1048} shows the potential energy, the kinetic energy and the strain energy for the whole simulation. It shows that a strain of 0.048 is only a bit more than what is needed if the the criterion for a crack to propagate is $\mathcal{G}_c = 2\gamma_s$. That means the system shows brittle behavior in this particular simulation. The kinetic energy slightly increases, which means the temperature increases during fracture. This is beacuse the release of heat is faster than what can be absorbed by the thermostat. The temperature is not indicated in the figure, but the temperature is only rise with a few Kelvin. 
+
+Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stress tensor of the system in space in the period where the system is fully strained, but before propagation starts. It is averaged over the z-direction in space and over \SI{20}{\pico\second} in time to get statitsics for a nice picture. 
+
+
+Figure \ref{fig:stressfield_snap_propagation_180} is similar to figure \ref{fig:stressfield_avg_wait_for_crack}, but it now shows the stress field during crack propagation. Since tracking the crack requires higher time resolution, the stresses are only averaged over \SI{0.3}{\pico\second}. 
+
+Figure \ref{fig:stressfield_timelapse} shows the stress $\sigma_{xx}$ at several points in time before, during and after crack propagation. Here also, the stresses are only averaged over \SI{0.3}{\pico\second}.
+
+Figure \ref{fig:crack_area_evolution_1048} shows the measured crack area in time, and its time derivative which estimates the crack tip speed. The maximum crack tip speed is around \SI{1}{\kilo\meter\per\second}. A little bump can be seen in the crack tip speed during crack propagation. This is a feature that always show up in simulations of the same system but with a different strain. My guess is that it is caused by bulk elastic waves triggered by the crack. The crack tip speed is a measure that is likely to be influenced by the strain level before fracture. 
 
 \begin{figure}
 \begin{minipage}[b]{0.5\linewidth}
@@ -216,16 +238,16 @@ In this subsection, I present analysis results from using all the tools that wer
 \includegraphics[width=\textwidth]{../snapshots/c_4.pdf}
 \end{minipage}
 \caption{(upper left) Equilibrated system, \SI{90}{\pico\second}. (upper right) Fully strained system ($\varepsilon_{xx} = 0.048$), \SI{150}{\pico\second}. (lower left) Crack started propagating, \SI{180}{\pico\second}. (lower right) Crack fully propagated after \SI{210}{\pico\second}. The crack is wider near the xz-plane periodic boundary at this point in time due to global oscillations following the crack propagation.}
+\label{fig:crack_evolution}
 \end{figure}
 
-Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stress tensor of the system. 
 
 \begin{figure}
 \centering
 \includegraphics[width=10cm]{../figures/thesis/strain_pot_kin_eng_1048_24_24_12.pdf}
 \caption{Strain energy, potential energy and kinetic energy for the whole 0.048 strain simulation. The values are rebased at $t=\SI{100}{\pico\second}$ where straining starts. The kinetic energy corresponds to the temperature, and we see that the temperature slightly drops while the strain increases, and increases during crack propagation. The strain energy imposed on the system is just slightly higher than the energy difference between the unstrained system and the fractured system.}
+\label{fig:energy_1048}
 \end{figure}
-
 
 
 \begin{figure}
@@ -236,26 +258,31 @@ Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stre
 \end{figure}
 
 
-
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/stressfield_snap_propagation_180.pdf}
-\caption{Snapshot of stress field during crack propagation. Taken at $t = \SI{180}{\pico\second}$.}
+\caption{Snapshot of stress field during crack propagation. Average over \SI{0.3}{\pico\second} before $t = \SI{180}{\pico\second}$.}
+\label{fig:stressfield_snap_propagation_180}
 \end{figure}
 
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/stressfield_timelapse.pdf}
 \caption{Timelapse of the stress $\sigma_{xx}$ during crack propagation. There are clear signs of sound waves, and the shape of the waves indicate that the crack is traveling at a speen on the same order of magnitude as the shear wave speed. The color scale is kept equal among the simulations for easier comparison. For that reason, the stress near the crack tip is higher that what is available on the color scale.}
+\label{fig:stressfield_timelapse}
 \end{figure}
 
 \begin{figure}
 \centering
 \includegraphics[width=10cm]{../figures/thesis/crack_area_evolution_1048.pdf}
-\caption{Crack surface area evolution in time. The upper panel shows the measured area, and the lower panel is an estimate of the crack tip speed. The derivative for the lower panel is calculated using a standard 5-point stencil for the first derivative. The crack surface area was measured useing the Monte Carlo procedure described in section @ref with $N_s = 10^6$, $r_p = \SI{4.0}{\angstrom}$ and $\Delta l = \SI{1.0}{\angstrom}$. }
+\caption{Crack surface area evolution in time. The upper panel shows the measured area, and the lower panel is an estimate of the crack tip speed. The derivative for the lower panel is calculated using a standard 5-point stencil for the first derivative. The crack surface area was measured useing the Monte Carlo procedure described in section @ref with $N_s = 10^6$, $r_p = \SI{4.0}{\angstrom}$ and $\Delta l = \SI{1.0}{\angstrom}$. Note the little bump in the crack speed around \SI{180}{\pico\second}.}
+\label{fig:crack_area_evolution_1048}
 \end{figure}
 
-\section{A simple characterization of the crack surface: The amount of methane released.}
-It might sound farfetched, but I believe that the amount of methane released can be a valuable measure of how the crack surface looks. That is because water molecules either stay on the crack surface, or are immidiately drawn towards the crack surface in a matter of picoseconds. Methane, on the other hand, is free to move in the pore space created by the crack. A first order approach to characterize the crack surface, is therefore to look at how much of the hydrate was dissociated during fracture. A way to estimate this, is to say that the number of cages that are dissociated is the same as the number of free methane molecules in the system.  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{A simple characterization of the fracture: The amount of free methane.}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+I believe that the amount of free methane can be a valuable measure of how the crack surface looks because free methane no longer support a cage structure. Water molecules either stay on the crack surface, or are immidiately drawn towards the crack surface in a matter of picoseconds during crack propagation. Methane, on the other hand, is free to move in the pore space created by the crack. A first order approach to crack surface characterization is therefore to count free methane in the pore space and use that to estimate the amount of hydrate that was dissociated during fracture. The simplest estimate is obtained by using the hydrate number $n_w$ (5.75 for fully occupied sI hydrate) to count the amount of water molecules that are no longer part of the stable hydrate structure. 
 
 \subsection{Estimate by mean squared displacement}
 One way of estimating the amount of methane released, is to realize that the motion of the free methane is diffusive. Therefore, the mean square displacement of the methane can be compared to what it would have been if all methane molecules were free to move.
@@ -274,7 +301,30 @@ Since the methane gas is purely a Lennard-Jones fluid, literature results for th
 \end{itemize}
 
 \subsection{Estimate by counting}
-A more straightforward approach, which is more computationally demanding, is to go through all methane positions, and check wheter they are part of the wall or the void, like what was done when tracking cracks. A particle is considered free if it was part of the void at any time during the simulation. The reason for the ``at any time during the simulation'' is that measuring frame by frame largely underestimates the number of free methanes. Methanes that are free arent necessarily far enough from the closest water molecule to be considered void, but they \emph{are} free to move. To check the that the free methanes are indeed free, the positions of the methanes that were defined as void can be drawn at a point in time after the crack has propagated. @AddFigure
+\label{sec:freemethane_counting}
+A more straightforward approach, which is more computationally demanding, is to go through all methane positions, and check wheter they are part of the wall or the void, like what was done when tracking cracks. A particle is considered free if it was part of the void at any time during the simulation. The reason for the ``at any time during the simulation'' is that measuring frame by frame largely underestimates the number of free methanes. Methanes that are free arent necessarily far enough from the closest water molecule to be considered void, but they \emph{are} free to move. To check the that the free methanes are indeed free, the positions of the methanes that were defined as void can be visualized at a point in time after the crack has propagated. Since free methane is accumulated in the measurement, a slightly higher $r_p$ is needed than for crack tracing -- near the lower reasonable limit for $r_p$, some improbable (but they will occur in large simulations) wall configurations will result in wall methane beeing counted as free. Figure \ref{fig:free_methane} is a snapshot of the system with the free methanes highlighted. Some of the methane molecules that are considered free actually reside in small cages near the fracture surface, and it is not obvious wherer they should be considered free or not. I tend toward considering the free, since they have proven that they are in cages that are not sufficiently intact to keep the methane molecules over time. Most of the free methane molecules are clearly free, so this sould not be a big issue -- but it can be interesting to study for instance the rate at which methane is captured and released by the near-crack-surface cages.
+
+\begin{figure}
+\includegraphics[width=\textwidth]{../pictures/free_methane.pdf}
+\caption{Free methane -- particles that were more than $r_p = \SI{4.5}{\angstrom}$ away from any water molecule at some point -- are drawn as big green spheres. Other methane molecules are barely visible particles. Note that some ``free'' methane molecules actually occupy cages. Most of them are in the small nearest to the crack, but a few also occupy big cages, that are a bit farther from the crack surface. }
+\label{fig:free_methane}
+\end{figure}
+
+\paragraph{Problems with this method}
+\begin{itemize}
+\item Some methanes jump in and out of clathrate cages. 
+\item Instant number of free methanes is not available.
+\end{itemize}
 
 \subsection{Diffusion revisited}
 Measuring the number of free methanes using the mean squared displacement turned out to be difficult, but now that the number of free methanes is measured, the diffusion inside the crack can be characterized.
+
+\section{Some effects of the system size}
+
+\section{Aggregated results}
+
+\subsection{Waiting time for fracture}
+
+\subsection{Crack tip speed}
+
+\subsection{Free methane}
