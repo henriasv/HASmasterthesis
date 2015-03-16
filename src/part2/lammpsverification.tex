@@ -84,13 +84,9 @@ Nucleation of methane hydrates in a solution of water and methane is a rare even
 
 \section{Numerical efficiency}
 
-\section{A selection of problems I have experienced in LAMMPS}
+\section{A subtle bug that took a lot of time to figure out -- Atoms out of range during P$^3$M calculation}
 
-Since dealing with technical problems is a huge part of computational physics, I thick it is necessary with a section describing some of the problems I have experienced.
-
-\subsection{Atoms out of range - USER-OMP}
-The most painful error that I experienced after getting rid of the beginnes mistakes, was the following:
-
+Since dealing with technical problems is a huge part of computational physics, I feel it necessary to describe some of the problems I have experienced. The most painful error that I experienced after getting rid of the beginners mistakes, was the following:
 
 \begin{verbatim}
 ERROR: Out of range atoms - cannot compute PPPM (../pppm_tip4p_omp.cpp:385)
@@ -106,8 +102,17 @@ neigh_modify delay 0 every 1 check yes
 
 However, this did not help me when i got the message. The next thing I tried was to half the timestep, which did not work either.
 
-The next approach is to try to increase the dampting time of the thermostat, as thermostats with a low characteristic time are known to cause trouble. But this did not help eiter. Then I realized that I did not experience this problem when I did not change from NPT to NVT during the simulation. Something ugly may happen when this is done.
+The next approach is to try to increase the damping time of the thermostat, as thermostats with a low characteristic time are known to cause trouble. But this did not help eiter. Then I realized that I did not experience this problem when I did not change from NPT to NVT during the simulation. Something ugly may happen when this is done.
 
 To avoid doing NPT and NVT in the same simulation, I can start by creating an equilibrated system containing a crack, and use the simulation box size and particle positions from that simulation as input in my crack simulations. This of course also introduces the advantage of not having to equilibrate the system for every simulation. However, it also introduces the disadvantage of needing a separate file for each initial crack size.
 
 It turned out that the problem was related to the OpenMP package bundled with LAMMPS. Some bug is introduced when using NPT and the OpenMP package. The OpenMP package did not give vital efficiency imporvements, so I choose not to use the OpenMP package rather than resolving the error.
+
+There are signatures of this error in the total energy curve of the system. Figure \ref{fig:toteng_omp_bug} shows the total energy of an sI system while waiting for a crack to propagate. The simulation failed with the error message described above. As indicated in the figure, small discontinuities can be spotted in the total energy curve. For this particular simulation, there was also a large spike close to the end of the simulation. 
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{../figures/thesis/toteng_omp_bug.pdf}
+\caption{Little spikes (indicated with arrows) in the total energy curve hint that someting is wrong with the simulation. These spikes disappeared when I stopped using the USER-OMP package.}
+\label{fig:toteng_omp_bug}
+\end{figure}

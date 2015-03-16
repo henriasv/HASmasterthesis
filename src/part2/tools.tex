@@ -1,30 +1,35 @@
 \chapter{Simulation and analysis tools}
 \label{ch:tools}
-The molecular dynamics workflow can be usefully divided as follows: 
+The molecular dynamics workflow can be usefully divided into the following steps: 
 \begin{enumerate}
-\item Create initial condition
-\item Run molecular dynamics
-\item Analyze results
+\item Create initial condition -- set initial positions and velocitief for all particles and define bonding interactions.
+\item Run molecular dynamics with a set of parameters.
+\item Post-process.
+\item Analyze results.
 \end{enumerate}
-Usually, step 3 will give experince that influence how steps 1 and 2 are done during the next iteration. It is important to have tools in place to accomodate this workflow. Most importantly, the tools have to be directly compatible when iterating $1 \to 2\to 3$. Otherwise, it is impossible to work efficiently. Second, it is convenient with compatibility $2\to 1$ if a simulation needs to be run furter in time. Third, it is convenient with compatibility $3 \to 1$, but the nature of such a compatibility is not as clear as the others. 
+Usually, step 3 will give experince that influence how steps 1 and 2 are done during the next iteration. It is important to have tools in place to accomodate this workflow. Most importantly, the tools have to be directly compatible when iterating $1 \to 2\to 3\to 4$. Otherwise, it is impossible to work efficiently. Second, it is convenient with compatibility $2\to 1$ if a simulation needs to be run furter in time. Third, it is convenient with compatibility $4 \to 1$ and $4 \to 2$, but the nature of such a compatibility is not as clear as the others, and is probably a matter of insight of the user rather than a technical compatibility.
 
+The most fundamental choice concerning tools is whether to program the molecular dynamics simulator myself or to use a program made by someone else. I have implemented my own simple molecular dynamics program before, and that experience tells me to use a package. It is quite easy to implement a simple molecular dynamics solver for Lennard-Jones particles in NVE and Berendsen NVT, but more complex potentials and barostatic ensembles are more challenging to implement and test. I used the Wikipedia overview of molecular dynamics simulators as a first guidefor choosing a simulator, and then moved on to scanning scientific papers on topics adjacent to my project. From that, I considered that either LAMMPS or GROMACS would be the best choice of simulator. After a brief look on the documentations of the two packages, I chose LAMMPS, due to its user-friendlyness. Another advantage of LAMMPS is that it is easy to extend with own code if the package itself doesn't contain sufficient functionality. That means LAMMPS covers step 2 of the workflow. 
 
+Step 1 can also be partially covered by LAMMPS. First, LAMMPS have several built-in features to create initial conditions. Secondly, it is possible to code extensions to LAMMPS to create and modify initial conditions. I have also used a tool called Moltemplate to create LAMMPS-compatible data files describing a methane hydrate.
 
-First choice is wheter to program the molecular dynamics simulator myself or to use a program made by someone else. I have implemented my own molecular dynamisc program before, and the experience from that tells me to use a package. It is quite easy to implement a simple molecular dynamics solver for Lennard-Jones particles in NVE and Berendsen NVT, but more complex potentials and barostatic ensembles are more challenging to implement and test. 
+I found it useful to distinguish between step 3 and step 4 even though the difference is not too obvious. One way of explicitly separating them is by the tools used in each process. Post-processing is done by another tool than the tool that presents the data for analysis. 
+
+The difference between steps 3 and 4 is not as clear as the difference between the other steps. I define it the following way. Post-processing is the processing of data prior to visualization. Analysis is the act of visualizing data that is already processed, and using that data to draw conclusions from the simulations. 
+
+In the following sections of this chapter, I give an introduction to LAMMPS that contains the features that will be used later on, and then describe post-processing tools that I have developed. 
 
 \section{LAMMPS}
 Lammps, Large-scale Atomic/Molecular Massively Parallel Simulator, is a tool for (possibly) large particle-style simulations - mainly molecular dynamics. Lammps is a massive open source project, and its main features are developed and maintained at Sandia National Laboratories in the United States. 
-
-From here follows a short introduction to practical use of Lammps. This section was written as memory notes to myself during the first month of using Lammps. 
 
 \subsection{Input files}
 Lammps input files are a set of commands to be executed. Some commands are only valid in the right order. The structure of such a file is:
 
 \begin{enumerate}
-\item \tb{Initialization:} Units, processors, boundary conditions, atom\_style, pair\_style
-\item \tb{Atom definition:} Either from input file (restart/data) or making a lattice or region and create a box and atoms. 
-\item \tb{Settings:} Typically thermostat and file dump information.
-\item \tb{Run:} Choose number of timesteps.
+\item \tb{Initialization:} Define the units (eg SI or {\tt real}) of the simulation. Describe the simulation box. Define the interactions that will go into the simulation. 
+\item \tb{Atom definition:} Set the initial positions (and optionally velocities) of the particles in the simulation. This can be done either from aninput file or by generating positions according to some supported algorithm. The box boundaries are set in this section.
+\item \tb{Settings:} Define the parameters of the particle interactions. Create output objects for thermodynamic data and particle trajectories etc. Optionally create particle velocities. Create the integrator (which can contain a thermostat).
+\item \tb{Run:} Run the simulation.
 \end{enumerate}
 \paragraph{Example file}
 
@@ -66,15 +71,16 @@ fix fxnpt all npt temp 300.0 300.0 100.0 x 400.0 400.0 100.0
 run   5000
 \end{lstlisting}
 
-Most properties are already set with a standard value, which means that only non-standard properties has to be set. 
+Many properties already have a default value, and only values that have the wrong default-value or are not set need to de defined.
 
 \paragraph{atom\_style}
-Atom style limits what kinds of interactions are possible to implement. For full flexibility, it is possible to set it to all.
+Atom style limits what kinds of interactions are possible to use for a simulation using the particular input file. Full flexibility is obtaied with {\tt atom\_style full}.
 
 \paragraph{pair\_style}
-Pair style is the kind of interaction that are applied to all possible pairs of atoms. In practice, pair\_style sets all interations that are not part of specific bonded or angle interactions. 
+Pair style interactions in LAMMPS are interactions using non-bonding potentials, as described in \ref{sec:non_bonding_potentials}. Many types of {\tt pair\_style} potentials are available, and they can also be combined -- but with caution -- using the concept of hybrid pair styles.
 
 \paragraph{bond\_style}
+This is 
 
 \paragraph{angle\_style}
 

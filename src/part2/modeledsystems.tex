@@ -206,7 +206,7 @@ In this subsection, I use the analysis tools that were presented in the tools se
 \end{figure}
 
 \begin{framed} 
-\textbf{Simulation details:} A system consisting of $24 \times 24\times 12$ S1 unit cells was prepared. First, an elliptical hole in the xy-plane spanning the whole z-direction was carved out as described in section \ref{subsec:reg_eprism}. The system was then allowed to equilibrate with an anisotropic NPT thermo-barostat for \SI{100}{\pico\second}, with ambient barostat pressure (\SI{101325}{\pascal}). The system was then integrated NVT, but subjected to a constant strain rate taking it to a strain level of 0.048 after \SI{50}{\pico\second}. Then straining stopped, and the system was left NVT for \SI{350}{\pico\second}. The damping time of the thermostat and barostat during the whole simulations was $t_{damp} = \SI{1}{\ps}$. The thermostat temperature was \SI{260}{\kelvin}.
+\textbf{Simulation details:} A system consisting of $24 \times 24\times 12$ S1 unit cells was prepared. First, an elliptical hole in the xy-plane spanning the whole z-direction was carved out as described in section \ref{subsec:reg_eprism}. The system was then allowed to equilibrate with an anisotropic NPT thermo-barostat for \SI{100}{\pico\second}, with ambient barostat pressure (\SI{101325}{\pascal}). The system was then integrated NVT, but subjected to a constant strain rate taking it to a strain level of 0.048 after \SI{50}{\pico\second}. Then straining stopped, and the system was left NVT for \SI{350}{\pico\second}. The damping time of the thermostat and barostat during the whole simulations was $t_{damp} = \SI{1}{\ps}$. Additionally, a drag coefficient of $1.0$ (as described in the LAMMPS documentation) was added, as this is recommended to damp oscillations in solids. The thermostat temperature was \SI{260}{\kelvin}.
 \end{framed}
 
 For illustrative purposes, figure \ref{fig:system_1048} shows what the system looks like in perspective. The other pictures are rendered with an orthographic projection, so the system will look two-dimensional. 
@@ -320,10 +320,17 @@ A more straightforward approach, which is more computationally demanding, is to 
 \subsection{Diffusion revisited}
 Measuring the number of free methanes using the mean squared displacement turned out to be difficult, but now that the number of free methanes is measured, the diffusion inside the crack can be characterized.
 
-\section{Some effects of the system size}
-The study of finite size effects is not given much attention in this work, but since I have performed simulations on two system sizes, where the difference is the z-direction thichness, I can report some observations of differences between the two system sizes.
+\section{Effects of the system thickness}
+The study of finite size effects has not yet gotten much attention in this work, but from visual inspection of simulations with different thicknesses $L_z$, it is clear that there are finite thickness effects. Until now, two system sizes has been studied: A thickness of one sI unit cell and a thickness of 12 sI unit cells. 
 
 Most notably, the crack propagation in the big system is more predictable than that in the small system. Particularly, the crack tip in the small simulations can change direction for a short time, and then continue propagating in the y-direction but in another column of unit cells than it did before. Similar behavior has not been observed this in the large system.
+
+
+
+\begin{figure}
+\includegraphics[width=\textwidth]{../pictures/slim_system.pdf}
+\caption{Fracture of a system of $24 \times 24 \times 1$ sI unit cells. The fracture pattern is more complex than that of the thicker system: The upper crack changes from propagating between columns of unit cells to propagating in the middle of a column of unit cells, breaking big cages instead of small ones.}
+\end{figure}
 
 \section{Aggregated results}
 

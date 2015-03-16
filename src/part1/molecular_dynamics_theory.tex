@@ -27,6 +27,7 @@ In molecular dynamics, it is natural to define two types of interactions -- and 
 These definitions should not be confused with the distiction between covalent and non-covalent bonds i chemistry, even though it is common that bonding interactions in molecular dynamics represent covalent bonds.
 
 \subsection{Non-bonding potentials}
+\label{sec:non_bonding_potentials}
 I will use two non-bonding potentials in this thesis: Lennard-Jones and Coulomb.
 A simple and widely used potential is the Lennard-Jones potential. For two particles separated by a distance $r$, the Lennard-Jones potential is:
 \begin{equation}
@@ -167,15 +168,26 @@ This is known as the Nosé-Hoover thermostat \cite{PhysRevA.31.1695}. It is comm
 Three types of temperature have now been introduced: Thermodynamic temperature $T$, instant temperature $\mathcal{T}$, and heat bath temperature $T_{bath}$. From here on, I will use the symbol $T$ for all of them, unless two different temperatures appear in the same equation. It should always be clear from the context what $T$ means. For example: A temperature referred from an experiment will always be a temperature measurement, which tries to measure $T$, while a temperature specified for a thermostatted molecular dynamics simulation will be $T_{bath}$.
 
 \section{Pressure and stress tensor}
-The pressure in a general classical N-body system can be expressed based on the virial equation for the pressure.
+The pressure in a general classical N-body system interacting with classical potentials can be expressed based on the virial equation for the pressure:
 
-A precise formulation of the stress tensor is given in \cite{Thompson2009}.
-The virial of a system consiting of N interacting particles is defined as:
+\begin{equation}
+	P = \frac{Nk_BT}{V} + \frac{\langle W \rangle}{3V}
+\end{equation}
+Where $\langle W \rangle$ is an ensemble average of the virial:
 \begin{equation}
 	W(\rvec^N) \equiv -3V\frac{\dd U(\rvec^N)}{\dd V}
 \end{equation}
-Where $U$ is the potential energy of the system, which in molecular dynamics is only a function of the postitions of the particles and their interaction potentials.
-@mentionDragCoefficient
+$U$ is the potential energy of the system, which is only a function of the postitions of the particles and the interaction potentials acting between them. 
+
+The virial is usually just derived for pair interactions, ignoring many-body interactions. But \citet{Thompson2009} shows that the virial of a system with many-body interactions is not very different from that of the pair interactions, as long as the many-body interacting particles can be divided into groups of many-body interacting particles. The virial is then:
+@insertequation
+
+The stress tensor is defined in a similar way to the pressure:
+\begin{equation}
+	\mb{P} V = \langle \sum_{i=1}^N m_i \mb{v}_i \otimes \mb{v}_i \ + \mb{W}(\rvec^N)\rangle
+\end{equation}
+
+@insertFromThompson
 
 \section{Cutoffs and Long range corrections}
 Large-scale molecular dynamics simulations ($N \sim 10^6$) are unattainable if interactions between all particles are to be calculated. Molecular dynamics simulations with only pairwise interactions require $\mathcal{O}(N^2)$ calculations to be performed. To reduce the computational complexity, a cutoff radius $r_{cut}$ is introduced: Only interactions between particles that are closer to each other than the cutoff radius can interact. Introducing a cutoff radius reduces the time complexity of an MD simulation from $\mathcal{O}(N^2)$ to $\mathcal{O}(N)$. 
@@ -227,6 +239,8 @@ For the purpose of estimating viscosities, the autocorrelation function is only 
 
 
 Following \cite{Yeh2004}, it would also be possible to calculate the viscosity using the finite size effect on the thermal diffusivity.
+
+\subsection{The pair-pair correlation function}
 
 
 
