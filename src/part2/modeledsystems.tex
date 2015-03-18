@@ -1,6 +1,7 @@
 % file: modeledsystems.tex
 
 \chapter{Modeled systems}
+\label{ch:modeledsystems}
 The goal of this thesis is to study fracture of methane hydrates. In order to do that, I need to know the mechanical properties of the model I study. Since studies of mechanical properties of methane hydrates modeled with TIP4P/ICE+UAM are scarce, I start this chapter by working out even the basic properties of the model, such as Poissons ratio and Youngs modulus. In order to be sure that the methods I use to estimate the mechanical properties work, I first check them with known values for a Lennard-Jones crystal. 
 
 \section{Shear viscosity and diffusivity of the water model}
@@ -320,11 +321,15 @@ A more straightforward approach, which is more computationally demanding, is to 
 \subsection{Diffusion revisited}
 Measuring the number of free methanes using the mean squared displacement turned out to be difficult, but now that the number of free methanes is measured, the diffusion inside the crack can be characterized.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Increasing the temperature}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+All simulations until now have been run at $T=\SI{260}{\kelvin}$. This is a relatively low temperature, and specificly, it is lower than the melting point of water for the TIP4P/ICE water model. I start by running a few simulations in the large system, $24\times 24\times 12$ sI unit cells, and report results. From then I will decide on wheter to furter investigate temperature changes.
+
 \section{Effects of the system thickness}
 The study of finite size effects has not yet gotten much attention in this work, but from visual inspection of simulations with different thicknesses $L_z$, it is clear that there are finite thickness effects. Until now, two system sizes has been studied: A thickness of one sI unit cell and a thickness of 12 sI unit cells. 
 
 Most notably, the crack propagation in the big system is more predictable than that in the small system. Particularly, the crack tip in the small simulations can change direction for a short time, and then continue propagating in the y-direction but in another column of unit cells than it did before. Similar behavior has not been observed this in the large system.
-
 
 
 \begin{figure}
@@ -332,10 +337,15 @@ Most notably, the crack propagation in the big system is more predictable than t
 \caption{Fracture of a system of $24 \times 24 \times 1$ sI unit cells. The fracture pattern is more complex than that of the thicker system: The upper crack changes from propagating between columns of unit cells to propagating in the middle of a column of unit cells, breaking big cages instead of small ones.}
 \end{figure}
 
+To systematically study this effect, I compare the crack surface area in simulations with systems of different thicknesses, but with the same strain rate. A chaotic crack should leave a larger crack surface area than a straight one.
+
 \section{Aggregated results}
 
 \subsection{Waiting time for fracture}
+In the simulations with $T=\SI{260}{\kelvin}$, the waiting time was whort for the highly strained samples, and the samples subjected to too little strain didn't fracture. Between these extremes, there was no general rule that higher strains gave shorter waiting times. The simulations with $T=\SI{280}{\kelvin}$, on the other hand, showed more systematic behavior, and generally shorter waiting times. It is possible that the variation in waiting time is smaller when temperature increases, and especially when exceeding the melting temperature of pure water in the given model.
 
 \subsection{Crack tip speed}
+There is a significant relationship between the crack tip speed and the strain before fracture. 
 
 \subsection{Free methane}
+Methane is freed almost instantly during crack propagation, which is opposed to the possibility of a very sharp crack where methane would have to diffuse out of their cages after crack propagation. It is also worth noting that the proportion of methane that is freed during rapid surface area growth is of the same order as the proportion of surface area that is grown during rapid area growth.

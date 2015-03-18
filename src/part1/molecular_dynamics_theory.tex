@@ -179,15 +179,20 @@ Where $\langle W \rangle$ is an ensemble average of the virial:
 \end{equation}
 $U$ is the potential energy of the system, which is only a function of the postitions of the particles and the interaction potentials acting between them. 
 
-The virial is usually just derived for pair interactions, ignoring many-body interactions. But \citet{Thompson2009} shows that the virial of a system with many-body interactions is not very different from that of the pair interactions, as long as the many-body interacting particles can be divided into groups of many-body interacting particles. The virial is then:
-@insertequation
+The virial is usually just derived for pair interactions, ignoring many-body interactions. But \citet{Thompson2009} shows that the virial of a system with many-body interactions is not very different from that of the pair interactions, as long as the many-body interacting particles can be divided into groups. The virial of the local cell is then:
+\begin{equation}
+	W(\rvec^N) = \sum_{k\in\mb{0}}\sum_{w=1}^{N_k} \rvec^k_w \cdot \mb{F}^k_w
+\end{equation}
+Here $k$ denotes groups, and $w$ particles in that group, so $\rvec^k_w$ is the $w$th particle in the $k$th group. $\sum_{k \in \mb{0}}$ is the sum over local-cell groups of the periodic system. There is a main particle in each group that is always defined to be in the local cell. If other particles in that group are contained in another periodic image than the main particle, their contribution to the virial should be taken with the positions those particles would have had if their positions had not been remapped when crossing the periodic boundary.
 
 The stress tensor is defined in a similar way to the pressure:
 \begin{equation}
 	\mb{P} V = \langle \sum_{i=1}^N m_i \mb{v}_i \otimes \mb{v}_i \ + \mb{W}(\rvec^N)\rangle
 \end{equation}
-
-@insertFromThompson
+The virial tensor, again found in \citet{Thompson2009} is:
+\begin{equation}
+	\mb{W}(\rvec^N) = \sum_{k \in \mb{0}} \sum_{w=1}^{N_k} \rvec_w^k \otimes \mb{F}^k_w
+\end{equation}
 
 \section{Cutoffs and Long range corrections}
 Large-scale molecular dynamics simulations ($N \sim 10^6$) are unattainable if interactions between all particles are to be calculated. Molecular dynamics simulations with only pairwise interactions require $\mathcal{O}(N^2)$ calculations to be performed. To reduce the computational complexity, a cutoff radius $r_{cut}$ is introduced: Only interactions between particles that are closer to each other than the cutoff radius can interact. Introducing a cutoff radius reduces the time complexity of an MD simulation from $\mathcal{O}(N^2)$ to $\mathcal{O}(N)$. 
@@ -240,9 +245,14 @@ For the purpose of estimating viscosities, the autocorrelation function is only 
 
 Following \cite{Yeh2004}, it would also be possible to calculate the viscosity using the finite size effect on the thermal diffusivity.
 
-\subsection{The pair-pair correlation function}
+\subsection{Radial distribution function}
+The radial distribution function (RDF), $g(r)$, describes how the density of particles vary with the distance between particles. It can be defined as:
 
+\begin{equation}
+	g(r) = 4\pi r^2 \rho(r) \ \dd r
+\end{equation}
 
+Where $r$ is taken from a selected particle, and $\rho(r)$ is the number density of particles within the sherical shell $(r, r+\dd r)$. In practice, the RDF is sampled using all particles as the origin in order to collect as much statistics as possible. The RDF is useful to identify crystal structures and for verification of simulations. 
 
 
 \begin{comment}
