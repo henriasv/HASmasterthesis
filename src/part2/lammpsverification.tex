@@ -86,7 +86,7 @@ Nucleation of methane hydrates in a solution of water and methane is a rare even
 \end{comment}
 
 \section{Numerical efficiency}
-Increasing the number of processor cores running a simulation almost always mean each cpu will work less effectively on the numerical task. But the wall time goes down, which means human waiting time goes down. Human waiting time is not critical in this project, since the results won't be applied immidiately. Therefore, a reasonable balance between computational efficiency and human waiting time should be found. Figure \ref{fig:lammps_efficiency} shows the numerical efficiency of simulating a large system on up to 300 cpu cores.
+Increasing the number of processor cores running a simulation almost always mean each cpu will work less effectively on the numerical task. But the wall time goes down, which means human waiting time goes down. The total price of a cpu-hour these days, is around \$ 0.10, which means they have to be carefully spent. Sinc human waiting time is not very critical in this project -- the results won't be applied immidiately like in weather forecasting -- I need to find a reasonable balance between computational efficiency and human waiting time. Figure \ref{fig:lammps_efficiency} shows the numerical efficiency of simulating a large system on up to 300 cpu cores.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/lammps_efficiency.pdf}

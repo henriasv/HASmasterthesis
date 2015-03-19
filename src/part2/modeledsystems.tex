@@ -80,7 +80,7 @@ Figure \ref{fig:strain_strain_11_11_11_y_z_poisson_tip4p_ice_uam} shows the rela
 
 
 
-\subsection{Simulation details}
+\subsection{Simulation protocol}
 @VerifyThatThisIsADescriptionOfHantal2014
 It is not at all obvious how to perform simulations to determine the fracture toughness. \citet{Hantal2014} performed NVT simulations and imposed a series of small deformations to their sample. After each deformation, they minimized the system, and then ran molecular dynamics for \SI{10}{\pico\second}. I have tried to use the same protocol, but find that for my system, the impact on the energy distribution among the degrees of freedom is too large when performing minimizations between the deformations. this results in a system farther out of equlilibrium that the deformed but not minimized system. Therefore, a possible protocol:
 
@@ -101,25 +101,26 @@ A simpler protocol -- and I believe this to be a good way to study this particul
 
 
 \subsection{Proof-of-concept simulations}
-Before performing serious simulations, I do preliminary simulations to find out whether the protocol proposed in the latter section can produce interesting results. I do simulations on a relatively small and quasi 2-dimensional system -- the system is only one unit cell thick -- to keep computational costs down. The total computational cost for tuning in on parameters and getting rid of bugs and blunders was about $10^4$ cpu hours.
+Before performing serious simulations, I do preliminary simulations to find out whether the protocol proposed in the latter section can produce interesting results. I do simulations on a relatively small and quasi two-dimensional system -- the system is only one unit cell thick -- to keep computational costs down. The total computational cost for tuning in on parameters and getting rid of bugs and blunders has been about $10^4$ cpu hours.
 
-Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain for four simulations where S1 methane hydrates of 24x24x1 unit cells were gradually subjected to a strain of between 0.045 and 0.1 (see figure caption for simulation details). Then, the system was left on its own. For three of the systems, a crack started propagating, for two of them after the strain rate was set to zero. 
+Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain for four simulations where S1 methane hydrates of 24x24x1 unit cells were gradually subjected to a strain of between 0.045 and 0.1 (see figure caption for simulation details). Then, the system was left on its own. In three of the systems, a crack spanned the yz-plane after the simulation was finished. The two others had seen no visible crack growth.
 
+\begin{framed}
 \paragraph{Visual experience of the crack propagation}
 First, the system slightly contracts (NPT allows volume change). The system comes to rest, and some methane molecules diffuse out of near-wall cages to the hole that was carved out during initiation. After \SI{100}{\pico\second} straining starts. The system expands along the x-axis at a constant rate during \SI{50}{\pico\second},which corresponds to a very high strain rate if though of in macroscopic terms. More methane fills the crack, as its volume increases when the crack gets wider -- but the crack length remains the same during expansion. The system has now reached is the desired strain. Methane molecules bounce back and fourth inside the crack, and the crack edges seem jittery. Suddenly, a hydrogen bond near a crack tip breaks -- flucuations from methane molecules and lattice vibrations have made the system unstable. When the first bond breaks, the next bond along the crack axis can't hold it. Bonds near the other crack edge breaks. Then bonds break one after the other on both edges of the crack -- the crack propagates. In a matter of tens of picoseconds, both crack edges reach the periodic boundary. During crack propagation, clathrate cages are ripped apart. Water molecules remain stuck to the wall, while methane is released, and fills the void between the two pieces of methane hydrate (well, actually, because of the periodic boundary, there is still only \emph{one} piece of methane hydrate). The crack is not traveling straight in one direction: It first starts traveling between columns of sI cells before it turns and continues to propagate in the middle of hydrate cells, ripping apart big cages. Just after the crack has propagated, the methane hydrate oscillates with a spatial amplitude of the same order as the void width. During the following hundreds of picoseconds, the oscillations damp out -- the system is approaching a new equilibrium.
+\end{framed}
 
 From the visuals, I move on to preliminary calculations of the surface energy and the critial energy release rate. The surface energy can be estimated as the change in potential energy from the equilibrated system before straining to the system of methane hydrate and free methane after crack propagation. The energy release rate can be estimated as the change in potential energy during crack propagation. If $\Delta U_c$ is the change in potential energy during crack propagation, and $\Delta U_s$ is the change in potential energy from befor straining to after crack propagation, then the formulas for $G_c$ and $\gamma_s$ read:
 
 \begin{equation}
-	G_c \approx \frac{\Delta U}{L_yL_z}
+	\mathcal{G}_c \approx \frac{\Delta U}{L_yL_z}
 \end{equation}
 
 \begin{equation}
 	\gamma_s \approx \frac{\Delta U}{2 L_y L_z}
 \end{equation}
 
-Where the $\frac{1}{2}$ factor is because the crack opens two surfaces. The thermalization for all four of the simulations are equal, with an average potential energy of $\SI{-2.8112}{\femto\joule}$ on the plateau (40--100 \si{\pico\second}). The average potential energy after crack propagation was $\SI{-2.7970}{\femto\joule}$, with almost no variation among the simulations. This yields an energy difference of \SI{1.42d-17}{\joule}. Using the simulation box side face area (measured values: $L_y = \SI{288.8}{\angstrom}$, $L_z = \SI{12.04}{\angstrom}$) as an estimate of the crack size, I get an estimated surface energy of $\gamma_s = \SI{0.204}{\joule\per\meter\squared}.$
-@FindFractureToughnessFromGammaAndFromMaxEnergy
+Where the $\frac{1}{2}$ factor is because the crack opens two surfaces. The thermalization for all four of the simulations are equal, with an average potential energy of $\SI{-2.8112}{\femto\joule}$ on the plateau (40--100 \si{\pico\second}). The average potential energy after crack propagation was $\SI{-2.7970}{\femto\joule}$, with almost no variation among the simulations. This yields an energy difference of \SI{1.42d-17}{\joule}. Using the simulation box side face area (measured values: $L_y = \SI{288.8}{\angstrom}$, $L_z = \SI{12.04}{\angstrom}$) as an estimate of the crack size, the estimated surface energy is $\gamma_s = \SI{0.204}{\joule\per\meter\squared}$. Since the energy level required to start a crack is not well defined from figure \ref{fig:proof_of_concept_crack}, the critical energy release rate estimate is coarser. Reading off a potential energy of around \SI{-2.765}{\femto\joule}, the estimated critical energy release rate is \SI{1.3}{\joule\per\meter\squared}. This corresponds to, using equation \ref{eq:energy_release_to_stress_intensity_isotropic} for the stress intensity in isotropic materials, a critical stress instensity factor of $K_{Ic} = 0.10 \text{ MPam}^{\frac{1}{2}}$ (Using $E=\SI{7.1}{\giga\pascal}$ and $\nu = 0.4$). Unfourtunately, we shall see that this method for finding the fracture toughness is wrong because of how the energy was measured. More about that later in the chapter. For reference, the fracture toughness of real freshwater ice is around $K_{Ic} = 0.10 \text{ MPam}^{\frac{1}{2}}$. 
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/proof_of_concept_poteng_strain.pdf}
@@ -128,7 +129,7 @@ Where the $\frac{1}{2}$ factor is because the crack opens two surfaces. The ther
 \end{figure}
 
 \paragraph{Detailed crack analysis}
-This is the point at which I developed my code to measure the crack area. Hopefully, that estimate will be better than the estimate solely based on the simulation box dimensions. The code also lets me follow the crack area in time, which makes it possible to measure the crack speed. I choose to define the crack speed as the change of crack area divided by the crack width, since the crack width is well defined – it is $L_z$ of the simulation box. Keeping in mind that my cracks travel in two directions, the crack velocity for a crack initiated as a hole parallell to the z-axis is:
+This is the point at which I developed my code to measure the crack area. Hopefully, that estimate will be better than the estimate solely based on the simulation box dimensions. The code also lets me follow the crack area in time, which makes it possible to measure the crack speed. I choose to define the crack speed as the change of crack area divided by the crack width, since the crack is well defined – it is $L_z$ of the simulation box. Keeping in mind that my cracks travel in two directions, the crack velocity for a crack initiated as a hole parallell to the z-axis is:
 
 \begin{equation}
 v_c = \frac{1}{2L_z}\frac{\dd A_c}{\dd t}
@@ -141,9 +142,11 @@ v_c = \frac{1}{2L_z}\frac{\dd A_c}{\dd t}
 \subsection{Arising questions}
 Several quiestion arise as a result of the proof-of-concept runs:
 \begin{itemize}
+\item Is the amount of methane that is freed during fracture propagation always the same?
 \item Is there a relationship between the waiting time from straining ends till rupture starts and the slope of the potential energy curve?
-\item Is the slowly decreasing potential energy of long waiting-time events important, and can it be realted to the waiting time?
+\item Is the slowly decreasing potential energy of long waiting-time events important, and can it be related to the waiting time?
 \item What is the fracture toughness for long (infinite) waiting times, and is it possible to measure? Will the system melt before it fractures?
+\item Is the methane in the initial crack important for fracture initiation?
 \end{itemize}
 
 There are also several technical problems that can be addressed:
@@ -152,6 +155,7 @@ There are also several technical problems that can be addressed:
 \item Is the strain rate important? Does the time it takes to strain the system compete with the waiting time until fracture?
 \end{itemize}
 
+Each of these questions will require substantial efforts to be answered, and I will only have time to address a few of them. In the sections to come, I focus on @insertHere. I will essentially ignore the technical issues for now. If I find something interesting, the tecknical issues will of course be part of the verification -- but I find it unjustifiable to spend time and cpu core hours on these issues before I have found anything interesting that needs thorough verification.
 
 \section{Energy considerations -- the thermodynamics of expanding the simulation box}
 The result that $\mathcal{G}_c > 2\gamma_s$ to the extent that was seen from the preliminary results is peculiar -- and actually wrong. In the last section, I only considered the potential energy to estimate the fracture toughness, since fracture mechanics dictates that the fracture toughness should be the amount of potential energy released per projected crack surface area opened. But really, it is the Helmholtz free energy release rate that should be used for fracture toughness calculations -- potential energy in fracture mechanics is not necessarily the same as in molecular dynamics. A more thorough analysis solves the problem of methane hydrates seeming very brittle while having $\mathcal{G}_c > 2\gamma_s$, and the conclusion, which we shall see, is that we actually have $\mathcal{G}_c \approx 2\gamma_s$.
@@ -204,7 +208,7 @@ For expansion of the simulation box along the x-axis, the strain integral (nomin
 
 \subsection{Complete analysis of a single simulation}
 \label{sec:complete_analysis_single_simulation}
-In this subsection, I use the analysis tools that were presented in the tools section to analyze \emph{one} simulation. The analyzes here will be representative of how data is obtained when showing up in later results where data from several simulations are used together to say something more general.
+In this subsection, I use the analysis tools that were presented in the tools section to analyze \emph{one} simulation. This simulation will be referred to as the \emph{full-analysis simulation}. The analyzes here will be representative of how data is obtained when showing up in later results where data from several simulations are used together to say something more general.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../pictures/system_1048.pdf}
@@ -213,7 +217,7 @@ In this subsection, I use the analysis tools that were presented in the tools se
 \end{figure}
 
 \begin{framed} 
-\textbf{Simulation details:} A system consisting of $24 \times 24\times 12$ S1 unit cells was prepared. First, an elliptical hole in the xy-plane spanning the whole z-direction was carved out as described in section \ref{subsec:reg_eprism}. The system was then allowed to equilibrate with an anisotropic NPT thermo-barostat for \SI{100}{\pico\second}, with ambient barostat pressure (\SI{101325}{\pascal}). The system was then integrated NVT, but subjected to a constant strain rate taking it to a strain level of 0.048 after \SI{50}{\pico\second}. Then straining stopped, and the system was left NVT for \SI{350}{\pico\second}. The damping time of the thermostat and barostat during the whole simulations was $t_{damp} = \SI{1}{\ps}$. Additionally, a drag coefficient of $1.0$ (as described in the LAMMPS documentation) was added, as this is recommended to damp oscillations in solids. The thermostat temperature was \SI{260}{\kelvin}.
+\textbf{Simulation details:} A system consisting of $24 \times 24\times 12$ S1 unit cells is prepared. First, an elliptical hole in the xy-plane spanning the whole z-direction is carved out as described in section \ref{subsec:reg_eprism}. The system is then allowed to equilibrate with an anisotropic NPT thermo-barostat for \SI{100}{\pico\second}, with ambient barostat pressure (\SI{101325}{\pascal}). The system is then integrated NVT, but subjected to a constant strain rate taking it to a strain level of $\epsilon_{xx} = 0.048$ after \SI{50}{\pico\second}. Then straining is stopped, and the system is left NVT for \SI{350}{\pico\second}. The damping time of the thermostat and barostat during the whole simulations is $t_{damp} = \SI{1}{\ps}$. Additionally, a drag coefficient of $1.0$ (as described in the LAMMPS documentation) is added, as this is recommended to damp oscillations in solids. The thermostat temperature is set to \SI{260}{\kelvin}.
 \end{framed}
 
 For illustrative purposes, figure \ref{fig:system_1048} shows what the system looks like in perspective. The other pictures are rendered with an orthographic projection, so the system will look two-dimensional. 
@@ -292,23 +296,8 @@ with $\sim \SI{10}{\angstrom}$. }
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{A simple characterization of the fracture: The amount of free methane.}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-I believe that the amount of free methane can be a valuable measure of how the crack surface looks because free methane no longer support a cage structure. Water molecules either stay on the crack surface, or are immidiately drawn towards the crack surface in a matter of picoseconds during crack propagation. Methane, on the other hand, is free to move in the pore space created by the crack. A first order approach to crack surface characterization is therefore to count free methane in the pore space and use that to estimate the amount of hydrate that was dissociated during fracture. The simplest estimate is obtained by using the hydrate number $n_w$ (5.75 for fully occupied sI hydrate) to count the amount of water molecules that are no longer part of the stable hydrate structure. 
+I believe that the amount of free methane can be a valuable measure of how the crack surface looks because free methane no longer support a cage structure. Water molecules either stay on the crack surface, or are immidiately drawn towards the crack surface in a matter of picoseconds after a crack has passed. Methane, on the other hand, is free to move in the pore space created by the crack. A first order approach to crack surface characterization is therefore to count free methane in the pore space and use that to estimate the amount of hydrate that was dissociated during fracture. The simplest estimate is obtained by using the hydrate number $n_w$ (5.75 for fully occupied sI hydrate) to count the amount of water molecules that are no longer part of the stable hydrate structure. 
 
-\subsection{Estimate by mean squared displacement}
-One way of estimating the amount of methane released, is to realize that the motion of the free methane is diffusive. Therefore, the mean square displacement of the methane can be compared to what it would have been if all methane molecules were free to move.
-
-Since the methane gas is purely a Lennard-Jones fluid, literature results for the diffusion coefficient should be readily available. It turns out that this approach is not straightforward. The ...
-
-\paragraph{Problems with this method:}
-\begin{itemize}
-\item Global oscillations of the system
-\item Finite size effects of the diffusivity
-\item Quasi-2D
-\item Will the method converge?
-\item Caculation of the pore volume.
-\item The density enters in the literature diffusion constant
-\item The conditions for thermal diffusion in the crack might not be present. 
-\end{itemize}
 
 \subsection{Estimate by counting}
 \label{sec:freemethane_counting}
@@ -326,8 +315,17 @@ A more straightforward approach, which is more computationally demanding, is to 
 \item Instant number of free methanes is not available.
 \end{itemize}
 
-\subsection{Diffusion revisited}
-Measuring the number of free methanes using the mean squared displacement turned out to be difficult, but now that the number of free methanes is measured, the diffusion inside the crack can be characterized.
+\subsection{Estimate by mean squared displacement}
+Before landing on counting the number of free methanes, I explored an indirect way of measuring the amount of free methane. The idea was to assume the motion of the free methane to be diffusive. The diffusion constant could then be measured and compare to what it would have been if all methane molecules were free to move. Unfourtunately, the diffusion constant varies too much with the density of the methane gas for this to be a viable method -- both the number of methane molecules and the volume of the pore space is unknown. Furtermore, diffusion is not expected to be the same in pores as in a bulk Lennard-Jones fluid (see eg. \citet[p. 18]{Pozhar:1668293}. Therefore, this method was discarded. An additional problem is the global oscillations after crack propagation, which might furter disturb the diffusion of particles. 
+
+But, even though measuring the number of free methanes by mean squared displacement turned out to be difficult, the diffusion constant of the free methane can still be interesting to measure. Knowing the number of free methane molecules, and assuming the rest of the methanes have exhausted their potential for contributiong to the mean squared displacement, the diffusion constant in the pore space can be measured. Figure \ref{fig:msq_methane_crack} shows the per-particle mean squared displacement of methane and water in the full-analysis simulation. The slope of the mean squared displacement is calculated to \SI{0.74}{\angstrom\squared\per\pico\second}, which corresponds to a diffusion coefficient of $D_E = \SI{1.2d-9}{\meter\squared\per\second}$. That value makes little sense, as it includes the enclathrated methane. When correcting for the fration of methane molecules that are considered free to move, in this simulation it is 2.4 \%, the diffusion coefficient of the free methane is $D_E = \SI{5.3d-8}{\meter\squared\per\second}$. This value is probably an underestimation of the diffusion coefficient for the particles that are actually diffsing, as many methanes are trapped by the wall. What can be said, however, is that this is a very high diffusion coefficient, which, given the temperature, corresponds to a low pressure. A possible simulation to compare with, is a simulation by \citet{Cao2004} of Lennard-Jones methane in carbon nanotubes. At a temperature of \SI{267}{\kelvin}, they found self-diffusion coefficients for methane of around \SI{1d-8}{\meter\squared\per\second} to \SI{10d-8}{\meter\squared\per\second} for pressures ranging from \SI{1}{\mega\pascal} to \SI{8}{\mega\pascal}. The simulations were done in carbon nanotubes with diameters from \SI{20}{\angstrom} to \SI{40}{\angstrom}. This comparison is farfetched, but it is reassuring that the results are in the right ballpark. It should be noted that the methane I observe in the crack is very dilute, possibly to the extent where Knudsen diffusion is a reasonable approximation. The methane being dilute is not obvious from the pictures of the system, since methanes that are behind each other seem to crowd the crack. If looking at the thinner system $L_z \approx \SI{12}{\angstrom}$, the diluteness becomes clear.
+
+\begin{figure}
+\centering
+\includegraphics[width=14cm]{../figures/thesis/methane_crack_diffusion.pdf}
+\caption{Per-particle mean squared displacement of methane and water in the full-analysis simulation. The slope of the methane msq is $\SI{0.74}{\angstrom\squared\per\pico\second}$.}
+\label{fig:msq_methane_crack}
+\end{figure}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Increasing the temperature}
