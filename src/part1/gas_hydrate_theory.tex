@@ -48,8 +48,13 @@ Characteristics/surprising observations
 \item Strain-hardening (to about 0.2 strain)
 \end{itemize}
 
-\section{The water molecule}
-Water is a special type of matter. 
+\section{Models of water}
+Water is difficult to model, and many models are developed in the pursuit of understanding water in all its phases. 
+
+One can represent the water molecule in many different ways, but the most common picture of the water molecule is the picuture of two hydrogen atoms connected to an oxygen atom. In this representation, the parameters for the distance between the oxyygen and the hydrogen and the angle between them have been foun experimentally. The values are given in table \ref{tb:intro:h2odata}. Another representation of the water molecule is by its wavefunction, which can be visualized for example by the electron density around the nuclei of the molecule. Such a representation can be derived from quantum mechanics. Both representations are illustrated in figure \ref{fig:water_molecule}. The quantum mechanic description is too complex to be directly applied in molecular dynamics, so the molecular dynamics representation must be some variation over the connected-particlies picture. 
+
+
+@1933-model @TIP-models.  \citet{Vega2011} review rigid non-polarizable models.
 
 \begin{figure}
 \begin{minipage}{\textwidth}
@@ -57,7 +62,7 @@ Water is a special type of matter.
 \includegraphics[width=0.52\linewidth]{../pictures/h2o_molecule.pdf}}
 \subcaptionbox{Electron density representation of the water molecule. The density is caculated with the Hartree-Fock method. Taken from my simulations for a course at the University of Oslo.}{
 \includegraphics[width=0.48\linewidth]{../pictures/h2o_hf_density.png}}
-\caption{Two perspectives on the water molecule.}
+\caption{Two pictures of the water molecule.}
 \end{minipage}
 \label{fig:water_molecule}
 \end{figure}
@@ -75,8 +80,8 @@ Distance O-H & $d_{OH}$ & \SI{0.9572}{\angstrom} \\
 \end{center}
 \end{table}
 
-\section{Molecular models of water}
-@1933-model @TIP-models.  \citet{Vega2011} review rigid non-polarizable models.
+
+
 
 
 \section{Molecular dynamics modeling of methane hydrates}
@@ -94,7 +99,7 @@ I will name a few outstanding quiestions concerning methane hydrates. @FindFromM
 \item What characterizes failure in methane hydrates, is it ductile or brittle? Are there sub-critical fractures, and are they available on the timescale of molecular dynamics?
 \item What does the fracture surface look like?
 \item Are the fracture properties of methane hydrates predictable? It could for instance be that for a given stress or strain applied to a piece of methane hydrate, the critial stress/strain or the time it takes before it starts cracking is very predictable, and sharply peaked around some value. It can just as well be that statisical processes in the material are important, and that there is a wide waiting-time distribution governing the fracture initiation -- and even propagation.
-\item Strain hardening to 20\% strain. How can this be explained?
+\item Strain hardening to 20 \% strain. How can this be explained?
 \end{enumerate}
 
 There are also questions regarding how to model methane hydrates, and event within molecular dynamics modeling of methane hydrates, little is actually known -- especially when it comes to fracture. 

@@ -118,11 +118,11 @@ To avoid doing NPT and NVT in the same simulation, I can start by creating an eq
 
 It turned out that the problem was related to the OpenMP package bundled with LAMMPS. Some bug is introduced when using NPT and the OpenMP package. The OpenMP package did not give vital efficiency imporvements, so I choose not to use the OpenMP package rather than resolving the error.
 
-There are signatures of this error in the total energy curve of the system. Figure \ref{fig:toteng_omp_bug} shows the total energy of an sI system while waiting for a crack to propagate. The simulation failed with the error message described above. As indicated in the figure, small discontinuities can be spotted in the total energy curve. For this particular simulation, there was also a large spike close to the end of the simulation. 
+There are signatures of this error in the total energy curve of the system. Figure \ref{fig:toteng_omp_bug} shows the total energy of an sI system while waiting for a crack to propagate. The simulation failed with the error message described above. As indicated in the figure, small discontinuities can be spotted in the total energy curve. For this particular simulation, there was also a large spike close to the end of the simulation, but that kind of spike doesn't show up often.
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{../figures/thesis/toteng_omp_bug.pdf}
-\caption{Little spikes (indicated with arrows) in the total energy curve hint that someting is wrong with the simulation. These spikes disappeared when I stopped using the USER-OMP package.}
+\caption{Little spikes (indicated with arrows) in the total energy curve hint that someting is wrong with the simulation. These spikes disappeared when I stopped using the USER-OMP package. Note the small time-window in the right panel. These spikes are only visible when zooming closely in on the data.}
 \label{fig:toteng_omp_bug}
 \end{figure}

@@ -83,13 +83,9 @@ Pair style interactions in LAMMPS are interactions using non-bonding potentials,
 This is 
 
 \paragraph{angle\_style}
+BlaBla
 
-\paragraph{pair\_coeff}
-
-\paragraph{bond\_coeff}
-
-\paragraph{angle\_coeff}
-
+The style commands have complementary {\tt \_coeff}-commands to thes the coefficients for the potentials. The number of coefficients and their role depend on the specific potential that is chosen with the {\tt \_style}-command.
 
 \subsubsection{Data files}
 It is usually a good idea to have all atom input information i a file separate from the input file, and read it with the data\_read command. An atom data file shall contain positions and velocities for all particles. In addition, if some atoms are parts of specific molecules, this is decleared. All bonds and angles (and dihedrals and so on ..) that are meant to support interactions between specific particles must be decleared. In addition, it is possible to insert coefficients for the different interactions. However, it is not possible to declare atom\_style, pair\_style or any other style in the data files. This has to be done in the input file, and it is important that the number of coefficients in the data file is compatible with the interaction potential chosen in the input file. 
