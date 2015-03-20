@@ -262,6 +262,12 @@ Figure \ref{fig:free_methane} shows the system after fracture with the free meth
 \label{fig:energy_1048}
 \end{figure}
 
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{../figures/thesis/crack_area_evolution_1048.pdf}
+\caption{Crack surface area evolution in time. The upper panel shows the measured area, and the lower panel is an estimate of the crack tip speed. The derivative for the lower panel is calculated using a standard 5-point stencil for the first derivative. The crack surface area was measured useing the Monte Carlo procedure described in section @ref with $N_s = 10^6$, $r_p = \SI{4.0}{\angstrom}$ and $\Delta l = \SI{1.0}{\angstrom}$. Note the little bump in the crack speed around \SI{180}{\pico\second}.}
+\label{fig:crack_area_evolution_1048}
+\end{figure}
 
 \begin{figure}
 \centering
@@ -285,12 +291,7 @@ with $\sim \SI{10}{\angstrom}$. }
 \label{fig:stressfield_timelapse}
 \end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[width=10cm]{../figures/thesis/crack_area_evolution_1048.pdf}
-\caption{Crack surface area evolution in time. The upper panel shows the measured area, and the lower panel is an estimate of the crack tip speed. The derivative for the lower panel is calculated using a standard 5-point stencil for the first derivative. The crack surface area was measured useing the Monte Carlo procedure described in section @ref with $N_s = 10^6$, $r_p = \SI{4.0}{\angstrom}$ and $\Delta l = \SI{1.0}{\angstrom}$. Note the little bump in the crack speed around \SI{180}{\pico\second}.}
-\label{fig:crack_area_evolution_1048}
-\end{figure}
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -304,9 +305,16 @@ I believe that the amount of free methane can be a valuable measure of how the c
 A more straightforward approach, which is more computationally demanding, is to go through all methane positions, and check wheter they are part of the wall or the void, like what was done when tracking cracks. A particle is considered free if it was part of the void at any time during the simulation. The reason for the ``at any time during the simulation'' is that measuring frame by frame largely underestimates the number of free methanes. Methanes that are free arent necessarily far enough from the closest water molecule to be considered void, but they \emph{are} free to move. To check the that the free methanes are indeed free, the positions of the methanes that were defined as void can be visualized at a point in time after the crack has propagated. Since free methane is accumulated in the measurement, a slightly higher $r_p$ is needed than for crack tracing -- near the lower reasonable limit for $r_p$, some improbable (but they will occur in large simulations) wall configurations will result in wall methane beeing counted as free. Figure \ref{fig:free_methane} is a snapshot of the system with the free methanes highlighted. Some of the methane molecules that are considered free actually reside in small cages near the fracture surface, and it is not obvious wherer they should be considered free or not. I tend toward considering the free, since they have proven that they are in cages that are not sufficiently intact to keep the methane molecules over time. Most of the free methane molecules are clearly free, so this sould not be a big issue -- but it can be interesting to study for instance the rate at which methane is captured and released by the near-crack-surface cages.
 
 \begin{figure}
+\centering
 \includegraphics[width=\textwidth]{../pictures/free_methane.pdf}
 \caption{Free methane -- particles that were more than $r_p = \SI{4.5}{\angstrom}$ away from any water molecule at some point -- are drawn as big green spheres. Other methane molecules are barely visible particles. Note that some ``free'' methane molecules actually occupy cages. Most of them are in the small nearest to the crack, but a few also occupy big cages, that are a bit farther from the crack surface. }
 \label{fig:free_methane}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{../figures/thesis/free_methane_nz1_nz2.pdf}
+\caption{Free methane in time for systems with $L_z \approx \SI{12}{\angstrom}$ (dashed lines) $L_z\approx \SI{24}{\angstrom}$ (solid lines) for different values of the final strain (legend). Free methane is normalized by the number of unic cells in the fracture plane, so the plotted value is: $\text{Free Methane Molecules}\cdot L_{sI}^2/(L_yL_z)$.}
 \end{figure}
 
 \paragraph{Problems with this method}
@@ -352,7 +360,28 @@ All simulations up to now has had a production time of \SI{400}{\pico\second}, b
 
 In this section, I look at a simulation very similar to the one described in section \ref{sec:complete_analysis_single_simulation}. The onsly difference is that the strain level after \SI{150}{\pico\second} is 0.045, and the temperature is \SI{280}{\kelvin}. No system spanning crack is obseved during the \SI{400}{\pico\second} after straining. There is, however, a small increase in the surface area, as can be seen in figure @insertFigure. 
 
-Since the system doesn't seem tom have equilibrated (the potential energy is still falling), I continue the simulation for another \SI{400}{\pico\second} to see what happens.
+Since the system doesn't seem tom have equilibrated (the potential energy is still falling), I continue the simulation for another \SI{400}{\pico\second} to see what happens. Figure \ref{fig:crack_no_propagate_long_time_snapshots} shows images of the crack at selected points in time, and shos that even though the crack does not span the system after the simulations, it \emph{does} develop.
+
+\begin{figure}
+\begin{minipage}[b]{0.24\linewidth}
+\subcaptionbox{$t=\SI{150}{\pico\second}$}{
+\includegraphics[width=\linewidth]{../pictures/snapshots_1045_280K/t_150000.pdf}}
+\end{minipage}
+\begin{minipage}[b]{0.24\linewidth}
+\subcaptionbox{$t=\SI{300}{\pico\second}$}{
+\includegraphics[width=\linewidth]{../pictures/snapshots_1045_280K/t_300000.pdf}}
+\end{minipage}
+\begin{minipage}[b]{0.24\linewidth}
+\subcaptionbox{$t=\SI{600}{\pico\second}$}{
+\includegraphics[width=\linewidth]{../pictures/snapshots_1045_280K/t_600000.pdf}}
+\end{minipage}
+\begin{minipage}[b]{0.24\linewidth}
+\subcaptionbox{$t=\SI{900}{\pico\second}$}{
+\includegraphics[width=\linewidth]{../pictures/snapshots_1045_280K/t_900000.pdf}}
+\end{minipage}
+\caption{Images zoomed in on the initial crack at different points in time in a long simulation. Methane molecules are hided for a better visual experience of the water. No global crack propagates, but there is still development of the small initial crack. From $t= \SI{150}{\pico\second}$ to $t=\SI{900}{\pico\second}$ the water-rich region at the wall-void interface is getting less ordered, and after $t=\SI{900}{\pico\second}$ there is a water-film between the sI hydrate and the free methane in the crack.}
+\label{fig:crack_no_propagate_long_time_snapshots}
+\end{figure}
 
 \section{Aggregated results}
 
