@@ -91,3 +91,7 @@ Perhaps the simplest way to combine two species Lennard-Jones particles, is to u
 \section{TIP4P-ICE + OPLS-UA methane}
 We now have all the ingredients we need to model a methane hydrates: A water model, a methane model, and a way to make the water and the methane interact with each other. This model is essentially a description of the total energy of a system consisting of particles with known positions and momenta. The next step is to use molecular dynamics to explore the properties of this model, and to see if we can use this model to learn something about methane hydrate. 
 
+
+\section{A system for studying fracture of methane hydrates}
+It was suggested by \citet{Ning2012} to find basic mechanical properties like Young's modulus and Poisson's ratio and the fracture toughness of methane hydrates using molecular dynamics. Particulary, they propose to study methane hydrates with a dislocation subjected to tensile stress. Since I have not found any studies on the tensile strength of methane hydrates using molecular dynamics, I choose to model a system close to the simplest case in fracture mechanics: A rectancular prismatic piece of methane hydrate with an artificial elliptical prismatic crack spanning its z-direction. This system will be sujected to tensile stress normal to the crack plane. 
+
