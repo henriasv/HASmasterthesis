@@ -1,9 +1,17 @@
 % -*- root: ../main.tex -*-
 \chapter{Introduction}
-\section{The art of computational modeling}
-The abundance of cheap computing resources developing over the last few decades has resulted in extensive computational studies @inWhatFields. These studies have resulted in @examplesOfHumanDevelopment. 
+\section{The art of computer models and simulations}
+The abundance of cheap computing resources developing over the last few decades has resulted in extensive computational studies in all parts of science. These studies have aided in understanding physical phenomena, and in the developent of new technologies, such as the atomic bomb. One of the immidiate applications of computer simulations, of which the results are used every day, is weather forecasting. Increasing access to High Performace Computers have resulted in weather forecasts that are useful several days in advance. 
 
-Some take the position that 
+A model, in the sense that I will be using it, is a mathematical formulation that possibly captures the behavior of a system that is being modeled. We hope that by investigating a model, we actually model the system that inspired the model. A simulation is a solution of the equations defining tha model. For simple models, the equations can be solved analytically, and the solution can be seen as a simulation. For many models, we are not able to solve the equations analytically, and numerical methods must be applied to simulate the model. 
+
+Computer simulations in science
+
+Computer simulations are especially useful for studying processes where important processes happen at timescales or spatial scales that are not available in experimental studies -- in computer models, all parameters of the simulations are automatically available.
+
+Computer models is a new thing, in the sense that running simulations on electronic computers was impossible before such devices were available. On the other hand, computer models are an old thing, since mathematical models could be formulated for computers long before electronic computers were even proposed, and the calculations could be performed by a human, which would at the time be referred to as a computer, but now it is more natural to refer. Indeed, iterative schemes like Newtons method for zero-points of a function and Eulers method for the integration of differential equations were developed by people who never lived to see electronic computers. 
+
+Can we trust the computer simulations?
 
 ( I may want to cite George E. P. Box - ``All models are wrong, but some are useful'')
 
@@ -24,17 +32,41 @@ Methane hydrate research has been boosted by the general hunt for unconventional
 The goal for my master project is to eludicate dissociation mechanisms for methane hydrates on the molecular scale. The choices made by me and my supervisor have focused the project into using molecular dynamics to study dissociation through critical and sub-critical crack propagation due to externally applied stress in pure, crystalline methane hydrates with artificial defects. The project does not aim to reproduce or explain any particular experiments or phenomena, but rather to develop tools and procedures for long-term research on methane hydrate dissociation, and to identify fruitful paths for future research.
 
 \section{The ethics of petroleum research}
+The conclusions of the Intergovernmental Panel on Climate Change (IPCC) states in its synthesis report from 2014 \cite{IPCC2014} that:
+
+\begin{quotation}
+The IPCC is now 95 percent certain that humans are the main cause of current global warming. In addition, the SYR finds that the more human activities disrupt the climate, the greater the risks of severe, pervasive and irreversible impacts for people and ecosystems, and long-lasting changes in all components of the climate system. 
+\end{quotation}
+
+Which means that we cannot continue burning fossil fules at the rates that we have been doing over the last decade. A quiestion arising from that conlusion, is whether it is responsible to do research that can potentially increase CO$_2$-emissions by making it easier to extract fossil fuels.
+
+Fossil fuel dependence must by definition end at some point. Either by replacement for someting else, or by fossil fuels turning out not to be fossil (which is highly unlikely). 
+
+Having said that, the other perspective is that if fossil fuel extraction was stopped overnight, people would start dying as a result of that, since energy-intensive fossil-fueled activity is essential for food production, healthcare, transportation and warming houses in cold areas.
+
+Fossil fuels can be ranked by how much CO$_2$ they emit per Joule of energy produced.
+
+Technologies for carbon capture and storage (CCS) are under development, and if they succeed, fossil fuel extraction can continue beyond the amount that is safe to burn and release into the atmosphere. 
+
+Gas is better than coal -- but it is not good enough.
+
+Whether fossil fuel extration and burning continue within safe amounts or not, it \emph{will} continue for several decades, and research on the topic will contribute to knowledge on fossil fuels. If that knowledge is used responsibly, that knowledge is good.
+
+
+
+I have concluded that I can do research on petroleum. 
 
 \section{My contribution}
 A master thesis by 2014 (Cite kriteriene? :P), by design, requires the student to describe rather that reference known theory. This feature of the masters thesis calls for a detailed account of what are my scientific contributions. I have investigated the TIP4P/ICE molecular water model, and worked out previously unknown properties of that model, includeing the viscosity and diffusion coefficient. I have studied fracture of methane hydrates in a molecular dynamics model, which to the best of my knowledge, no one did before. 
 
 I have developed some analysis tools, which are described in chapter \ref{ch:tools}. It should be clear what parts of that chapter are my descriptions of tools made by others, and what tools were developed by me.
 
-Most of my work has been on the properties of methane hydrates in the  TIP4P/ICE water and OPLS-UAM methane (explained in detail in chapter @reference). This model, like any molecular model of methane hydrates, is poorly investigated. I have made progress on the following:
+Most of my work has been on the properties of methane hydrates in the TIP4P/ICE water and OPLS-UAM methane (explained in detail in chapter \ref{ch:models}). This model, like any molecular model of methane hydrates, is poorly investigated. I have made progress on the following:
+
 \begin{itemize}
-\item Mechanical properties.
-\item Fracture toughness.
-\item Fracture propagation.
+\item Mechanical properties: Youngs modulus, Poissons ratio.
+\item Fracture toughness under tensile strain.
+\item Fracture propagation under tensile strain.
 \end{itemize}
 
 
@@ -44,10 +76,10 @@ This thesis is a walkthrough of how to do molecular simulations, how to apply it
 
 \section{Structure of this thesis}
 
-Chapter \ref{ch:state_of_the_science} attemps to sum up the state of the science of methane hydrates, both experimentally and theoretically, and ends with the research questions that I try to answer in my research.
+Chapter \ref{ch:state_of_the_science} attemps to sum up relevant aspects of the state of the science of methane hydrates, both experimentally and theoretically, and ends with the research questions that I try to answer in my research.
 ...
 In part I is also a presentation of the theory of molecular dynamics. I have sought to explain all theory needed to in principle implement a molecular dynamics program that would do the same job as the one I use. That means I aim to present an overview of what is important for the physics of the system, but not implementation details that are unimportant to the actual outcome of my simulations. Some topics can be explained in detail, while some are too technical, requiring too many details to be interesting in a master thesis. I will try to refer to research papers that can supplement the presentation where my presentation is incomplete.
 ...
-Part II is the main part of this thesis. Chapter \ref{ch:models} contains the choice of numerical model for the system i shall study. Chapters \ref{ch:tools} and \ref{ch:verification} describes the numerical tools i use and the tools I have developed, along with verification of the numerics. Chapter \ref{ch:modeledsystems} contains the main results. This chapter is mostly organized chronologically after what time I did what, and it can be seen as a description of the research process that I have been going through the last months. Some tools were devoloped during the research process, and these tools are described in detail in chapter \ref{ch:tools}, but it should be clear from the discussion in \ref{ch:modeledsystems} when they were actually introduced.
+Part II is the main part of this thesis. Chapter \ref{ch:models} contains the choice of mathematical model for the methane hydrates in addition to a description of the system that I will study. Chapters \ref{ch:tools} and \ref{ch:verification} describes the numerical tools i use and the tools I have developed, along with verification of the numerics. Chapter \ref{ch:modeledsystems} contains the main results. This chapter is mostly organized chronologically after what time I did what, and it can be seen as a description of the research process that I have been going through the last months. Some tools were devoloped during the research process, and these tools are described in detail in chapter \ref{ch:tools}, but it should be clear from the discussion in \ref{ch:modeledsystems} when they were actually introduced.
 
 
