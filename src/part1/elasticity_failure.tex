@@ -140,7 +140,42 @@ There are 3 loading modes: I =`opening', II = `sliding', III = `tearing'.
 \end{figure}
 
 \subsection{Failure criteria.}
-As is many fields, the first recorded studies the ones of Leonardo da Vinci. Leonardo discovered that short iron wires are stronger than long steel wires. A common interpretation is that random flaws make the iron wires weaker at some points, and that a longer wire has a larger probability of a weak spot than a long one. A major goal of fracture mechanics is to be able to predict the failure of structures -- what is the pressure required to break a sample of a material? The first somewhat successful attempt to predict failure was the efforts of Griffith in 1920. He continued along the path of Leonardo, and proposed a quantitative relation between the flaws of the sample and its fracture toughness: A crack will propagate from a flaw if the strain energy released during crack growth is higher than the surface energy of the crack. This works well for ideally brittle materials. Irwin refined Griffiths approach, and introduced the \emph{energy release rate}, $\mathcal{G}$. The energy release rate is a property of the elastic state of a linearly elastic material. According to Irwin, a crack will propagate when $\mathcal{G}$ becomes larger than a material-specific value $\mathcal{G}_c$ -- the \emph{critical} energy release rate. For a crack of width $2a$ on an infinite plate subjected to tensile stress, the energy release rate is:
+As is many fields, the first recorded studies the ones of Leonardo da Vinci. Leonardo discovered that short iron wires are stronger than long steel wires. A common interpretation is that random flaws make the iron wires weaker at some points, and that a longer wire has a larger probability of a weak spot than a long one. A major goal of fracture mechanics is to be able to predict the failure of structures -- what is the pressure required to break a sample of a material? The first somewhat successful attempt to predict failure was the efforts of Inglis. He introduced the concept of stress concentration at a crack tip. Specifically, he found that for an elliptical crack on an infinite sheet, the local stress at the crack tip as a function of the faraway tensile stress was:
+
+\begin{equation}
+	\sigma_{\text{cracktip}} = 2\sigma_{\text{faraway}}\sqrt{\frac{a}{\rho}}
+	\label{eq:stress_consentration}
+\end{equation}
+Where $a$ is the length of the major axis of the ellipsis, and $\rho$ is the radius of curvature of the ellipsis close to the crack tip. The local critical stress level is the stress needed to break atomic bonds \cite[p. 27]{Anderson2005}:
+
+\begin{equation}
+	\sigma_c = \sqrt{\frac{E\gamma_s}{x_0}}
+	\label{eq:critical_local}
+\end{equation}
+Where $x_0$ is the typical distance between atoms. Now setting the cracktip stress from equation \ref{eq:stress_consentration} equal to the critical local stress from equation \ref{eq:critical_local}, and assuming that the radius of curvature is equal to the distance between atoms, we get an expression for the critical faraway stress level:
+\begin{equation}
+	\sigma_f = \sqrt{\frac{E\gamma_s}{4a}}
+	\label{eq:inglis_formula}
+\end{equation}
+Which is the Inglis formula for the fracture stress on a large sheet with a crack of width $2a$.
+
+In 1920, Griffith improved on the flaw-approach, but instead of building a theory from the atomic level, he assumed the following: A crack will propagate from a flaw if the strain energy released during crack growth is higher than the corresponging surface energy from crack growth. This works well for ideally brittle materials. The formula for critical faraway stress with Griffiths theory is:
+\begin{equation}
+	\sigma_f = \sqrt{\frac{2E\gamma_s}{\pi a}}
+\end{equation}
+Which is the Griffith formula for the fracture stress on a large sheet with a frack of width $2a$. For reference, I also include the formula for the fracture stress of a penny-shaped crack subjected to remote tensile stress:
+\begin{equation}
+	\sigma_f = \sqrt{\frac{\pi E \gamma_s }{2(1-\nu^2)a}}
+\end{equation}
+ 
+ For a sheet of finite width, the fracture stress is slightly lower, since the crack actually weakens the materal (the cross sectional area bearing the stress is shrinking). The exact expression for a sheet of width $2W$ is:
+
+ \begin{equation}
+ 	\sigma_f = \sqrt{\frac{2\gamma_s E}{2W\tan\left( \frac{\pi a}{2W}\right)}}
+ 	\label{eq:griffith_finite_sheet}
+ \end{equation}
+
+ Irwin refined Griffiths approach, and introduced the \emph{energy release rate}, $\mathcal{G}$. The energy release rate is a property of the elastic state of a linearly elastic material. According to Irwin, a crack will propagate when $\mathcal{G}$ becomes larger than a material-specific value $\mathcal{G}_c$ -- the \emph{critical} energy release rate. For a crack of width $2a$ on an infinite plate subjected to tensile stress, the energy release rate is:
 
 \begin{equation}
 	\mathcal{G} = \frac{\pi \sigma^2 a}{E}
