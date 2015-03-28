@@ -76,6 +76,38 @@ Below follows a list of my scientific contributions:
 \section{What is the master thesis?}
 This thesis is a walkthrough of how to do molecular simulations, how to apply it to methane hydrates, and how to verify and interpret the results. In part, it is also a documentation of my work during the last year. If I have been strugling with a topic, and spent a lot of time figuring it out, this will be reflected in the thesis. These parts will be more elaborate than other parts of the thesis, regardless the scientific value of their contents. An example is the section ``proof-of-concept runs'' in the chapter about modeled systems.  This section represents a lot of work to find the right parameters to go into the model, but the results are not that interesting.
 
+\section{Goals and outcomes}
+The project was initially outlined with the following subprojects:
+\begin{enumerate}
+\item \tb{Develop molecular dynamics models for gas hydrate modeling:}
+The student will apply standard molecular dynamics codes, such as LAMMPS,
+to study gas hydrates in the stable regime. In addition, we will develop our
+own codes with reactive potentials, and validate the model by comparison with
+standard codes in the stable regime.
+\item \tb{Apply model to study gas hydrate disassociation:}
+The student will use the validated models to address gas hydrate disassociation
+processes in scenarios relevant for production.
+\item \tb{Refine model to include sedimentary interactions:}
+Finally, the student will develop the model to include effects of sediments, such
+as by including effects of silicate glasses for which we have well-tested reactive
+potentials, to address the effect of the surrounding sedimentary minerals and
+confined pore spaces on gas hydrate disassociation processes.
+\end{enumerate}
+
+During the work on the first subproject, we decided that time could be better spent by studying fracture as a dissociation mechanism in methane hydrates, since this kind of study has been proposed but not yet conducted. So in reality, the project has consisted of the following subprojects:
+
+\begin{enumerate}
+\item \tb{Develop molecular dynamics models for gas hydrate modeling:}
+The student will apply standard molecular dynamics codes, such as LAMMPS,
+to study gas hydrates in the stable regime.
+\item \tb{Apply model to find a protocol to study fracture of methane hydrates:}
+Use the validated model to find a way to impose and analyze fracture in the methane hydrate model. 
+\item \tb{Refine the protocol for studying fracture, and characterise fracture in methane hydrates:}
+Use the developed protocol to run simulations and study dissociation and mechanisms for fracture initiation and propagation in methane hydrates.
+\end{enumerate}
+
+Note that the project no longer contains the development of our own code. During the work on the first subproject, LAMMPS was found sufficiently flexible for developing out own potentials within its framework. This has not been done in this work because the fracture study was prioritized, not leaving time for the development of our own reactive potentials. But reactive potentials will be a priority in future work.
+
 \section{Structure of this thesis}
 
 Chapter \ref{ch:state_of_the_science} sums up relevant aspects of the state of the science of methane hydrates, both experimentally and theoretically, and ends with questions that my research aim to answer.

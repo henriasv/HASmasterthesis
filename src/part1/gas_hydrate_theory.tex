@@ -29,26 +29,33 @@ Since methane hydrates come in several forms, it is hard to say someting general
 Few mechanical properties are reported , and their measurements are difficult, partly because it is almost impossible to obtain pure hydrate samples.
 \end{quotation}
 
-Much of the research has been done on hydrate-bearing sediments, and functional relationships have been proposed that relate the strength of a hydrate-bearing sediment to the pure hydrate strength and the hydrate saturation (the amount of hydrate in the sediment). But since the strength of the mechanical properties of the hydrate are uncertain, the assessment of such relationships is hard. \citet{Ning2012} consider the mechanical properties of pure hydrates essential for understanding the mechanics of hydrate-bearing sediments.
-
 This must be taken into account when going through the experimental results on mechanical properties of methane hydrates. It also means that experimental results probly will not be directly comparable to molecular models of pure samples.
 
+Much of the research has been done on hydrate-bearing sediments, and functional relationships have been proposed that relate the strength of a hydrate-bearing sediment to the pure hydrate strength and the hydrate saturation (the amount of hydrate in the sediment). But since the strength of the mechanical properties of the hydrate are uncertain, the assessment of such relationships is hard. \citet{Ning2012} consider the mechanical properties of pure hydrates essential for understanding the mechanics of hydrate-bearing sediments. Furthermore, almost all strength tests on methane hydrates, tests where the hydrate is subjected to some stress to break it, are axial compression tests, which leaves a limited basis for comparison with simulations. 
+
 \subsection{Typical experimental setup}
-The initial challenge when doing experiments on methane hydrates is that samples of methane hydrate are not stable in room temperature and atmospheric pressure.
-
-The group of William B. Durham at MIT has built an ice creep apparatus, which is what they call a ``standard triaxial gas deformation rig''. In this device, pressure and temperature can be controlled from \SI{77}{\kelvin} to ambient temperature and ambient pressure to \SI{1}{\giga\pascal}. In addition to the confining pressure, deformation of a sample is controlled with a piston of which the velocity can be controlled over 5 orders of magnitude.
-
-@Illustration
+A main challenge when doing experiments on methane hydrates is that samples of methane hydrate are not stable in room temperature and atmospheric pressure. Therefore, experimental equipment for the study of mechanical properties of hydrates consist of two main parts: A hydrate formation unit, and a measurement unit, so that the hydrate doesn't need to be removed from its stability conditions during measurement. Sometimes, the measurement unit is actually an axial compression chamber, so that axial tests can be done.
 
 \subsection{Experimental results}
-Even though we cannot guarantee the purity of methane hydrate samples used in experiments, there are still robust findings that are valuable pointers for numerical investigations. 
+Even though we cannot guarantee the purity of methane hydrate samples used in experiments, there are still robust findings that are valuable pointers for numerical investigations. \citet{Waite2000} measured mechanical properties using the compressional and shear wave speeds, and assuming the sample to be isotropic and homogeneous. Their results are given in table \ref{tbl:si_mech_exp}.
 
-The most striking observation, is that methane hydrates can withstand high strains compared to regular water ice. It actually seems to exhibit strain-hardening up to a strain of almost 0.2 \cite{Durham2003, Stern1998}. \cite{Durham2003} investigates methane hydrates in the framework of rheology, suggesting that the deformations are creep-like and permanent, which is not surprising given their extent. @ReadCarefully 
+\begin{table}
+\caption{Some mechanical properties of sI methane hydrate as reported in \cite{Waite2000}.}
+\label{tbl:si_mech_exp}
+\centering
+\begin{tabular}{c|c}
+Property & Value \\
+\hline
+$V_p$ & \SI{3650\pm 50}{\meter\per\second} \\
+$V_s$ & \SI{1890\pm 30}{\meter\per\second} \\
+Poisson's ratio & \SI{0.317 \pm 0.006}{} \\
+Shear Modulus & \SI{3.2\pm0.1}{\giga\pascal} \\
+Isothermal Young's modulus & \SI{7.8\pm 0.3}{\giga\pascal}
+\end{tabular}
+\end{table}
 
-Characteristics/surprising observations
-\begin{itemize}
-\item Strain-hardening (to about 0.2 strain)
-\end{itemize}
+The tendency for the compressive strength of methane hydrates, is that it increases with increasing confining pressure and decreasing temperature. This claim is made by \citet{Ning2012}, based on numerous experiments they reviewed. However, this picture is complicated, and \citet{Ning2012} also say that all the other mechanical properties depend highly on the temperature, the pressure, the cage occupancy etc.
+A surprising observation with regards to compressional strength, is that methane hydrates exhibit strain-hardening for compressional strains as high as around 15-20 \% \cite{Durham2003, Stern1998}, which is very high compared to regular water ice.
 
 \section{Models of water}
 Water is difficult to model, and many models are developed in the pursuit of understanding water in all its phases. 
@@ -82,14 +89,27 @@ Distance O-H & $d_{OH}$ & \SI{0.9572}{\angstrom} \\
 \end{center}
 \end{table}
 
-
-
-
-
 \section{Molecular dynamics modeling of methane hydrates}
-Because of the lack of good experimental results, numerical modeling can be important to investigate methane hydrates. One of the ways to model them, is through molecular dynamics simulation, where trajectories of atoms are calculated with classical equations of motion.
+Due to the lack of good experimental results, numerical modeling can be important to investigate methane hydrates. One of the ways to model them, is through molecular dynamics simulation, where trajectories of individual atoms are calculated using classical equations of motion. 
 
-\citet{Ning2010} calculate the bulk modulus of sI methane hydrates using several water moedls and methane models.
+There are essentially two choices to be made when designing a molecular dynamics simulation: What potential models to use, and what system to simulate. By system, I mean both the initial condition and the conditions during simulation (temperature, pressure, etc.).
+
+For the potential models of methane hydrates, there are two common strategies: All atom potentials and united atom potentials. In the all atom potentials, methane and water are represented by all of its atoms. Interactions between atoms belonging to the same molecule are bonding, and interactions between atoms belonging to different atoms are non-bonding. In the united atom potentials, all atoms in a molecule are represented by one particle. Interactions between molecules in united atom representations are non-bonding, and the functional form of the potential is usually more complicated than for the all atom models. 
+
+In the first successful simulation of methane hydrate nucleation, \citet{Walsh2009} used a combination of these strategies. The water model was an all-atom model, TIP4P/Ice (described in detail in chapter \ref{ch:models}), and the methane model was a united-atom model, United-atom methane, which is a pure Lennard-Jones model. Figure \ref{fig:methane_hydrate_growth} shows illustrations of the formation process.  Later, \citet{Jacobson2010b} proposed a coarse-grained model using the united-atom approach both on the water model and the methane model. This model has later been used in several studies looking at nucleation and growth of methane hydrates. 
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{../pictures/methane_hydrate_growth.pdf}
+\caption{Nucleation and growth of methane hydrates. From \citet{Walsh2009}. Reprinted with permission from AAAS.}
+\label{fig:methane_hydrate_growth}
+\end{figure}
+
+\citet{Ning2010} calculate the bulk modulus of sI methane hydrates using several water models and methane models.
+
+\citet{English2015} review molecular modeling of methane hydrates. Still no fracture. 
+
+Chill+ identification of clathrate cages \citet{Nguyen}.
 
 \section{Quantum mechanical calculations on methane hydrates}
 
