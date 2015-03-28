@@ -14,11 +14,12 @@ Notes for the conclusion
 \item I speculate that hydrate dissociation in the presence of fracture is highly dependent on slow dissociation, which means the fracture toughness likely highly depend on the pressure and temperature, which drive the non-fracture-induced dissociation. This fits well with experimental observations, namely that the compressional strength increases with decreasing temperature, increasing confining pressure and increasing density.
 \end{itemize}
 
+Regarding the robustness of my results, I think that a twofold approach is necessary. First, LAMMPS is well tested, and since I ended up using mostly the core features of LAMMPS. This package should be stable, and since I only use TIP4P water and a pure Lennard-Jones methane, it is highly likely that the simulation actually simulate the model I want it to simulate. Then is the question of the model itself. And the model is probably not well suited to make accurate predictions of the fracture properties of methane hydrates. But since TIP4P/Ice + UAM has proved to reasonably calculate growth and dissociation of methane hydrates, I think it is reasonable to conclude that the fracture initiation is highly influenced by slow dissociation processes. Confirmation using other potentials and looking more closely on effects of the methane in the initial crack will probably be needed to conclude definitely.
 
 \section{Outlook}
 \begin{itemize}
 \item Furter investigations to confirm the two stages of dissociation: Thermally activated crack growth (slow) and strain-activate crack growth (fast).
-\item Other potentials – the problem with high poisson ratio.
+\item Other potentials – the problem with high poisson ratio. It might be a good idea to parametrize a water model that reproduces reasonable elastic features of the empty hydrate lattice, and then, using ab-initio calculations fit a methane-water potential.
 \item Less ordered structures.
 \item Changing the hydration number. Molecular dynamics simulations can shed light on how the cage occupancy influence the mechanical properties of methane hydtates.
 \item Defects of different geometries.

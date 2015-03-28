@@ -43,6 +43,14 @@ This job script starts LAMMPS in a hybrid MPI and OpenMP mode with 18 mpi proces
 
 Note: since it turned out that I could not use the OpenMP package, the scripts I actually used does not contain the OpenMP commands, and {\tt --cpus-per-task} is set to 1.
 
+\section{Experienced problems when using the Abel computing cluster}
+When performing large-scale simulations, failures on the computing cluster can consume a lot of time.
+\begin{itemize}
+\item Random node failures
+\item Slow nodes -- killed jobs
+\end{itemize}
+
+
 I have made a small python module that lets me submit a job for each subdirectory containing a file {\tt lmp\_slurm\_job.sh}:
 
 \begin{lstlisting}[language=Python]
