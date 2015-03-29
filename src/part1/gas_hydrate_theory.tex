@@ -54,8 +54,7 @@ Isothermal Young's modulus & \SI{7.8\pm 0.3}{\giga\pascal}
 \end{tabular}
 \end{table}
 
-The tendency for the compressive strength of methane hydrates, is that it increases with increasing confining pressure and decreasing temperature. This claim is made by \citet{Ning2012}, based on numerous experiments they reviewed. However, this picture is complicated, and \citet{Ning2012} also say that all the other mechanical properties depend highly on the temperature, the pressure, the cage occupancy etc.
-A surprising observation with regards to compressional strength, is that methane hydrates exhibit strain-hardening for compressional strains as high as around 15-20 \% \cite{Durham2003, Stern1998}, which is very high compared to regular water ice.
+In the review by \citet{Ning2012}, it is claimed, based on numerous experiments they reviewed, that the tendency for the compressive strength of methane hydrates, is that it increases with increasing confining pressure and decreasing temperature. But it is also stated that all the other mechanical properties depend highly on the temperature, the pressure, the cage occupancy etc, which means results from experiments under slightly different conditions are hard to compare. A surprising observation with regards to compressional strength, is that methane hydrates exhibit strain-hardening for compressional strains as high as around 15-20 \% \cite{Durham2003, Stern1998}, which is very high compared to regular water ice.
 
 \section{Models of water}
 Water is difficult to model, and many models are developed in the pursuit of understanding water in all its phases. 
@@ -96,7 +95,7 @@ There are essentially two choices to be made when designing a molecular dynamics
 
 For the potential models of methane hydrates, there are two common strategies: All atom potentials and united atom potentials. In the all atom potentials, methane and water are represented by all of its atoms. Interactions between atoms belonging to the same molecule are bonding, and interactions between atoms belonging to different atoms are non-bonding. In the united atom potentials, all atoms in a molecule are represented by one particle. Interactions between molecules in united atom representations are non-bonding, and the functional form of the potential is usually more complicated than for the all atom models. 
 
-In the first successful simulation of methane hydrate nucleation, \citet{Walsh2009} used a combination of these strategies. The water model was an all-atom model, TIP4P/Ice (described in detail in chapter \ref{ch:models}), and the methane model was a united-atom model, United-atom methane, which is a pure Lennard-Jones model. Figure \ref{fig:methane_hydrate_growth} shows illustrations of the formation process.  Later, \citet{Jacobson2010b} proposed a coarse-grained model using the united-atom approach both on the water model and the methane model. This model has been used in several studies looking at nucleation and growth of methane hydrates. 
+In the first successful simulation of methane hydrate nucleation, \citet{Walsh2009} used a combination of these strategies. The water model was an all-atom model, TIP4P/Ice (described in detail in chapter \ref{ch:models}), and the methane model was a united-atom model, United-atom methane, which is a pure Lennard-Jones potential. Figure \ref{fig:methane_hydrate_growth} shows illustrations of the formation process.  Later, \citet{Jacobson2010b} proposed a coarse-grained model using the united-atom approach both on the water model and the methane model. This model has been used in several studies looking at nucleation and growth of methane hydrates. 
 
 \begin{figure}
 \centering
@@ -105,31 +104,43 @@ In the first successful simulation of methane hydrate nucleation, \citet{Walsh20
 \label{fig:methane_hydrate_growth}
 \end{figure}
 
+\begin{comment}
 \citet{Ning2010} calculate the bulk modulus of sI methane hydrates using several water models and methane models.
 
 \citet{English2015} review molecular modeling of methane hydrates. I will summarize two things they mention: Dissociation and molecular-simulation approaches. They don't cite anyone studying it in conjunction with fracture. 
 
 Chill+ identification of clathrate cages \citet{Nguyen}.
+\end{comment}
 
-\subsection{Ab-initio fitting of potential models}
 
 
 \section{Quantum mechanical calculations on methane hydrates}
+The properties of the sI hydrate cage has been calculated using DFT-analysis. The results differ quite a lot from the experimental values, but since the experimental values are uncertain, it is hard to assess the value of the DFT-analysis.
+
+There have also been some efforts on fitting a methane-water potentials using ab initio quantum mechanical methods. A popular metod is by second order Møller--Plesset perturbation theory (MP2). \citet{Anderson2004} used this to develop a potential for argon--water and methane--water interactons and applied the methane--water results on methane hydrates. They fix the internal configuration of each molecule, i.e. the hydrogen positions relative to the oxygen in water and the hydrogen positions relative to carbon in methane. Then they map the six-dimensional energy surface of the methane--water interaction. The dimensions are the C--O distance and five angles describing the relative rotations of the molecules. One of the conclusions is that the Exponential--6-potential better represents the H$_4$\tb{C}--\tb{O}H$_2$ interaction than the Lennard--Jones potential. That study does not cover the interactions between particles of the same species (eg. water--water).
+
 
 \section{Molecular dynamics modeling of fracture}
-\citet{doi:10.1142/9789812773326_0001} review some aspects of molecular modeling of fracture. 
+A lot has been done on characterizing fracture of relatively simple crystal lattices such as the FCC-lattice. \citet[ch. 6]{doi:10.1142/9789812773326_0001} reviews dynamical fracture of homegeneous lattices. An interesting result is that cracks become unstable at a certain crack velocity. This velocity depends not only on the Rayleigh wave speed, but also on hyperelastic (non-linear elastic) properties of the material. Stable, low speed cracks produce mirror interfaces, whereas unstable cracks form either mist (flat but rough) or hackle regions (rough) on the crack surface. In the studies cited in \citet[ch. 6]{doi:10.1142/9789812773326_0001}, tesile strain is applied on the boundary by forcing the position of the atoms in the edge planes parallell to the crack plane. 
+
+\citet{Hantal2014} studied the fracture toughness of illite using clayFF and reaxFF. The actual fracture propagation was not studied -- only the fracture toughness and the stress--strain curves. In that study, the tensile strain was applied in discrete steps by expanding the simulation box normal to the crack plane and remapping all particle positions.
+
+I have not been able to find any studies on molecular dynamics simulations of fracture in methane hydrates.
 
 
 \section{Research questions}
-I will name a few outstanding quiestions concerning methane hydrates. @FindFromMechPropPaper.
+The reality that I have not been able to find any studies on fracture of methane hydrates using molecular dynamics limits the expectations of what can be done during a master project. Below, I name a few questions concerning methane hydrates that seem within reach to address:
 
 \begin{enumerate}
-\item What is the fracture toughness of methane hydrate? Fracture toughness of matarials are usually estimated with standardized mechanical tests. Since such tests are hard to do for methane hydrates, it is actually possible that the best estimates can come from molecular simulations. 
-\item What characterizes failure in methane hydrates, is it ductile or brittle? Are there sub-critical fractures, and are they available on the timescale of molecular dynamics?
-\item What does the fracture surface look like?
-\item Are the fracture properties of methane hydrates predictable? It could for instance be that for a given stress or strain applied to a piece of methane hydrate, the critial stress/strain or the time it takes before it starts cracking is very predictable, and sharply peaked around some value. It can just as well be that statisical processes in the material are important, and that there is a wide waiting-time distribution governing the fracture initiation -- and even propagation.
-\item Strain hardening to 20 \% strain. How can this be explained?
+\item What is the fracture toughness of methane hydrates in simulations? This question is not only interesting to compare with experiments, but to complement experiments. Fracture toughness of matarials are usually estimated with standardized mechanical tests, but since such tests are hard to perform on methane hydrates, it is possible that simulation results can complement experimental results, and be important for instance as the pure-hydrate strength going into calculations of the strength of hydrate-bearing sediments. 
+\item Is pure methane hydrate ductile or brittle, and is the brittle- or ductileness dependant on the strain rate the sample is subjected to?
+\item What does the fracture surface look like? Is it mirror-like or hackle-like? Does the fracture surface develop in time after fracture propagation?
+\item How much methane hydrate is dissociated during fracture? How much methane is freed?
+\item How predictable are the fracture properties of methane hydrates predictable? Is it such that for a given stress or strain applied to a piece of methane hydrate, the critial stress/strain or the time it takes before it starts cracking can be accurately estimated? Or is it a statisical processes with a wide waiting-time distribution that govern the fracture initiation -- or even propagation?
+\item Compressional strain hardening up to almost 20 \% strain. How can this be explained?
 \end{enumerate}
+
+I will produce novel results and insights regarding molecular dynamics modeling of methane hydrate fractures based on these questions. Question 1 and 2 will be answered quite conclusively (but only within the model I choose). Question 3 will be discussed along with question 4, offering some descriptive results but little insight. Question 5 results in a claim that I hope to be able to verify in the future. Question 5 will be ignored.
 
 There are also questions regarding how to model methane hydrates, and event within molecular dynamics modeling of methane hydrates, little is actually known -- especially when it comes to fracture. 
 
@@ -138,5 +149,4 @@ There are also questions regarding how to model methane hydrates, and event with
 \item How may cracks be triggered in simulation if the results are going to say someting about reality?
 \end{enumerate}
 
-I will not end up answering many of these questions. I will, however, produce novel results and insights regarding molecular dynamics modeling of methane hydrate fractures.
-@TellWhatQuestionsIEndUpAnswering
+My thesis is not about potentials, but I think it appropriate to list it, since understanding the limitations of the potentials is essential when doing molecular dynamics, and since I have to choose a potential. Question 2 will be touched, because imposing fracture forces me to choose or find a way to do it. 
