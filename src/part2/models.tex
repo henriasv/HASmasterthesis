@@ -1,17 +1,15 @@
 \chapter{A model for methane hydrates}
 \label{ch:models}
-With the theoretical framework of molecular dynamics in place, I go on to introduce specific potentials, and choose which one to use to model cracks in methane hydrates. 
-
-In this chapter, I describe moelcular potentials for water and methane, and choose which one to use in my simulations.  
+With the theoretical framework of molecular dynamics in place, I go on to introduce specific potentials, and choose which one to use to model cracks in methane hydrates.  
 
 \section{Criteria for a sufficient model}
-I will model dissociation of methane hydrates. As long as the methane hydrates are pure, i.e. no sediments nearby, it is reasonable to assume that noe chemical reactions will take place @cite. Therefore a TIP-model @WhatDoesTipMean should be sufficient. Since I will model fracture, the mechanical properties should be reasonably represented. Since I lack experience with water models, I end up using a model that other people have shown to work. Specifically, I choose a model that was able to spontaneously nucleate methane hydrates in molecular dynamics simulations. The strategy is to use a model that successfully reproduced some feature of methane hydrates to study another feature. This means we cannot immediatly trust the model, and this study is just as much a test of whether the model I choosi is suitable for studying fracture of methane hydrates.
+I will model fracture of methane hydrates. If the methane hydrates are pure, i.e. no sediments nearby, it is reasonable to assume that noe chemical reactions will take place. Conversely, if the hydrate are to be modeled near for example a silicon oxide surface, chemical reactions can be important. Since chemical reactions are not expected to occur in pure hydrates, bonding potentials can be used for covalent bonds. The transferable interpotential models (TIP-models) are popular models that use bonding potentials for the OH-bonds. Since I will model fracture, the mechanical properties should be reasonably represented. I lack experience with water models, so I end up using a model that other people have shown to work. Specifically, I choose a model that was able to spontaneously nucleate methane hydrates in molecular dynamics simulations. The strategy is to use a model that successfully reproduced some feature of methane hydrates to study another feature. This means we cannot immediatly trust the model, and this study is just as much a test of whether the model I choose is suitable for studying fracture of methane hydrates.
 
-\section{TIP4P/ICE water model}
+\section{TIP4P water model}
 The TIP4P/ICE was developed by \citet{Abascal2005} as a reparametrization of the TIP4P water model. TIP4P was used by \citet{Matsumoto2002} in the first successfull simulations of nucleation of ice crystals in molecular dynamics, and TIP4P/ICE was used by \citet{Walsh2009} in the first successful simulation of spontaneous methane hydrate nucleation. 
 
 \subsection{Overview}
-The TIP4P-ICE water model is a rigid wnrkater model with 4 sites for each water molecule: One O-site, two H-sites, and a site commonly referred to as the M-site. The M-site is supposed to slightly move the oxygen charge, and it is situated on the bisector of the H-O-H angle. The parameters for the arrangement as well as the masses of hydrogen and oxygen are taken from experimental observations, and were listed in table \ref{tb:intro:h2odata}.
+TIP4P is a rigid water model with 4 sites for each water molecule: One O-site, two H-sites, and a site commonly referred to as the M-site. The M-site is supposed to slightly move the oxygen charge, and it is situated on the bisector of the H-O-H angle. The parameters for the arrangement as well as the masses of hydrogen and oxygen are taken from experimental observations, and were listed in table \ref{tb:intro:h2odata}.
 
 \begin{table}[h!tb]
 \caption{Parameters for TIP4P-ICE model as in \cite{Abascal2005}.}
@@ -56,7 +54,9 @@ Hydrogen charge & $q_H$ & \SI{0.520}{\elementarycharge} & \SI{0.5564}{\elementar
 \end{tabular}
 \end{table}
 
-\section{OPLS methane}
+\section{Optimized Potentials for Liquid Simulations (OPLS)}
+
+\subsection{OPLS methane}
 OPLS-UA and OPLS-AA. I will choose OPLS-UA for simplicity. Another potential might be used in the future. 
 United atom methane is the united atom model for methane, and is effectively a single Lennard-Jones interaction site for each methane molecule. 
 \begin{equation}
