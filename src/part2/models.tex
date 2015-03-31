@@ -103,11 +103,10 @@ The nonbonded interaction is a Lennard--Jones plus a Coulombic potential. The pr
 
 All interaction-sites are centered on the atoms, i.e. there are no massless sites like in the water models.
 
-\subsection{OPLS methane}
-OPLS-UA and OPLS-AA. I will choose OPLS-UA for simplicity. Another potential might be used in the future. 
-United atom methane is the united atom model for methane, and is effectively a single Lennard-Jones interaction site for each methane molecule. 
+\subsection{OPLS United-atom methane}
+The methane hydrate model of \citet{Walsh2009}  (which I am going to use) uses one of the simplest OPLS-models for methane: OPLS United-atom (OPLS-UA). United atom methane is the united atom model for methane, and is effectively a single Lennard-Jones interaction site for each methane molecule. 
 \begin{equation}
-	U_{LJ} = 4\varepsilon\left[\left(\frac{\sigma}{r_{MM}}\right)^{12} - \left(\frac{\sigma}{r_{MM}}\right)^{6}\right]
+	E_{MM} = 4\varepsilon\left[\left(\frac{\sigma}{r_{ij}}\right)^{12} - \left(\frac{\sigma}{r_{ij}}\right)^{6}\right]
 	\label{eq:part1:lennardjonespotentialmethane}
 \end{equation}
 A parameter set for this methane representation can for example be taken from \cite{Martin1998}, and are listed in \ref{tb:parameters_unitedatommethane}. 
@@ -126,17 +125,17 @@ Lennard-Jones characteristic distance & $\sigma_{MM}$ & \SI{3.73}{\angstrom}
 \end{table}
 
 \section{Combining particles of different species in a model}
-Having different potentials, for different aggregate particles (such as TIP4P/ICE), we want a way to combine them in a model containing both species. For electrostatic interactions, the combination rules are straightforward, as they follow from Coulombs law. For Lennard-Jones interactions, there is not such a simple combination law, and in principle, one has to fit parameters for each unique pair of particles. Luckily, it is possible to make rules that combine particles without going into an extensive parameter fitting exercise. 
+Having different potentials, for different aggregate particles (such as TIP4P/ICE), we want a way to combine them in a model containing both species. For electrostatic interactions, the combination rules are straightforward, as they follow from Coulombs law. For Lennard-Jones interactions, combination rules don't appear automatically, and in principle one has to fit parameters for each unique pair of particles. Luckily, perople have worked out formulas that work reasonably well without going into an extensive parameter fitting exercise. 
 
-\subsection{Lorentz-Berthelot combination rules}
-Perhaps the simplest way to combine two species Lennard-Jones particles, is to use the following rules from two sets of parameters ($\varepsilon_{ii}$, $\sigma_{ii}$) and ($\varepsilon_{jj}$, $\sigma_{jj}$) for interactions between two particles of the same species i or j, on to a set of parameters ($\varepsilon_{ij}$, $\sigma_{ij}$) for interactions between one particle of each species:
+One simple way, which is the one that is used in \citet{Walsh2009}, is to use the following rules from two sets of parameters ($\varepsilon_{ii}$, $\sigma_{ii}$) and ($\varepsilon_{jj}$, $\sigma_{jj}$) for interactions between two particles of the same species i or j, on to a set of parameters ($\varepsilon_{ij}$, $\sigma_{ij}$) for interactions between one particle of each species:
 \begin{align}
 \varepsilon_{ij} = \sqrt{\varepsilon_{ii}\varepsilon_{jj}} \\
 \sigma_{ij} = \frac{1}{2} \left(\sigma_{ii}+\sigma_{jj}\right)
 \end{align}
+These are called Lorentz--Berthelot combination rules.
 
 \section{TIP4P-ICE + OPLS-UA methane}
-We now have all the ingredients we need to model a methane hydrates: A water model, a methane model, and a way to make the water and the methane interact with each other. This model is essentially a description of the total energy of a system consisting of particles with known positions and momenta. The next step is to use molecular dynamics to explore the properties of this model, and to see if we can use this model to learn something about methane hydrate.
+The necessary ingredients for a potential model for methane hydrates are now presented: A water model, a methane model, and a way to make the water and the methane interact with each other. This model is essentially a description of the total energy of a system consisting of particles with known positions and momenta. The next step is to decide on what kinds of systems to model, i.e. what are the initial positions going to be, and that are the thermodynamic conditions going to be during simulation?
 
 \section{A system for studying fracture of methane hydrates}
 It was suggested by \citet{Ning2012} to find basic mechanical properties like Young's modulus and Poisson's ratio and the fracture toughness of methane hydrates using molecular dynamics. Particulary, they propose to study methane hydrates with a dislocation subjected to tensile stress. Since I have not found any studies on the tensile strength of methane hydrates using molecular dynamics, I choose to model a system close to the simplest case in fracture mechanics: A rectancular prismatic piece of methane hydrate with an artificial elliptical prismatic crack spanning its z-direction. This system will be subjected to tensile stress normal to the crack plane. Apart from the crack that is carved out, the hydrate lattice will be fully occupied with methane molecules. Studies of partly occupied lattices are left for future work.

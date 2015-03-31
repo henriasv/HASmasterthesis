@@ -393,6 +393,19 @@ Since the system doesn't seem tom have equilibrated (the potential energy is sti
 \subsection{Waiting time for fracture}
 In the simulations with $T=\SI{260}{\kelvin}$, the waiting time was whort for the highly strained samples, and the samples subjected to too little strain didn't fracture. Between these extremes, there was no general rule that higher strains gave shorter waiting times. The simulations with $T=\SI{280}{\kelvin}$, on the other hand, showed more systematic behavior, and generally shorter waiting times. It is possible that the variation in waiting time is smaller when temperature increases, and especially when exceeding the melting temperature of pure water in the given model.
 
+\begin{figure}
+\centering
+\includegraphics[width=12cm]{../figures/thesis/area_speed_stress_all.pdf}
+\caption{Crack area (top panel), crack speed (middle panel) and tensile stress (lower panel). Simulation temperatures are \SI{260}{\kelvin} (solid lines) and \SI{280}{\kelvin} (dashed lines). Strains: 0.044 (blue) 0.045 (orange), 0.046 (yellow), 0.0465 (violet), 0.047 (green), 0.0475 (cyan), 0.048 (purple). The colors are the same as in the legend of figure \ref{fig:fracture_theory_compare}. }
+\label{fig:area_speed_stress_all}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=12cm]{../figures/thesis/area_speed_stress_all_zoomed.pdf}
+\caption{Crack area (top panel), crack speed (middle panel) and tensile stress (lower panel). The panels are the same as the ones in \ref{fig:area_speed_stress_all}, but they are significantly zoomed.}
+\end{figure}
+
 \subsection{Crack tip speed}
 There is a significant relationship between the crack tip speed and the strain before fracture. 
 
@@ -416,7 +429,7 @@ Parameters & Surface energy \\
 Figure \ref{fig:fracture_theory_compare} shows the global tensile stress in the \SI{280}{\kelvin} simulations plotted against the crack length. The results agree well with the Griffith thory for brittle solids. It might be that this plot can aid the understanding of two separate mechanisms for fracture. some process slowly increases the crack width and reduces the tensile stress, until -- at some point -- the crack width-tensile stress configuration is such that it allows for rapid crack growth. This should be determined by whether the simulation follows a less steep slope than some critical line, which is probably close to the finite width Griffith line.
 \begin{figure}
 \centering
-\includegraphics[width=12cm]{../figures/thesis/fracture_theory_compare.pdf}
+\includegraphics[width=12cm]{../figures/thesis/stress_area_lefm.pdf}
 \caption{Relationship between tensile stress and crack width during dynamic runs. Markers indicate where critial fracture is estimated to have started (judgement call from looking at the fracture speed). It is the position of the markers that determine whether this is a good agreement with Griffith or Inglis theory. The crack width is estimated as $A_s/2L_z$, and it is clear that it is over-estimated at the end of the simulation (at full crack opening). It is not clear whether the crack length is over-estimated at the early stages of crack propagation. When straining is finished, which is at the point where the stress reaches its maximum, the crack area is quite exactly estimated to the length of the crack that was carved out, namely \SI{40}{\angstrom}. The theory curves (Inglis and Griffith) are calculated using $E=\SI{7.1}{\giga\pascal}$ and $\gamma_s = \SI{0.21}{\joule\per\meter\squared}$ The finite width curve is made using equation \ref{eq:griffith_finite_sheet}. The legend indicate the maximum strain level in each simulation, and the diffenrent theoretical curves.}
 \label{fig:fracture_theory_compare}
 \end{figure}
