@@ -82,7 +82,7 @@ A simple three-particle bonding potential, which is often used in combination wi
 The latter potentials are common for creating small molecules that will not take part in chemical reactions, such as water in ice simulations. I my simulations, I will use rigid water, which effectively means that $k\to\infty$ for the harmonic bond and angle potentials. In practice the rigidity will be treated with dedicated algorithms.
 
 \section{Time integration}
-In order to solve the newtonian equations of motion numerically, a numerical scheme is needed. For particles in conservative fields -- fields in classical molecular dynamics are conservative -- the velocity Verlet scheme is usually preferred @CiteFrenkelSmit.p.69. 
+In order to solve the newtonian equations of motion numerically, a numerical scheme is needed. For particles in conservative fields -- fields in classical molecular dynamics are conservative -- the velocity Verlet scheme is usually preferred \cite[p. 69]{frenkel2001understanding}. 
 
 \subsection{Velocity Verlet}
 The velocity Verlet algorithm is:
@@ -92,9 +92,11 @@ The velocity Verlet algorithm is:
 \end{align}
 The velocity Verlet integrator is symplectic. Being symplectic can be defined in a very strict mathematical way, but for the purposes of this work, it is sufficient to note that a symplectic integrator conserves a Hamiltonian that is only slightly perturbed relative to the Hamiltonian from which it tries to solve Hamiltons equations. This in turn means that in practice it conserves energy. Therefore the velocity Verlet algorithm can be used to sample the microcanonical ensemble (NVE).
 
+\section{Simulation box}
+MD simulations can in principle be performed in infinite space, but it is usually best to confine the simulation to a specified region. Most commonly, the simulation is performed in a box with periodic boundary conditions (PBC). In PBC, a particle that leaves the simulation box reappears on the opposite side of the simulation box, keeping its velocity. There are two main reasons why PBC in beneficial for simulations in confined regions: First, it is the simplest choice. Any other choice would imply either some sort of wall interaction or particles just disappearing. Secondly, it allows for sampling bulk properties of the system, since the system is in priciple infinite. This should however be done with caution, since there are well-known finite size effects of unsing PBC, such as the diffusion coefficient being lower for smaller simulation boxes.
+
 \section{Temperature}
-\citet{Hunenberger2005} Says a lot about temperature and thermostats@
-The instantanous temperature $T$ in molecular dynamics is defined using the equipartition theorem:
+The instantanous temperature $T$ in molecular dynamics is usually defined using the equipartition theorem:
 \begin{equation}
 	\langle E_k \rangle = \frac{f}{2}k_B T
 \end{equation}
@@ -120,7 +122,8 @@ A considerable improvement from the rescaling approach is the thermostat of \cit
 Where $T_{bath}$ is the temperature of the heat bath that is coupled to the MD-system to keep the temperature constant. This step is applied just after velocity calculation in the time integration scheme. Since the portion of energy belonging to respectively potential and kinetic energy vary in time as particles move according to the equaitions of motion, the actual value of $\mathcal{T}$ will not develop according to \ref{eq:berendsen}. The thermostat is just a mechanism that tries to push the system towards a kinetic energy corresponding to a given temperature $T_{bath}$.
 
 \subsection{Nosé-Hoover thermostat}
-The Nosé-Hoover thermostat represents a more complicated couplig to a heat bath than the Berendsen thermostat. A MD system propagated using the Nosé-Hoover thermostat will sample the canonical ensemble. 
+The Nosé-Hoover thermostat represents a more complicated couplig to a heat bath than the Berendsen thermostat. A MD system propagated using the Nosé-Hoover thermostat will sample the canonical ensemble. This presentation of the Nosé--Hoover thermostat follows the presentation of \citet{Hunenberger2005}.
+
 
 Les us begin by writing down the Lagrangian of the MD system with no temperature control (NVE).
 
@@ -128,13 +131,13 @@ Les us begin by writing down the Lagrangian of the MD system with no temperature
 	\mathcal{L}(\rvec, \dot\rvec) = \frac{1}{2} \sum_{i=1}^N m_i \dot\rvec_i^2 - \mathcal{U(\rvec)}
 \end{equation}
 
-The basic idea of the Nosé-Hoover thermostat is to introduce an extra dynamic variable to the equations of motiong, effectively creating an \emph{extended} system, which is almost equal to the original system, which we will denote the \emph{real} system. The Lagrangian of the extended system is chosen to be:
+The basic idea of the Nosé-Hoover thermostat is to introduce an extra dynamic variable to the equations of motion, effectively creating an \emph{extended} system, which is almost equal to the original system, which we will denote the \emph{real} system. The Lagrangian of the extended system is chosen to be:
 
 
 \begin{equation}
 	\mathcal{L}_e(\tilde\rvec, \dot{\tilde\rvec}, \tilde{s}, \dot{\tilde s}) = \frac{1}{2}\sum_{i=1}^N m_i \tilde s^2 \dot{\tilde\rvec}_i^2 - \mathcal{U}(\tilde\rvec) 
 	\tikz[baseline] {
-		\node [fill=green!20, anchor=base] (t1) {$+ \frac{1}{2} Q \dot{\tilde s}^2 - gk_BT_0 \ln\tilde s $};
+		\node [fill=green!20, anchor=base] (t1) {$+ \frac{1}{2} Q \dot{\tilde s}^2 - gk_BT_{\text{bath}} \ln\tilde s $};
 	}
 \end{equation}
 
@@ -149,20 +152,22 @@ The corresponding equations of motion are (in the extended system):
 
 \begin{align}
 	\ddot{\tilde\rvec}_i & = m_i^{-1} \tilde s^{-2} \tilde{\mathbf{F}}_i - 2\tilde s^{-1} \dot{\tilde s} \dot{\tilde\rvec}_i \\
-	\ddot{\tilde s} & =  Q^{-1} \tilde s^{-1} \left(\sum_{i=1}m_i\tilde s^2 \dot{\tilde\rvec}_i - gk_bT_0\right)
+	\ddot{\tilde s} & =  Q^{-1} \tilde s^{-1} \left(\sum_{i=1}m_i\tilde s^2 \dot{\tilde\rvec}_i - gk_bT_{\text{bath}}\right)
 \end{align}
 
-This is the thermostat of \citet{Nose1984}, and in the real system it samples the canonical ensemble. However, the velocity-scaling between the real and the extended system effectively leads to uneven time intervals in the real system. Hoover later overcame this problem, and showed that the equation of motion Nosé-algorithm could be equivalently formulated in the real system as:
+This is the thermostat of \citet{Nose1984}, and in the real system it samples the canonical ensemble. However, the velocity-scaling between the real and the extended system effectively leads to uneven time intervals in the real system. Hoover later overcame this problem, and showed that the equations of motion in the Nosé-algorithm could be equivalently formulated in real system coordinates:
 
 \begin{align}
 	\ddot \rvec_i & = m_i^{-1} \mathbf{F}_i -\gamma \dot\rvec_i \\
-	\dot \gamma & = -k_b f Q^{-1} \mathcal{T} \left(\frac{g}{f} \frac{T_0}{\mathcal{T}}-1\right)
+	\dot \gamma & = -k_b f Q^{-1} \mathcal{T} \left(\frac{g}{f} \frac{T_{\text{bath}}}{\mathcal{T}}-1\right)
 \end{align}
 
-This is known as the Nosé-Hoover thermostat \cite{PhysRevA.31.1695}. It is common to introduce a characteristic timescale for the Nosé-Hoover thermostat, since time is more intuitive than mass in MD simulations. 
+This is known as the Nosé-Hoover thermostat \cite{PhysRevA.31.1695}. Note that this is still a formulation of the \emph{extended} system, but it is formulated in \emph{real} system coordinates. The \emph{real} system -- all $\ddot\rvec_i$'s -- now sample the canonical ensemble in real system coordinates with an even timestep.
+
+It is common to introduce a characteristic timescale for the Nosé-Hoover thermostat, since time is more intuitive than mass in MD simulations. 
 
 \begin{equation}
-	\tau_{NH} = (fk_b T_0)^{-\frac{1}{2}} Q^{\frac{1}{2}}
+	\tau_{NH} = (fk_b T_{\text{bath}})^{-\frac{1}{2}} Q^{\frac{1}{2}}
 \end{equation}
 
 Three types of temperature have now been introduced: Thermodynamic temperature $T$, instant temperature $\mathcal{T}$, and heat bath temperature $T_{bath}$. From here on, I will use the symbol $T$ for all of them, unless two different temperatures appear in the same equation. It should always be clear from the context what $T$ means. For example: A temperature referred from an experiment will always be a temperature measurement, which tries to measure $T$, while a temperature specified for a thermostatted molecular dynamics simulation will be $T_{bath}$.
@@ -214,14 +219,14 @@ For the method to be effective, the variations in charge density in the part cal
 There are several methods that calculate the Ewald sum. They differ for example in how they mesh the charge distribution for fourier transforms. It is crucial for computational eficiency to be able to use the fast fourier transform (FFT), so the mesh has to support FFT. In a paper concerining different methods to cacluate Ewald sums, \citet{Deserno1998} states, in a thorough paper reviewing the accuracy of mesh routines for Ewald sums, that the partilce-particle-particle-mesh routine (P$^3$M) by \citet{Hockney:1988:CSU:62815} is the ``most accurate and versatile routine'' for Ewald sums. 
 
 \section{Rigid groups of particles}
-There are several ways to keep a group of atoms constrained as a rigid molecule. The goal of constraint algorithms is to obtain the same positions and velocities as if the equations of motion were integrated in coordinates incorporationg the holonomic constraints, but without explicitly using these coordinates. The SHAKE algorithm by \citet{Ryckaert1977} is the most common constaint algorithm. For the particular case of three rigid atoms, like a water molecule, the SETTLE algorithm \cite{Miyamoto1992} is an analytical solution when integrating numerically the equations of motion. 
+There are several ways to keep a group of atoms constrained as a rigid molecule. The goal of constraint algorithms is to obtain the same positions and velocities as if the equations of motion were integrated in coordinates incorporationg the holonomic constraints, but without explicitly using these coordinates. The SHAKE algorithm by \citet{Ryckaert1977} is the most common constaint algorithm. For the particular case of three rigid atoms, like a water molecule, the SETTLE algorithm \cite{Miyamoto1992} is an analytical solution when integrating numerically the equations of motion.
 \label{sec:shake}
-@MentionRelationToMinimization
 
 \section{Measurements}
+I this section, I describe two transport properties (self diffusion coeficient and viscositgy) and one structural property (the radial distribution function), and explain how to measure them in MD.
 
-\subsection{Thermal Diffusivity}
-Thermal diffusivity can be measured with the Einstein relation:
+\subsection{Self-diffusion coefficient}
+Self-diffusion is the diffusion of a labeled particle of a species among other partivles of the same species. Like in regular diffusion, the expected concentration of this particle in time will be governed by Fick's law.The self-diffusion coefficient can be measured with the Einstein relation:
 \begin{equation}
 	D_E = \lim_{t\to\infty} \frac{1}{6} \frac{\dd \langle \left|\rvec(t) - \rvec(0)\right|^2\rangle}{\dd t}
 	\label{eq:Einstein_diffusivity}
@@ -243,7 +248,7 @@ Where $\sigma_{\alpha\beta}$ are independent off-diagonal elements of the stress
 For the purpose of estimating viscosities, the autocorrelation function is only well sampled for $t <<< \tau$. Luckily, the autocorrelation function is essentially zero for times larger that some system-specific characteristic time, which is usually in the order of picoseconds, at least for water. That means $\eta_{GK}(t, \tau)$ can provide good estimates of the viscosity for molecular dynamics simulations that last for nanoseconds.
 
 
-Following \cite{Yeh2004}, it would also be possible to calculate the viscosity using the finite size effect on the thermal diffusivity.
+Following \cite{Yeh2004}, it would also be possible to calculate the viscosity using the finite size effect on the self-diffusion constant.
 
 \subsection{Radial distribution function}
 The radial distribution function (RDF), $g(r)$, describes how the density of particles vary with the distance between particles. It can be defined as:
@@ -253,6 +258,8 @@ The radial distribution function (RDF), $g(r)$, describes how the density of par
 \end{equation}
 
 Where $r$ is taken from a selected particle, and $\rho(r)$ is the number density of particles within the sherical shell $(r, r+\dd r)$. In practice, the RDF is sampled using all particles as the origin in order to collect as much statistics as possible. The RDF is useful to identify crystal structures and for verification of simulations. 
+
+The simplest way to measure the RDF is to loop over all pairs of particles, measure the distance between them and put the distances in bins.
 
 
 \begin{comment}

@@ -311,11 +311,6 @@ A more straightforward approach, which is more computationally demanding, is to 
 \label{fig:free_methane}
 \end{figure}
 
-\begin{figure}
-\centering
-\includegraphics[width=10cm]{../figures/thesis/free_methane_nz1_nz2.pdf}
-\caption{Free methane in time for systems with $L_z \approx \SI{12}{\angstrom}$ (dashed lines) $L_z\approx \SI{24}{\angstrom}$ (solid lines) for different values of the final strain (legend). Free methane is normalized by the number of unic cells in the fracture plane, so the plotted value is: $\text{Free Methane Molecules}\cdot L_{sI}^2/(L_yL_z)$.}
-\end{figure}
 
 \paragraph{Problems with this method}
 \begin{itemize}
@@ -323,7 +318,17 @@ A more straightforward approach, which is more computationally demanding, is to 
 \item Instant number of free methanes is not available.
 \end{itemize}
 
-\subsection{Estimate by mean squared displacement}
+\subsection{Results on free methane}
+Figure \ref{fig:free_methane_diff_l} shows the amount of free methane during simulation for two different thicknesses of the system. The number of free methanes is rescaled using the number of sI unit cells per cross section parallell to the crack. With full occupancy, the number of methanes per sI cell is 8, and if a whole plane of unit cells released their methanes, that would yield a number of 8 free methanes after rescaling. The number of free methanes shows no significant variance with the system thickness. This is a bit surprising, since the crack propagation has seemed more jittery for thinner systems, which could have led to mer methane being released. It might still be an effent, but in that case the effect must be small. 
+
+\begin{figure}
+\centering
+\includegraphics[width=10cm]{../figures/thesis/free_methane_nz1_nz2.pdf}
+\caption{Free methane in time for systems with $L_z \approx \SI{12}{\angstrom}$ (dashed lines) $L_z\approx \SI{24}{\angstrom}$ (solid lines) for different values of the final strain (legend). Free methane is normalized by the number of unic cells in the fracture plane, so the plotted value is: $\text{Free Methane Molecules}\cdot L_{sI}^2/(L_yL_z)$.}
+\label{fig:free_methane_diff_l}
+\end{figure}
+
+\subsection{Diffusion in the crack space}
 Before landing on counting the number of free methanes, I explored an indirect way of measuring the amount of free methane. The idea was to assume the motion of the free methane to be diffusive. The diffusion constant could then be measured and compare to what it would have been if all methane molecules were free to move. Unfourtunately, the diffusion constant varies too much with the density of the methane gas for this to be a viable method -- both the number of methane molecules and the volume of the pore space is unknown. Furtermore, diffusion is not expected to be the same in pores as in a bulk Lennard-Jones fluid (see eg. \citet[p. 18]{Pozhar:1668293}. Therefore, this method was discarded. An additional problem is the global oscillations after crack propagation, which might furter disturb the diffusion of particles. 
 
 But, even though measuring the number of free methanes by mean squared displacement turned out to be difficult, the diffusion constant of the free methane can still be interesting to measure. Knowing the number of free methane molecules, and assuming the rest of the methanes have exhausted their potential for contributiong to the mean squared displacement, the diffusion constant in the pore space can be measured. Figure \ref{fig:msq_methane_crack} shows the per-particle mean squared displacement of methane and water in the full-analysis simulation. The slope of the mean squared displacement is calculated to \SI{0.74}{\angstrom\squared\per\pico\second}, which corresponds to a diffusion coefficient of $D_E = \SI{1.2d-9}{\meter\squared\per\second}$. That value makes little sense, as it includes the enclathrated methane. When correcting for the fration of methane molecules that are considered free to move, in this simulation it is 2.4 \%, the diffusion coefficient of the free methane is $D_E = \SI{5.3d-8}{\meter\squared\per\second}$. This value is probably an underestimation of the diffusion coefficient for the particles that are actually diffsing, as many methanes are trapped by the wall. What can be said, however, is that this is a very high diffusion coefficient, which, given the temperature, corresponds to a low pressure. A possible simulation to compare with, is a simulation by \citet{Cao2004} of Lennard-Jones methane in carbon nanotubes. At a temperature of \SI{267}{\kelvin}, they found self-diffusion coefficients for methane of around \SI{1d-8}{\meter\squared\per\second} to \SI{10d-8}{\meter\squared\per\second} for pressures ranging from \SI{1}{\mega\pascal} to \SI{8}{\mega\pascal}. The simulations were done in carbon nanotubes with diameters from \SI{20}{\angstrom} to \SI{40}{\angstrom}. This comparison is farfetched, but it is reassuring that the results are in the right ballpark. It should be noted that the methane I observe in the crack is very dilute, possibly to the extent where Knudsen diffusion is a reasonable approximation. The methane being dilute is not obvious from the pictures of the system, since methanes that are behind each other seem to crowd the crack. If looking at the thinner system $L_z \approx \SI{12}{\angstrom}$, the diluteness becomes clear.
@@ -392,7 +397,7 @@ In the simulations with $T=\SI{260}{\kelvin}$, the waiting time was whort for th
 There is a significant relationship between the crack tip speed and the strain before fracture. 
 
 \subsection{Free methane}
-Methane is freed almost instantly during crack propagation, which is opposed to the possibility of a very sharp crack where methane would have to diffuse out of their cages after crack propagation. It is also worth noting that the proportion of methane that is freed during rapid surface area growth is of the same order as the proportion of surface area that is grown during rapid area growth.
+Methane is freed almost instantly during crack propagation, which is opposed to the possibility of a very sharp crack where methane would have to diffuse out of their cages after crack propagation. It is also worth noting that the proportion of methane that is freed during rapid surface area growth is of the same order as the proportion of surface area that is grown during rapid area growth. That means methane is quickly released -- it does not stay in the mydrate lattice and then diffuse out.
 
 
 \subsection{Surface energy}
