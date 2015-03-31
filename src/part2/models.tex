@@ -1,18 +1,48 @@
 \chapter{A model for methane hydrates}
 \label{ch:models}
-With the theoretical framework of molecular dynamics in place, I go on to introduce specific potentials, and choose which one to use to model cracks in methane hydrates.  
+With the theoretical framework of molecular dynamics in place, I go on to introduce specific potentials, and choose which one to use to model cracks in methane hydrates. This chapter bridges the theory presentation to my work. 
+
+Some force fields are developed with one specific application in mind, while others give a general functional form that can be parametrized for a wide range of applications. Examples of the latter are the AMBER force field \cite{Cornell1995} and the OPLS force field \cite{Jorgensen1988}. The OPLS force field will be explained in more detail. It is also common to distingush these force fields from the water potentials that are used along with them. Since water is complicated to model, it is best treated separately. In this chapter I will describe the TIP4P water model and the SPC water model.
 
 \section{Criteria for a sufficient model}
-I will model fracture of methane hydrates. If the methane hydrates are pure, i.e. no sediments nearby, it is reasonable to assume that noe chemical reactions will take place. Conversely, if the hydrate are to be modeled near for example a silicon oxide surface, chemical reactions can be important. Since chemical reactions are not expected to occur in pure hydrates, bonding potentials can be used for covalent bonds. The transferable interpotential models (TIP-models) are popular models that use bonding potentials for the OH-bonds. Since I will model fracture, the mechanical properties should be reasonably represented. I lack experience with water models, so I end up using a model that other people have shown to work. Specifically, I choose a model that was able to spontaneously nucleate methane hydrates in molecular dynamics simulations. The strategy is to use a model that successfully reproduced some feature of methane hydrates to study another feature. This means we cannot immediatly trust the model, and this study is just as much a test of whether the model I choose is suitable for studying fracture of methane hydrates.
+I will model fracture of methane hydrates. If the methane hydrates are pure, i.e. no sediments nearby, it is reasonable to assume that noe chemical reactions will take place. Conversely, if the hydrate are to be modeled near for example a silicon oxide surface, chemical reactions can be important. Since chemical reactions are not expected to occur in pure hydrates, bonding potentials can be used for covalent bonds. The transferable interpotential models (TIP-models) are popular models that use bonding potentials for the OH-bonds. For applications on fracture, it is important that mechanical properties are reasonably represented. 
 
-\section{TIP4P water model}
-The TIP4P/ICE was developed by \citet{Abascal2005} as a reparametrization of the TIP4P water model. TIP4P was used by \citet{Matsumoto2002} in the first successfull simulations of nucleation of ice crystals in molecular dynamics, and TIP4P/ICE was used by \citet{Walsh2009} in the first successful simulation of spontaneous methane hydrate nucleation. 
+Since this is the first time I choose a molecular dynamics potential, I will use a model that other people have shown to work. Specifically, I choose the model that was able to spontaneously nucleate methane hydrates in MD simulations. Thus the strategy is to use a model that successfully reproduced some feature of methane hydrates to study another feature. This means that the model cannot be immidiately trusted, and this study is just as much a test of whether the model I choose is suitable for studying fracture of methane hydrates as an actual study of fracture.
 
-\subsection{Overview}
-TIP4P is a rigid water model with 4 sites for each water molecule: One O-site, two H-sites, and a site commonly referred to as the M-site. The M-site is supposed to slightly move the oxygen charge, and it is situated on the bisector of the H-O-H angle. The parameters for the arrangement as well as the masses of hydrogen and oxygen are taken from experimental observations, and were listed in table \ref{tb:intro:h2odata}.
+First an overview of some models.
+
+\section{Water models}
+
+Molecular dynamics water models most commonly contain eiter 3 or 4 interaction sites. Sometimes 5 or 6 sites are used, but they are more computationally expensiv and less common. The 5- and 6-site models were developed later than the 3- and 4-site models, which might also be a reason why they are less popular. A clear difference between 5- and 6-site models and the ones with fewer sites, are the L-sites, which enables the model to give more structure to the energy surface of the \emph{water dimer} \cite{Mahoney2000}. A selection of common site configurations are given in figure \ref{fig:water_models}. 
+
+All the water models illustrated in figure \ref{fig:water_models} have their mass placed on the oxygen and hydrogen sites. Additionally, there is a positive charge on each hydrogen atom. The negative charge associatied with the oxygen atom is either put on the atom itself (3-site model) or in its entirety moved to one, two or three massless sites (4-, 5- and 6-site models) called M-site and/or L-sites. These massless sites distribute the force acting on them betwenn the massive particles when the equations of motion are integrated.
+
+For simple water models (which are widely used), there are Coulomb interactions between charged sites, and Lennard--Jones interactions between the oxygens. Some models also include a Lennard--Jones interaction between the hydrogen sites, but that is less common.
+
+
+\begin{figure}
+\centering
+\chemnameinit{\chemfig{O(-[:-142]H)(-[:-38]H)(-[:270]M)(<:[:70]L)(<[:110]L)}}
+\chemname{\chemfig{O(-[:-142]H)(-[:-38]H)}}{3-site model}\qquad
+\chemname{\chemfig{O(-[:-142]H)(-[:-38]H)(-[:270, 0.5]M)}}{4-site model}\qquad
+\chemname{\chemfig{O(-[:-142]H)(-[:-38]H)(<:[:70]L)(<[:110]L)}}{5-site model}\qquad
+\chemname{\chemfig{O(-[:-142]H)(-[:-38]H)(-[:270, 0.5]M)(<:[:70]L)(<[:110]L)}}{6-site model}
+\chemnameinit{}
+\caption{Different kinds of molecular water models.}
+\label{fig:water_models}
+\end{figure}
+
+\subsection{SPC water model}
+The SPC water model is a 3-site model with a different spatial configuration than the experimental configuration of the nuclei of the water molecule. Rather than using the experimental HOH angle of \SI{104.52}{\degree}, is uses the ideal tetrahedral angle of \SI{109.47}{\degree}. 
+
+\subsection{TIP4P water model}
+The TIP4P water model was introduced by \citet{Jorgensen1983} in 1983. Since then, the model has gone through several reparametrizations. The TIP4P/2005 parameter set has been found to give the best overall performance in water smulations, but there also exist a parametrization specifically made for the solid phases of water: TIP4P/ICE, parametrized by \citet{Abascal2005}. TIP4P was used by \citet{Matsumoto2002} in the first successful simulation of nucleation of ice crystals in molecular dynamics, and TIP4P/ICE was used by \citet{Walsh2009} in the first successful simulation of spontaneous methane hydrate nucleation. 
+
+TIP4P is a rigid water model with 4 sites for each water molecule: One O-site, two H-sites, and a site commonly referred to as the M-site. This corresponds to the second model from the left in figure \ref{fig:water_models}. The M-site is supposed to slightly move the oxygen charge, and it is situated on the bisector of the H-O-H angle. The parameters for the spatial configuration as well as the masses of hydrogen and oxygen are taken from experimental observations, and were listed in table \ref{tb:intro:h2odata}. The HOH-angle and the OH-bonds are rigid. The electrostatic interactions are coulombic, and the oxygen--oxygen interaction is a Lennard--Jones interaction. The parameters are given in table \ref{tbl:tip4p_ice}. For reference, parameters for the original TIP4P model and the 2005 reparametrization are given in table \ref{tbl:tip4p_parameters}.
 
 \begin{table}[h!tb]
 \caption{Parameters for TIP4P-ICE model as in \cite{Abascal2005}.}
+\label{tbl:tip4p_ice}
 \begin{center}
 \begin{tabular}{c|c|c}
 Description & Symbol & Value \\ 
@@ -21,25 +51,22 @@ Lennard-Jones energy & $\varepsilon/k$ & \SI{100.5}{\kelvin} \\
 Lennard-Jones characteristic distance & $\sigma_{OO}$ & \SI{3.155}{\angstrom} \\
 Distance O-site to M-site along bisector & $d_{OM}$ & \SI{0.157}{\angstrom} \\
 Hydrogen charge & $q_H$ & \SI{0.5676}{\elementarycharge} \\
+Oxygen charge & $q_O$ & $2q_H$ 
 \end{tabular}
 \end{center}
 \end{table}
 
-\subsection{Interactions}
-There are two interaction potentials for TIP4P-ICE: electrostatic interactions and Lennard-Jones (LJ) interactions, with the following functional forms:
+\paragraph{Equations for the TIP4P interactions}
+To be explicit about the functional forms of the TIP4P model, I give them below:
 
 \begin{align}
-	U_{LJ} & = 4\varepsilon\left[\left(\frac{\sigma}{r_{OO}}\right)^{12} - \left(\frac{\sigma}{r_{OO}}\right)^{6}\right]
+	E_{LJ} & = 4\varepsilon\left[\left(\frac{\sigma}{r_{OO}}\right)^{12} - \left(\frac{\sigma}{r_{OO}}\right)^{6}\right]
 	\label{eq:part1:lennardjonespotential}
 	\\
-	U_{\si{\elementarycharge}} & = \frac{\si{\elementarycharge\squared}}{4\pi\varepsilon_0} \sum_{a, b} \frac{q_aq_b}{r_{ab}}
+	E_{\si{\elementarycharge}} & = \frac{\si{\elementarycharge\squared}}{4\pi\varepsilon_0} \sum_{a, b} \frac{q_aq_b}{r_{ab}}
 	\label{eq:part1:electrostaticpotential}
-\end{align}
-
-Since the molecules are treated as rigid, interactions are only between sites on different molecules. 
-
-\subsection{Parameters for the TIP4P family}
-TIP4P is a family of potentials, of which TIP4P/ICE is one member. The TIP4P potentials differ only in the values of their parameters. TIP4P/ICE has not been thoroughly investigated, and therefore, several simple properties such as the shear viscosity are unknown. To be able to verify my use of the TIP4P/ICE, i will do simulations with parameters from other TIP4P models for verification, and then I will work out properties for the TIP4P model. For this I need parametes for additional members of the TIP4P family. I these parameters in table \ref{tbl:tip4p_parameters}.
+\end{align} 
+The Lennard--Jones interaction is between oxygens, and the electrostatic interaction is between all charged sites of different molecules (but not beteen siten belonging to the same molecule).
 
 \begin{table}
 \caption{Parameters for the different parametrizations in the TIP4P family.}
@@ -51,10 +78,30 @@ Lennard-Jones energy & $\varepsilon/k$ & \SI{78.0}{\kelvin} & \SI{93.2}{\kelvin}
 Lennard-Jones characteristic distance & $\sigma_{OO}$ & \SI{3.154}{\angstrom} & \SI{3.1589}{\angstrom} \\
 Distance O-site to M-site along bisector & $d_{OM}$ & \SI{0.150}{\angstrom} & \SI{0.1546}{\angstrom} \\
 Hydrogen charge & $q_H$ & \SI{0.520}{\elementarycharge} & \SI{0.5564}{\elementarycharge} \\
+Oxygen charge & $q_O$ & $2q_H$ & $2q_H$ 
 \end{tabular}
 \end{table}
 
 \section{Optimized Potentials for Liquid Simulations (OPLS)}
+
+\subsection{Potential model}
+The OPLS force field has the following contributions to the potential energy:
+\begin{equation}
+	E(\rvec^N) = E_{\text{bond}} + E_{\text{angle}} + E_{\text{torsion}} + E_{\text{nonbonded}} 
+\end{equation}
+Where the individual energy contributions are defined as follows:
+\begin{align}
+	E_{\text{bond}} & = \sum_{\text{bonds}} K_r (r-r_0)^2 \\
+	E_{\text{angle}} & = \sum_{\text{angles}} K_{\theta} (\theta-\theta_0)^2 \\
+	E_{\text{torsion}} & = \sum_{\text{dihedrals}} \frac{1}{2}K_1(1+\cos\phi) + \frac{1}{2}K_2(1-\cos 2\phi) + \frac{1}{2}K_3(1+\cos 3\phi) + \frac{1}{2}K_4(1-\cos 4\phi) \\
+	E_{\text{nonbonded}} & = \sum_{i>j} f_{ij} \left(\frac{A_{ij}}{r_{ij}^{12}} - \frac{C_{ij}}{r_{ij}^{6}}+ \frac{q_iq_je^2}{4\pi\epsilon_0 r_{ij}}\right)
+\end{align}
+
+For the torsion contribution, $\phi$ is the dihedral angle (the angle between two planes) defined by three vectors connecting four atoms. The torsion contribution given here is slightly simplified compared to the original OPLS force field, but it \emph{is} the version that is implemented in LAMMPS.
+
+The nonbonded interaction is a Lennard--Jones plus a Coulombic potential. The prefactor $f$ is the so-called \emph{fudge factor}, and is $0.5$ for particles that are three bonds apart. Closer than 3 three bonds it is zero, and otherwise it is 1.
+
+All interaction-sites are centered on the atoms, i.e. there are no massless sites like in the water models.
 
 \subsection{OPLS methane}
 OPLS-UA and OPLS-AA. I will choose OPLS-UA for simplicity. Another potential might be used in the future. 

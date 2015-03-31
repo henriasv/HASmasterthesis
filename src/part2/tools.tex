@@ -211,7 +211,9 @@ LAMMPS was designed to be easily extendable, and in my opinion that turns out to
 
 I have made @number extension to LAMMPS.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Region {\tt eprism} -- elliptical prism}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \label{subsec:reg_eprism}
 I have written a simple extension to LAMMPS, which enables med to define regions formed like elliptical prisms. This is needed to carve out elliptical holes for my simulations. 
 
@@ -242,6 +244,8 @@ I was not going to use the surface functions, so I only needed to implement {\tt
 \includegraphics[width=8cm]{../snapshots/carved_crack.pdf}
 \caption{An elliptic crack carved out using {\tt region eprism}}
 \end{figure}
+
+\subsection{Usage}
 
 \section{General Utility Lattice Program}
 It is cumbersome to calculate stiffness paramenters using molecular dynamics. Therefore I use a dedicated program -- General Utility Lattice Program (GULP) -- to caculate these parameters. @IProbablyWontUseGulpForTheMaster

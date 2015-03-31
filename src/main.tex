@@ -1,4 +1,4 @@
-\documentclass[twoside, english, a4paper, 11pt]{../../uiofysmaster/uiofysmaster}
+\documentclass[twoside, english, a4paper, 11pt]{uiofysmaster}
 %\includeonly{part1/molecular_dynamics_theory, geometry}
 \usepackage{HASstyle}
 
@@ -8,6 +8,7 @@
 
 %\citestyle{authoryear}
 \begin{document}
+\pagenumbering{arabic}
 \maketitle
 
 \include{intro/abstract}
@@ -15,7 +16,11 @@
 
 \tableofcontents
 
+\setcounter{page}{11}
+
+\addcontentsline{toc}{chapter}{List of figures}
 \listoffigures
+\addcontentsline{toc}{chapter}{List of tables}
 \listoftables
 
 \include{intro/introduction}
@@ -36,7 +41,6 @@
 
 \part{Appendices}
 \appendix
-%\include{appendices/geometry}
 \include{appendices/templates}
 \include{appendices/abel_setup}
 
