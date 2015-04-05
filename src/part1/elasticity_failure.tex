@@ -274,31 +274,31 @@ It is now convenient to introduce a new quantity, the surface energy $\gamma_s$.
 	\label{eq:surface_energy}
 \end{equation}
 
-Young's modulus should (from its definition) be the slope of the stress for small strains. With the stress from equation \ref{eq:atomic_force} the slope around equilibrium is $\frac{\pi\sigma_c}{x_0}$. Since Young's modulus is defined from relative deformations, this has to be multiplied with $x_0$ to get the relative slope. The result for Young's modulus is:
+Young's modulus should (from its definition) be the slope of the stress with respect to strain. The slope of the stress with respect to distance in equation \ref{eq:atomic_force} is $\frac{\pi\sigma_c}{x_0}$, which means Young's modulus is:
 \begin{equation}
 E = \pi\sigma_c
 \label{eq:youngs_atomistic}
 \end{equation}
 
-Combining equations \ref{eq:surface_energy} and \ref{eq:youngs_atomistic} one obtains an estimate of the cohesive strength of atom bonds using only \emph{one} microscopic parameter:
+Combining equations \ref{eq:surface_energy} and \ref{eq:youngs_atomistic} one obtains an estimate of the cohesive strength of atom bonds using only \emph{one} atomic scale parameter, $x_0$:
 \begin{equation}
 	\sigma_c = \sqrt{\frac{E\gamma_s}{x_0}}
 	\label{eq:critical_local}
 \end{equation}
-Setting the cracktip stress from equation \ref{eq:stress_consentration} equal to the critical local stress from equation \ref{eq:critical_local}, and assuming that the radius of curvature is equal to the distance between atoms (this turns out to be a good assumption), we get an expression for the critical faraway stress level:
+Setting the cracktip stress from equation \ref{eq:stress_consentration} equal to the critical local stress from equation \ref{eq:critical_local}, and assuming that the radius of curvature is equal to the distance between atoms (this turns out to be a good assumption, and removes the atomic scale parameter), we get an expression for the critical faraway stress level:
 \begin{equation}
 	\sigma_f = \sqrt{\frac{E\gamma_s}{4a}}
 	\label{eq:inglis_formula}
 \end{equation}
-Which is the Inglis formula for the fracture stress on a large sheet with a crack of width $2a$.
+This is the Inglis formula for the fracture stress on a large sheet with a crack of width $2a$.
 
 In 1920, Griffith improved on the flaw-approach, but instead of building a theory from the atomic level, he assumed the following: A crack will propagate from a flaw if the strain energy that will be released during crack growth is higher than the corresponging surface energy associated with the created crack surface. The surface energy density is denoted $\gamma_s$ and have units of energy per area. Griffith's approach works well for ideally brittle materials. The formula for critical faraway stress with Griffiths theory is:
 \begin{equation}
 	\sigma_f = \sqrt{\frac{2E\gamma_s}{\pi a}}
 \end{equation}
-For an elliptic crack of width $2a$. This expression is actually equal to the expression of Inglis, except for a factor. But Griffith's theory is based solely on continuum mechanics.
+For an elliptic crack of width $2a$ (Same conditions as with Inglis' theory). This expression is actually equal to the expression of Inglis, except for a factor, even though Griffith's theory is based solely on continuum mechanics.
 
- For a sheet of finite width, the fracture stress is slightly lower, since the crack actually weakens the materal (the cross sectional area bearing the stress is shrinking). The exact expression for a sheet of width $2W$ is:
+For a sheet of finite width, the fracture stress is slightly lower, since the crack actually weakens the materal (the cross sectional area bearing the stress is shrinking). The exact expression for a sheet of width $2W$ is:
 
  \begin{equation}
  	\sigma_f = \sqrt{\frac{2E\gamma_s}{2W\tan\left( \frac{\pi a}{2W}\right)}}
@@ -311,32 +311,35 @@ For reference, I also include the formula for the fracture stress of a penny-sha
 \end{equation}
  
 
-
- Irwin refined Griffiths approach, and introduced the \emph{energy release rate}, $\mathcal{G}$. The energy release rate is a property of the elastic state of a linearly elastic material. According to Irwin, a crack will propagate when $\mathcal{G}$ becomes larger than a material-specific value $\mathcal{G}_c$ -- the \emph{critical} energy release rate. This differs from Griffith's theory, since the critical energy release rate doesn't necessarily have to be the same as the surface energy growth rate. For a crack of width $2a$ on an infinite plate subjected to tensile stress, the energy release rate is:
+ Irwin refined Griffiths approach, and introduced the \emph{energy release rate}, $\mathcal{G}$. The energy release rate is a property of the elastic state of a linearly elastic material. According to Irwin, a crack will propagate when $\mathcal{G}$ becomes larger than a material-specific value $\mathcal{G}_c$ -- the \emph{critical} energy release rate. This differs from Griffith's theory, since the critical energy release rate doesn't necessarily have to be the same as the surface energy. For a straight crack of width $2a$ (no longer required to be elliptic) on an infinite plate subjected to tensile stress, the energy release rate is:
 
 \begin{equation}
 	\mathcal{G} = \frac{\pi \sigma^2 a}{E}
 \end{equation}
 
-This is a purely a relation concerning how a linear elastic material distributes energy during crack opening. In the particular case of an elliptical crack on an infinite sheet, we see that the longer the crack, the higher the energy release rate. This fits with the intuition that a larger flaw will reduce the strength of a material. Note that the material doesn't get weaker because the flaw reduces the load-bearing area (the sheet is infinite). The material gets weaker because a longer crack increases the elastic energy that gets released when the crack grows.
+This is purely a relation concerning how a linear elastic material distributes energy during crack opening. In the particular case of a straight crack on an infinite sheet, we see that the longer the crack, the higher the energy release rate. This fits with the intuition that a larger flaw will reduce the strength of a material. Note that the material doesn't get weaker because the flaw reduces the load-bearing area (the sheet is infinite). The material gets weaker because a longer crack increases the elastic energy that gets released per crack area grown. The critial value can be measured experimentally using a sample with an artificial flaw whose length is known, and measure the yield pressure. 
 
-The critial value can be measured experimentally using a sample with an artificial flaw whose length is known and measure the yield pressure. 
+Notice that the formula for energy release rate is actually equivalent to the Griffith formula, equation \ref{eq:griffith_finite_sheet}, except that the surface energy $2\gamma_s$ is swapped with the energy release rate.
 
 Irwin also introduced another property, which is equivalent to the energy release rate, namely the \emph{stress intensity factor}, $K$. The stress intensity factor is a constant of proportionality between the applied stress on a crack and the stress distribution around the crack tip. This is very similar to the approach of Inglis, but it not only concerns the strength of a single atomic bond, but rater the whole stress distribution. So unlike Inglis' theory, the stress intensity factor is a continuum property. For mode I loading, the stress intensity factor is defined by:
 \begin{equation}
 	\lim_{r \to 0} \sigma_{ij}^I = \frac{K_I}{\sqrt{2\pi r}} f_{ij}(\theta)
 \end{equation}
-Where $r$ is the distance from the crack tip and $\theta$ is the angle from the crack axis. Both the energy release rate and the stress intensity factor concern the distribution of a remote stress, but the stress intensity factor says how the stress is distributed near the crack tip, whereas the energy release rate says how much mechanical energy will released if the new crack surface opens. 
+Where $r$ is the distance from the crack tip and $\theta$ is the angle from the crack axis. Both the energy release rate and the stress intensity factor concern the distribution of a remote stress, but the stress intensity factor says how the stress itself is distributed near the crack tip, whereas the energy release rate says how much mechanical energy will released if new crack surface opens. 
+
+Like the energy release rate, the stress intensity factor can take a critical value; the \emph{critical stress intensity factor} $K_c$. Under mode I loading it is called $K_{Ic}$. This is the standard measure of fracture toughness.
+
+For the sake of history, a quick and dirty summary of the development of linear elastic fracture mechanics: Leonardos random flaws inspired Inglis to calculate the stress concentration around sharp cracks in an atomistic approach. Griffith thought an energy balance was a better, and that earned him a prefactor. He created the same theory as Inglis, but got rid of the atomistic view. Irwin decoupled the theory from the actual surface energy and also introduced the stress intensity factor, which is almost like the Inglis' stress concentration, but it is more rigorously defined and fits in a continuum theory.
 
 \subsection{Stress intensity factors in anisotropic materials}
-This section was originally written in case the methane hydrate was to be analysed as an anisotropic material. That will not happen, but the section is kept to show how quicly the calculations get messy when considering anisotropic materials. Simple fracture theory assumes that one only need one parameter to describe the fracture properties of a material, the critical stress intensity factor under tensile loading -- the fracture toughness. Having obtained the fracture area and the energy release rate. a generalized irwin formula can be used to calculate the stress intensity factor:
+This section was originally written in case the methane hydrate was to be analysed as an anisotropic material. That will not happen, but the section is kept to show how quicly the calculations get messy when considering anisotropic materials. Having obtained the fracture area and the energy release rate. a generalized irwin formula can be used to calculate the stress intensity factor \cite{Laubie2014}:
 
 \begin{equation}
-	G = \pi \vec{K}^T [\vec{H}] \vec{K} 
+	\mb{\mathcal{G}} = \pi \vec{K}^T [\vec{H}] \vec{K} 
 \end{equation}
 
 
-Where $\vec{H}$ is a matrix that depends on the elastic properties of the material. This expression is valid for a plane crack propagating in two opposite directions with symmetric load with respect to the two directions of crack propagation. In the case of mode I loading, only one of the elements of the $\vec{H}$-matrix nees to be known, $H_{11}$. This matix element was worked out by \cite{Laubie2014}, and is:
+Where $\vec{H}$ is a matrix that depends on the elastic properties of the material. This expression is valid for a plane crack propagating in two opposite directions with symmetric load with respect to the two directions of crack propagation. In the case of mode I loading, only one of the elements of the $\vec{H}$-matrix nees to be known, $H_{11}$. This matix element was worked out by \citet{Laubie2014}, and is:
 
 \begin{equation}
 	H_{11} = \frac{1}{2\pi} \sqrt{\frac{C_{11}}{C_{11}C_{33}-C^2_{13}}\left( \frac{1}{C_{44}} + \frac{2}{C_{13} + \sqrt{C_{11} C_{33}}}\right)}
@@ -345,9 +348,11 @@ Where $\vec{H}$ is a matrix that depends on the elastic properties of the materi
 For isotropic materials under mode I loading, we recover a more familiar expression; Irwins formula for plane strains:
 
 \begin{equation}
-	K_c = \sqrt{\frac{EG_c}{1-\nu^2}}
+	K_{Ic} = \sqrt{\frac{E\mathcal{G}_{c}}{1-\nu^2}}
 	\label{eq:energy_release_to_stress_intensity_isotropic}
 \end{equation}
+
+
 
 \section{Stress consentrations around an elliptical hole}
 There are several analytical solutions for stress concentrations for isotropic materials with failures of specific geometries. A particularly interesting solution for my purposes is the stress concentration near the crack tip of an elliptic crack in an infinitely large sheet of linearly elastic and isotropic material \cite{Anderson2005}. I give the equations for a crack along the y-axis with a stress applied along the x-axis.

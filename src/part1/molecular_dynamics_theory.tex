@@ -3,22 +3,22 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Molecular dynamics is a method for simulating systems of particles. It is assumed that the particles behave classically -- each particle obeys Newtons second law $\sum \mb{F} = m\ddot{\rvec}$. The forces are calculated using interaction potentials, and each particle can in priciple interact with all other particles in the system:
+Molecular dynamics is a method for simulating systems of point particles. It is assumed that the particles behave classically; each particle obeys Newtons second law $\sum \mb{F} = m\ddot{\rvec}$. The forces are calculated using interaction potentials, and each particle can in priciple interact with all other particles in the system:
 \begin{equation}
 	\mb{F}_i = -\nabla U_i(\rvec^N)
 \end{equation}
-Where $\rvec^N = \rvec_1, \dots, \rvec_N$ are the positions of all the particles in the system. In the simple case of two-particle interactions of one type we get:
+Where $\rvec^N = \rvec_1, \dots, \rvec_N$ are the positions of all the particles in the system. In the simple case of two-particle interactions of one type, the potential on each particle becomes:
 \begin{equation}
 	\mb{F}_i = \sum_{j=1}^N -\frac{\partial U(\rvec_{ij})}{\partial \rvec_{ij}}
 \end{equation}
 
-This is in principle all that is needed to do molecular dynamics (if we have a potential $U$). However, many details arise when implementing specific potentials, and when we want to control simulations. In order to get results that are relevant to the real world, we often have to apply complicated potentials. It is also common that we want to control thermodynamic properties such as temperature and pressure. While complicated potential are just rules that we impose within the framework presented above, details concerning controlling thermodynamic properties will actually alter the fundamental equations. 
+Given a potential $U$, this is in principle all that is needed to do molecular dynamics. However, many details arise when implementing specific potentials, and when the thermodynamic conditions for the simulations are to be controlled. In order to get results that are relevant to the real world, the potentials often have to be quite complicated, involving not only pairwise interactions. While complicated potentials are just rules that imposed within the framework presented above, details concerning controlling thermodynamic properties and boundary conditions will actually alter the fundamental equations. 
 
-There are also details concerning computational efficiency. To be able to simulate large systems over long periods of time -- large and long is relative to molecular scales -- we need methods that ignore the negligible parts of the potentials, but at the same time capture the important parts to sufficient accuracy. Usually this is done by setting a cutoff radius beyond which interactions are ignored. 
+There are also details concerning computational efficiency. To be able to simulate large systems over long periods of time -- large and long is relative to molecular scales -- the methods must ignore negligible parts of the potentials, but capture the important parts to sufficient accuracy.
 
 \section{Potentials}
 
-In molecular dynamics, it is natural to define two types of interactions -- and therefore two types of potentials -- based on how they relate groups of atoms. Non-bonding interactions depend on the spatial configurations of each possible set of a specific kind, for example all triplets of Si-atoms. Bonding interactions depend on the spatial configuration of specific predfined sets of particles. The total potential is the sum of the contributions from these potentials: 
+In molecular dynamics, it is natural to define two types of interactions, and therefore two types of potentials, based on how they relate groups of atoms. \emph{Non-bonding interactions} depend on the spatial configurations of each possible set of particles of a specific kind, for example all triplets of Si-atoms or all HOO triplets (sorted that way). \emph{Bonding interactions} depend on the spatial configuration of specific predfined sets of particles. The total potential is the sum of the contributions from these potentials: 
 
 \begin{equation}
 	U_{\text{tot}} = U_{\text{non-bonding}} + U_{\text{bonding}} 
@@ -28,12 +28,13 @@ These definitions should not be confused with the distiction between covalent an
 
 \subsection{Non-bonding potentials}
 \label{sec:non_bonding_potentials}
-I will use two non-bonding potentials in this thesis: Lennard-Jones and Coulomb.
-A simple and widely used potential is the Lennard-Jones potential. For two particles separated by a distance $r$, the Lennard-Jones potential is:
+I will use two non-bonding potentials in this thesis: The Lennard-Jones potential and the Coulomb potential.
+The Lennard-Jones potential is simple and widely used. For two particles separated by a distance $r$, the Lennard-Jones potential is:
 \begin{equation}
 	U_{LJ} = 4\varepsilon\left[\left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^{6}\right]
 \end{equation}
-The first term represents Pauli repulsion, and the second represents van der Waals attraction. $\sigma$ is a characteristic length which is of the same order of magnitude as the distance at which the inter-particle force is zero. $\varepsilon$ is the depth of the potentiall well -- a measure of the strength of the interaction. The Lennard-Jones potential is computationally attractive as there is no need to calculate the square roots of the distances between the particles. The Lennard-Jones potential is given in terms of reduced units. Since most studies of Lennard-Jones systems report results in these units, the equations defining the  reduced units are included in table \ref{tbl:lj_parameters}.
+(Do not confuse $\sigma$ and $\epsilon$ with stress and strain in elasticity).
+The first term represents Pauli repulsion, and the second represents van der Waals attraction. $\sigma$ is a characteristic length which is close to the equilibrium distance between two particles. $\varepsilon$ is the depth of the potentiall well -- a measure of the strength of the interaction. The Lennard-Jones potential is computationally attractive because there is no need to calculate square roots of distances between particles. The Lennard-Jones potential is given in terms of reduced units. Since most studies of Lennard-Jones systems report results in these units, the equations defining some properties in reduced units are included in table \ref{tbl:lj_parameters}.
 
 \begin{table}
 \centering
@@ -54,7 +55,7 @@ The Coulomb potential -- a potential for static charges -- is used for charges p
 	U_e = k\frac{q_iq_j}{r_{ij}}
 \end{equation}
 
-As an example of a simple three-particle non-bonding potential, I include the Stillinger-Weber potential @citeStillingerWeber1985:
+As an example of a simple three-particle non-bonding potential, I include the silicon potential by \citet{Stillinger1985}:
 \begin{equation}
 	U_{SW} = \sum_i \sum_{j>i} \phi_2(r_{ij}) + \sum_i \sum_{j\neq i} \sum_{k>j} \phi_3(r_{ij}, r_{ik}, \theta_{ijk})
 \end{equation}
@@ -65,24 +66,24 @@ As an example of a simple three-particle non-bonding potential, I include the St
 	\phi_3(r_{ij}, r_{ik}, \theta_{ijk}) = \lambda\varepsilon\left[ \cos{\theta_{ijk}} - \cos{\theta_0}\right]^2 \exp\left( \frac{\gamma\sigma}{r_{ij}-a\sigma}\right) \exp\left(\frac{\gamma \sigma}{r_{ik}-a\sigma} \right)
 \end{equation}
 
-Note the exponential tails on the potential, resulting in the potential and its derivative going to zero when $r_{ij}$ gets large.
+Note the exponential tails on the potential, resulting in the potential and its derivative going to zero when $r_{ij}$ gets large. The functional form of this potential is quite flexible, and of the Stillinger–Weber potential has been used for example to model water using one Stillinger-Weber particle per water molecule. 
 
 \subsection{Bonding potentials}
-Bonded potentials only apply for a specific group of particles. I give the expression for the potential energy of single groups below.
-A simple two-particle bonding potential is the harmonic bond potential:
+Bonded potentials only apply for a specific group of particles. A simple two-particle bonding potential is the harmonic bond potential:
 \begin{equation}
-	U_{HB} = k(r_{12} - r_0)^2
+	U_{HB} = k(r - r_0)^2
 \end{equation}
+Where $r_0$ is the equilibrium distance between the particles and $k$ is a constant of propotionality.
 
 A simple three-particle bonding potential, which is often used in combination with the harmonic bond potential is the harmonic angle potential:
 \begin{equation}
-	U_{HA} = k(\theta_{123} - \theta_0)^2
+	U_{HA} = k(\theta - \theta_0)^2
 \end{equation}
 
-The latter potentials are common for creating small molecules that will not take part in chemical reactions, such as water in ice simulations. I my simulations, I will use rigid water, which effectively means that $k\to\infty$ for the harmonic bond and angle potentials. In practice the rigidity will be treated with dedicated algorithms.
+These two latter potentials are common for creating small molecules that will not take part in chemical reactions, such as water in ice simulations. Sometimes these potential are taken to the limit of $k\to\infty$ creating rigid particles. The rigidity is then treated with dedicated algorithms.
 
 \section{Time integration}
-In order to solve the newtonian equations of motion numerically, a numerical scheme is needed. For particles in conservative fields -- fields in classical molecular dynamics are conservative -- the velocity Verlet scheme is usually preferred \cite[p. 69]{frenkel2001understanding}. 
+In order to solve the newtonian equations of motion numerically, a discrete scheme is needed. For particles in conservative fields -- fields in classical molecular dynamics are conservative -- the velocity Verlet scheme is usually preferred \cite[p.69]{frenkel2001understanding}. 
 
 \subsection{Velocity Verlet}
 The velocity Verlet algorithm is:
@@ -93,7 +94,7 @@ The velocity Verlet algorithm is:
 The velocity Verlet integrator is symplectic. Being symplectic can be defined in a very strict mathematical way, but for the purposes of this work, it is sufficient to note that a symplectic integrator conserves a Hamiltonian that is only slightly perturbed relative to the Hamiltonian from which it tries to solve Hamiltons equations. This in turn means that in practice it conserves energy. Therefore the velocity Verlet algorithm can be used to sample the microcanonical ensemble (NVE).
 
 \section{Simulation box}
-MD simulations can in principle be performed in infinite space, but it is usually best to confine the simulation to a specified region. Most commonly, the simulation is performed in a box with periodic boundary conditions (PBC). In PBC, a particle that leaves the simulation box reappears on the opposite side of the simulation box, keeping its velocity. There are two main reasons why PBC in beneficial for simulations in confined regions: First, it is the simplest choice. Any other choice would imply either some sort of wall interaction or particles just disappearing. Secondly, it allows for sampling bulk properties of the system, since the system is in priciple infinite. This should however be done with caution, since there are well-known finite size effects of unsing PBC, such as the diffusion coefficient being lower for smaller simulation boxes.
+MD simulations can in principle be performed in infinite space, but it is usually best to confine the simulation to a specified region. Most commonly, the simulation is performed in a box with periodic boundary conditions (PBC). In PBC, a particle that leaves the simulation box reappears on the opposite side of the simulation box, keeping its velocity. There are two main reasons why PBC in beneficial for simulations in confined regions: First, it is the simplest choice. Any other choice would imply either some sort of wall interaction or particles just disappearing. Secondly, it allows for sampling bulk properties of the system, since the system is quiasi-infinite. This should however be done with caution, since there are well-known finite size effects of unsing PBC, such as the self-diffusion coefficient being lower for smaller simulation boxes (To be discussed in chapter \ref{ch:verification}).
 
 \section{Temperature}
 The instantanous temperature $T$ in molecular dynamics is usually defined using the equipartition theorem:
@@ -107,9 +108,9 @@ Where $f$ is the number of kinetic degrees of freedom and $T$ is the thermodynam
 	\mathcal{T} \equiv \frac{2E_k}{3 Nk_B} = \frac{1}{3 k_B} \frac{1}{N}\sum_{i=1}^{N} m_iv_i^2
 \end{equation}
 
-When a temperature measure is defined, various schemes can be applied to control the temperature of a molecular dynamics simulation. Such schemes are called thermostats, and they all try to couple the MD system to an external heat bath. Some thermostats can be shown to make the system sample a known thermodynamic ensemble, whereas others do not correspond to any statistical ensemble. Thermostatting is closely related to integration in the sense that thermostatting represents a change in the integration scheme. Some thermostats, like the Nose-Hoover thermostat, explicitly change the equations of motion, while others, like the simpler Berendsen thermostat only implicitly change the equations of motion by introducing an artificial velocity rescaling. 
+When a temperature measure is defined, various schemes can be applied to control the temperature of a molecular dynamics simulation. Such schemes are called thermostats, and they all try to couple the MD system to an external heat bath, either to get a system to a specific temperature running in the microcanonical ensemble (NVE), or to run a simulation and sample properties in the canonical ensemble (NVT). Some thermostats can be shown to make the system sample a known thermodynamic ensemble, whereas others do not correspond to any known ensemble. Some thermostats, like the Nose-Hoover thermostat, explicitly change the equations of motion, while others, like the simpler Berendsen thermostat, only implicitly change the equations of motion by introducing an artificial velocity rescaling. 
 
-The simplest way to control the temperature is to rescale all velocities such that the above equation yields the correct value for the temperature -- but that results in unrealistic dynamics, and it does not represent any ensemble.
+The simplest way to control the temperature is to rescale all velocities such that the above equation yields the correct value for the temperature -- but that results in unrealistic dynamics, and it does not represent any ensemble. The instantaneous temperature is not supposed to be constant, neither in the canonical ensemble nor in the microcanonical. 
 
 \subsection{Berendsen thermostat}
 A considerable improvement from the rescaling approach is the thermostat of \citet{Berendsen1984}. The Berendsen thermostat introduces a timescale for the velocity rescaling by adding a temperature-dependant friction term to the equations of motion. The idea is to weakly couple the system to a heat bath by rescaling particle velocities to satisfy:
@@ -199,7 +200,7 @@ The virial tensor, again found in \citet{Thompson2009} is:
 	\mb{W}(\rvec^N) = \sum_{k \in \mb{0}} \sum_{w=1}^{N_k} \rvec_w^k \otimes \mb{F}^k_w
 \end{equation}
 
-\section{Cutoffs and Long range corrections}
+\section{Cutoffs and long-range corrections}
 Large-scale molecular dynamics simulations ($N \sim 10^6$) are unattainable if interactions between all particles are to be calculated. Molecular dynamics simulations with only pairwise interactions require $\mathcal{O}(N^2)$ calculations to be performed. To reduce the computational complexity, a cutoff radius $r_{cut}$ is introduced: Only interactions between particles that are closer to each other than the cutoff radius can interact. Introducing a cutoff radius reduces the time complexity of an MD simulation from $\mathcal{O}(N^2)$ to $\mathcal{O}(N)$. 
 
 Most potentials fall off quickly, so that the error introduced by $r_{cut}$ is negligible. For some potentials however, for instance the electrostatic potential, a cutoff introduces large errors, rendering simulation results useless. Luckily, there are techniques that handle long-range interactions without explicitly calculating the forces between every pair of particles. These methods are based on a method developed by \citet{ANDP:ANDP19213690304} to calculate the energy of ionic crystals. I will briefly describe the idea of these methods -- a thorough understanding and description is out of the scope of my project.
