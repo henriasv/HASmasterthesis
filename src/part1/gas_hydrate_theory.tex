@@ -3,7 +3,7 @@
 Gas hydrates are clathrate compounds, which means they consist of host molecules forming a lattice that traps guest molecules. Special to clathrate \emph{hydrates}, which are clathrates where water form the lattice, is that the structure is stabilized by the guests, and would collapse into regular ice or liquid water without guests present. Metane hydrates are among the more prevalent clathrate hydrates, and are formed by water molecules providing cages that host methane molecules. The most common cage structures are comprised of pentagonal and hexagonal faces forming regular cage stuctures. These structures can be described as replications of relatively simple unit cells. This work focus on methane hydrates, but since other clathrate hydrates have also been researched, and are relevant, they will be mentioned.
 
 \section{Methane hydrates in nature}
-Gas hydrates were probably discovered as early as in the late 1700's by Sir Joseph Priestly, and the definitive confirmation of their existence was done by Sir Humphry Davy in 1810 \cite{Hester2009}. Early studies focused on identifying possible guest molecules in gas hydrates, but when methane-containing hydrates were shown to form in pipelines in 1934 \cite{Hammerschmidt1934}, \emph{methane} hydrates got mote attention, but the discovery of methane hydrates ocurring in natural deposits was not made until the 1960's \cite{Makogon200714}. Methane hydrates are now konwn to occur in mud, sand, permafrost and on the sea floor around the world, within what is called the \emph{methane hydrate stability zone} (MHSZ). The MHSZ is characterized by low temperatures and high pressures compared to the stability zone of pure water ice. Figures \ref{fig:stability_permafrost} and \ref{fig:stability_seawater} illustrate the stability zones in permafrost and under the sea floor, respectively.  Since methane hydrates reserves were discovered, estimates of total reserves have mainly been done for hydrates in marine sediments. The estimates have varied greatly, but the overall tendency has been a decline in the estimated amounts. Early estimates were as high as \SI{10000}{\giga\tonne} of carbon, but it has later been argued that the an amount of 500–\SI{2500}{\giga\tonne} is more reasonable \cite{Milkov2004183}. A fairly recent study by \citet{Wallmann2012} estimate the global reserves of carbon in methane hydrates in marine sediments to be more than \SI{455}{\giga\tonne}. This estimate comes with a geographical distribution of the reserves, which is shown in figure \ref{fig:hydrate_map}. This estimate is much smaller than the early estimates, but it is still large compared to the \emph{proven} natural gas reserves in the world, which is roughly \SI{120}{\giga\tonne} (2013, \cite{CIA2013}) of carbon. It must further be assumed that only a fraction of these resources are recoverable, but these numbers still leave the possibility of methane hydrates playing an important role in the energy mix. Some countries, like Japan and India, are very coal-dependent, and seek to diversify their energy mix. If methane hydrates turn out to be viable, they can be of great economical importance to such countries. 
+Gas hydrates were probably discovered as early as in the late 1700's by Sir Joseph Priestly, and the definitive confirmation of their existence was done by Sir Humphry Davy in 1810 \cite{Hester2009}. Early studies focused on identifying possible guest molecules in gas hydrates, but when methane-containing hydrates were shown to form in pipelines in 1934 \cite{Hammerschmidt1934}, \emph{methane} hydrates got mote attention, but the discovery of methane hydrates ocurring in natural deposits was not made until the 1960's \cite{Makogon200714}. Methane hydrates are now konwn to occur in mud, sand, permafrost and on the sea floor around the world, within what is called the \emph{methane hydrate stability zone} (MHSZ). The MHSZ is characterized by low temperatures and high pressures compared to the stability zone of pure water ice. Figures \ref{fig:stability_permafrost} and \ref{fig:stability_seawater} illustrate the stability zones in permafrost and under the sea floor, respectively. According to the World Ocean Review \cite{Bucker2014}, methane hydrates are mainly found on the continental slopes and in arctic permafrost.  Since methane hydrates reserves were discovered, estimates of total reserves have mainly been done for hydrates in marine sediments. The estimates have varied greatly, but the overall tendency has been a decline in the estimated amounts. Early estimates were as high as \SI{10000}{\giga\tonne} of carbon, but it has later been argued that the an amount of 500–\SI{2500}{\giga\tonne} is more reasonable \cite{Milkov2004183}. A fairly recent study by \citet{Wallmann2012} estimate the global reserves of carbon in methane hydrates in marine sediments to be more than \SI{455}{\giga\tonne}. This estimate comes with a geographical distribution of the reserves, which is shown in figure \ref{fig:hydrate_map}. This estimate is much smaller than the early estimates, but it is still large compared to the \emph{proven} natural gas reserves in the world, which is roughly \SI{120}{\giga\tonne} (2013, \cite{CIA2013}) of carbon. It must further be assumed that only a fraction of these resources are recoverable, but these numbers still leave the possibility of methane hydrates playing an important role in the energy mix. Some countries, like Japan and India, are very coal-dependent, and seek to diversify their energy mix. If methane hydrates turn out to be viable, they can be of great economical importance to such countries. 
 \begin{figure}
 \includegraphics[width=\textwidth]{../pictures/hydrate_map_nice.pdf}
 \caption{Estimated methane hydrate occurences in the world. This map is taken from the World Ocean Review \cite{Bucker2014}, and shows the data of \citet{Wallmann2012}.}
@@ -23,8 +23,8 @@ Gas hydrates were probably discovered as early as in the late 1700's by Sir Jose
 \draw[name path=stability] (0, 4.5) .. controls (3.0, 4.5) and (4, 3.5) .. (4, 0); % Stability
 \draw[name path=geoterm] (0, 6) -- (2, 3.0) -- (6, 0); % Geoterm parmafrost
 \draw[dashed] (0, 3) -- (8, 3) node[above, xshift=-1.7cm] (textpermafrost) {Base of permafrost};
-\fill[blue!40!white!, name intersections={of=stability and geoterm}]
-	(intersection-1) .. controls (2.8, 4.2) and (3.565, 3.6) .. (intersection-2) -- (2, 3.0) -- (intersection-1);
+\fill[blue!40!white!]
+	(0, 4.5) .. controls (3.0, 4.5) and (4, 3.5) .. (4, 0) -- (0, 0) -- (0, 4.5);
 \draw[name path=stability, very thick, postaction={decorate, decoration={text along path, text align=center, raise=2pt, text={Hydrate phase boundary}}}] (0, 4.5) .. controls (3.0, 4.5) and (4, 3.5) .. (4, 0); % Stability
 \draw[red, name path=geoterm, very thick, postaction={decorate, decoration={text along path, text align=left, raise=-10pt, text={Geotherm.}}}](2, 3.0) -- (6, 0); % Geoterm parmafrost
 \draw[red, very thick] (0, 6) -- (2, 3.0);
@@ -33,7 +33,7 @@ Gas hydrates were probably discovered as early as in the late 1700's by Sir Jose
 \draw [decorate,decoration={brace,amplitude=10pt,mirror,raise=4pt},yshift=0pt]
 (8 ,1.55) -- (8, 4.45) node [black,midway,xshift=0.8cm, rotate=90] {GHSZ};
 \end{tikzpicture}
-\caption{Methane hydrate stability zone in permafrost.}
+\caption{Gas hydrate stability conditions to the left of the (black) phase boundary. The red line shows the tempterature as a function of depth. In permafrost, the temperature is always increasing with increasing depth. This leaves a limited depth zone where the temperature–pressure configuration is to the left of the phase boundary. This is the gas hydrate stability zone (GHSZ).}
 \label{fig:stability_permafrost}
 \end{figure}
 
@@ -50,17 +50,17 @@ Gas hydrates were probably discovered as early as in the late 1700's by Sir Jose
 \draw[name path=stability] (0, 4) .. controls (3.0, 4) and (4, 3.5) .. (4, 0); % Stability
 \draw[name path=watertemp] (5, 6) to [out=190, in=85] (2, 3.0) -- (6, 0) ; 
 \draw[dashed] (0, 3) -- (8, 3) node[above, xshift=-1.7cm] (textpermafrost) {Sea floor};
-\fill[blue!40!white!, name intersections={of=stability and watertemp}]
-	(intersection-1) to [out=-15, in=96] (intersection-2) -- (2, 3.0) to [out=85, in=250] (intersection-1);
+\fill[blue!40!white!]
+	(0, 4) .. controls (3.0, 4) and (4, 3.5) .. (4, 0) -- (0, 0) -- (0, 4);
 \draw[name path=stability, very thick, postaction={decorate, decoration={text along path, text align=center, raise=2pt, text={Hydrate phase boundary}}}] (0, 4) .. controls (3.0, 4) and (4, 3.5) .. (4, 0); % Stability
 \draw[red, name path=geoterm, very thick, postaction={decorate, decoration={text along path, text align=left, raise=-10pt, text={Geotherm.}}}](2, 3.0) -- (6, 0); % Geoterm parmafrost
-\draw[red, very thick] (5, 6) to [out=190, in=85] (2, 3.0) -- (6, 0) ; ;
+\draw[red, very thick] (5, 6) to [out=190, in=85] (2, 3.0) -- (6, 0);
 \draw[dashed, very thick, blue] (0, 3.8) -- (8, 3.8);
 \draw[dashed, very thick, blue] (0, 1.55) -- (8, 1.55);
 \draw [decorate,decoration={brace,amplitude=10pt,mirror,raise=4pt},yshift=0pt]
 (8 ,1.55) -- (8, 3.8) node [black,midway,xshift=0.8cm, rotate=90] {GHSZ};
 \end{tikzpicture}
-\caption{Methane hydrate stability conditions to the left of the phase boundary.  The zone between the horizontal dashed lines is the hydrate stability zone.}
+\caption{Gas hydrate stability conditions to the left of the (black) phase boundary. The red line shows the tempterature as a function of depth. In seawater, the temperature falls all the way down to the sea floor, then the temperature follows the geoethermal gradient, which means it increases with depth. This leaves a limited depth zone where the temperature–pressure configuration is to the left of the phase boundary. This is the gas hydrate stability zone (GHSZ). Note that the pressure gradient is smaller in seawater than in permafrost, so the GHSZ starts deeper.}
 \label{fig:stability_seawater}
 \end{figure}
 
@@ -96,7 +96,14 @@ This must be taken into account when going through the experimental results on m
 Much of the research has been done on hydrate-bearing sediments, and functional relationships have been proposed that relate the strength of a hydrate-bearing sediment to the pure hydrate strength and the hydrate saturation (the amount of hydrate in the sediment). But since the strength of the mechanical properties of the hydrate are uncertain, the assessment of such relationships is hard. \citet{Ning2012} consider the mechanical properties of pure hydrates essential for understanding the mechanics of hydrate-bearing sediments. Furthermore, almost all strength tests on methane hydrates, tests where the hydrate is subjected to some stress to break it, are axial compression tests, which leaves a limited basis for comparison with simulations. 
 
 \subsection{Typical experimental setup}
-A main challenge when doing experiments on methane hydrates is that samples of methane hydrate are not stable in room temperature and atmospheric pressure. Therefore, experimental equipment for the study of mechanical properties of hydrates consist of two main parts: A hydrate formation unit, and a measurement unit, so that the hydrate doesn't need to be removed from its stability conditions during measurement. Sometimes, the measurement unit is actually an axial compression chamber, so that axial tests can be done.
+A main challenge when doing experiments on methane hydrates is that samples of methane hydrate are not stable in room temperature and atmospheric pressure. Therefore, experimental equipment for the study of mechanical properties of hydrates consist of two main parts: A hydrate formation unit, and a measurement unit, so that the hydrate doesn't need to be removed from its stability conditions during measurement. Sometimes, the measurement unit is actually an axial compression chamber, so that axial tests can be done. Figure \ref{fig:experimental_setup} shows an experimental setup for measuring elastic wave speeds \cite{Waite2000}.
+
+\begin{figure}
+\centering
+\includegraphics[width=12cm]{../pictures/experimentalsetup.pdf}
+\caption{Example of an experimental setup. Reprinted from \citet{Waite2000} with permission from Wiley.}
+\label{fig:experimental_setup}
+\end{figure}
 
 \subsection{Experimental results}
 Even though we cannot guarantee the purity of methane hydrate samples used in experiments, there are still robust findings that are valuable pointers for numerical investigations. \citet{Waite2000} measured mechanical properties using the compressional and shear wave speeds, and assuming the sample to be isotropic and homogeneous. Their results are given in table \ref{tbl:si_mech_exp}.
@@ -119,9 +126,9 @@ Isothermal Young's modulus & \SI{7.8\pm 0.3}{\giga\pascal}
 In the review by \citet{Ning2012}, it is claimed, based on numerous experiments they reviewed, that the tendency for the compressive strength of methane hydrates, is that it increases with increasing confining pressure and decreasing temperature. But it is also stated that all the other mechanical properties depend highly on the temperature, the pressure, the cage occupancy etc, which means results from experiments under slightly different conditions are hard to compare. A surprising observation with regards to compressional strength, is that methane hydrates exhibit strain-hardening for compressional strains as high as around 15-20 \% \cite{Durham2003, Stern1998}, which is very high compared to regular water ice.
 
 \section{Models of water}
-Water is a fundamental aspect of life on eart, but it is surprisingly difficult to model all aspects of water within the same modeling framework. Water is difficult to model, and many models are developed in the pursuit of understanding water in all its phases and for various types of systems. For example ...(water models) 
+Water is a fundamental aspect of life on earth, but it is surprisingly difficult to model all aspects of water within the same modeling framework. Water is difficult to model, and many models are developed in the pursuit of understanding water in all its phases and for various types of systems. For example ...(water models) 
 
-One can represent the water molecule in many different ways, but the most common picture of the water molecule is the picuture of two hydrogen atoms connected to an oxygen atom. In this representation, the parameters for the distance between the oxyygen and the hydrogen and the angle between them have been foun experimentally. The values are given in table \ref{tb:intro:h2odata}. Another representation of the water molecule is by its wavefunction, which can be visualized for example by the electron density around the nuclei of the molecule. Such a representation can be derived from quantum mechanics. Both representations are illustrated in figure \ref{fig:water_molecule}. The quantum mechanic description is too complex to be directly applied in molecular dynamics, so the molecular dynamics representation must be some variation over the connected-particlies picture. 
+One can represent the water molecule in many different ways, but the most common representation of the water molecule is the ball–stick model of two hydrogen atoms connected to an oxygen atom. In this representation, the parameters for the distance between the oxyygen and the hydrogen and the angle between them have been foun experimentally. The values are given in table \ref{tb:intro:h2odata}. Another representation of the water molecule is by its wavefunction, which can be visualized for example by the electron density around the nuclei of the molecule. Such a representation can be derived from quantum mechanics. Both representations are illustrated in figure \ref{fig:water_molecule}. The quantum mechanic description is too complex to be directly applied in molecular dynamics, so the molecular dynamics representation must be some variation over the connected-particlies picture. 
 
 
 @1933-model @TIP-models.  \citet{Vega2011} review rigid non-polarizable models.
@@ -133,7 +140,7 @@ One can represent the water molecule in many different ways, but the most common
 \subcaptionbox{Electron density representation of the water molecule. The density is caculated with the Hartree-Fock method. Taken from my simulations for a course at the University of Oslo.}{
 \includegraphics[width=0.48\linewidth]{../pictures/h2o_hf_density.png}}
 \end{minipage}
-\caption{Two pictures of the water molecule.}
+\caption{Two representations of the water molecule.}
 \label{fig:water_molecule}
 \end{figure}
 
