@@ -156,6 +156,30 @@ The necessary ingredients for a potential model for methane hydrates are now pre
 \caption{Lennard-jones interactions between methane and water in the TIP4P + OPLS-UA methane model. The hydrogens on the methane are not present in the model. The circle around the methane indicates that it is \emph{one} particle. Coulombic interactions are not indicated, but they are between the H- and M-sites of the two water molecules.}
 \end{figure}
 
-\section{A system for studying fracture of methane hydrates}
-It was suggested by \citet{Ning2012} to find basic mechanical properties like Young's modulus and Poisson's ratio and the fracture toughness of methane hydrates using molecular dynamics. Particulary, they propose to study methane hydrates with a dislocation subjected to tensile stress. Since I have not found any studies on the tensile strength of methane hydrates using molecular dynamics, I choose to model a system close to the simplest case in fracture mechanics: A rectancular prismatic piece of methane hydrate with an artificial elliptical prismatic crack spanning its z-direction. This system will be subjected to tensile stress normal to the crack plane. Apart from the crack that is carved out, the hydrate lattice will be fully occupied with methane molecules. Studies of partly occupied lattices are left for future work.
 
+
+
+\section{A system for studying fracture of methane hydrates}
+It was suggested by \citet{Ning2012} to find basic mechanical properties like Young's modulus and Poisson's ratio and the fracture toughness of methane hydrates using molecular dynamics. Particulary, they propose to study methane hydrates with a dislocation subjected to tensile stress. Since I have not found any studies on the tensile strength of methane hydrates using molecular dynamics, I choose to model a system close to the simplest case in fracture mechanics: A rectancular prismatic piece of methane hydrate with an artificial elliptical prismatic crack spanning its z-direction. This system will be subjected to tensile strain normal to the crack plane. Apart from the crack that is carved out, the hydrate lattice will be fully occupied with methane molecules. Figure \ref{fig:system_fracture} illustrates this system. Studies of partly occupied lattices are left for future work.
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\filldraw[fill=blue!40!white] (0, 0) rectangle (4, 6);
+\draw[very thick] (0,0) -- (4, 0);
+\draw[very thick] (0,6) -- (4, 6);
+\filldraw[fill=white, draw=red, thick, dashed] (2, 3) ellipse (0.25cm and 1cm);
+\foreach \i in {1, 2, 3, 4, 5}
+{
+	\draw[thick, ->] (4, \i) -- (5, \i);
+	\draw[thick, ->] (0, \i) -- (-1, \i);
+}
+\foreach \i in {0.3,0.6,...,3.8}
+{
+	\draw (\i, 0) -- (\i+0.2, -0.2);
+	\draw (\i, 6.0) -- (\i-0.2, 6.2);
+}
+\end{tikzpicture}
+\caption{Illustration of the model system. The blue area is initially a pure sI methane hydrate crystal, and the area inside the red dashed ellipse an empty crack.}
+\label{fig:system_fracture}
+\end{figure}
