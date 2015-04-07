@@ -3,12 +3,67 @@
 Gas hydrates are clathrate compounds, which means they consist of host molecules forming a lattice that traps guest molecules. Special to clathrate \emph{hydrates}, which are clathrates where water form the lattice, is that the structure is stabilized by the guests, and would collapse into regular ice or liquid water without guests present. Metane hydrates are among the more prevalent clathrate hydrates, and are formed by water molecules providing cages that host methane molecules. The most common cage structures are comprised of pentagonal and hexagonal faces forming regular cage stuctures. These structures can be described as replications of relatively simple unit cells. This work focus on methane hydrates, but since other clathrate hydrates have also been researched, and are relevant, they will be mentioned.
 
 \section{Methane hydrates in nature}
-Gas hydrates were probably discovered as early as in the late 1700's by Sir Joseph Priestly, and the definitive confirmation of their existence was done by Sir Humphry Davy in 1810 \cite{Hester2009}. Early studies focused on identifying possible guest molecules in gas hydrates, but when methane-containing hydrates were shown to form in pipelines in 1934 \cite{Hammerschmidt1934}, \emph{methane} hydrates got mote attention, but the discovery of methane hydrates ocurring in natural deposits was not made until the 1960's \cite{Makogon200714}. Methane hydrates are now konwn to occur in mud, sand, permafrost and on the sea floor around the world, within what is called the \emph{methane hydrate stability zone} (MHSZ). The MHSZ is characterized by low temperatures and high pressures compared to the stability zone of pure water ice.  Since methane hydrates reserves were discovered, estimates of total reserves have mainly been done for hydrates in marine sediments. The estimates have varied greatly, but the overall tendency has been a decline in the estimated amounts. Early estimates were as high as \SI{10000}{\giga\tonne} of carbon, but it has later been argued that the an amount of 500–\SI{2500}{\giga\tonne} is more reasonable \cite{Milkov2004183}. A fairly recent study by \citet{Wallmann2012} estimate the global reserves of carbon in methane hydrates in marine sediments to be more than \SI{455}{\giga\tonne}. This estimate comes with a geographical distribution of the reserves, which is shown in figure \ref{fig:hydrate_map}. This estimate is much smaller than the early estimates, but it is still large compared to the \emph{proven} natural gas reserves in the world, which is roughly \SI{120}{\giga\tonne} (2013, \cite{CIA2013}) of carbon. It must further be assumed that only a fraction of these resources are recoverable, but these numbers still leave the possibility of methane hydrates playing an important role in the energy mix. Some countries, like Japan and India, are very coal-dependent, and seek to diversify their energy mix. If methane hydrates turn out to be viable, they can be of great economical importance to such countries. 
+Gas hydrates were probably discovered as early as in the late 1700's by Sir Joseph Priestly, and the definitive confirmation of their existence was done by Sir Humphry Davy in 1810 \cite{Hester2009}. Early studies focused on identifying possible guest molecules in gas hydrates, but when methane-containing hydrates were shown to form in pipelines in 1934 \cite{Hammerschmidt1934}, \emph{methane} hydrates got mote attention, but the discovery of methane hydrates ocurring in natural deposits was not made until the 1960's \cite{Makogon200714}. Methane hydrates are now konwn to occur in mud, sand, permafrost and on the sea floor around the world, within what is called the \emph{methane hydrate stability zone} (MHSZ). The MHSZ is characterized by low temperatures and high pressures compared to the stability zone of pure water ice. Figures \ref{fig:stability_permafrost} and \ref{fig:stability_seawater} illustrate the stability zones in permafrost and under the sea floor, respectively.  Since methane hydrates reserves were discovered, estimates of total reserves have mainly been done for hydrates in marine sediments. The estimates have varied greatly, but the overall tendency has been a decline in the estimated amounts. Early estimates were as high as \SI{10000}{\giga\tonne} of carbon, but it has later been argued that the an amount of 500–\SI{2500}{\giga\tonne} is more reasonable \cite{Milkov2004183}. A fairly recent study by \citet{Wallmann2012} estimate the global reserves of carbon in methane hydrates in marine sediments to be more than \SI{455}{\giga\tonne}. This estimate comes with a geographical distribution of the reserves, which is shown in figure \ref{fig:hydrate_map}. This estimate is much smaller than the early estimates, but it is still large compared to the \emph{proven} natural gas reserves in the world, which is roughly \SI{120}{\giga\tonne} (2013, \cite{CIA2013}) of carbon. It must further be assumed that only a fraction of these resources are recoverable, but these numbers still leave the possibility of methane hydrates playing an important role in the energy mix. Some countries, like Japan and India, are very coal-dependent, and seek to diversify their energy mix. If methane hydrates turn out to be viable, they can be of great economical importance to such countries. 
 \begin{figure}
 \includegraphics[width=\textwidth]{../pictures/hydrate_map_nice.pdf}
 \caption{Estimated methane hydrate occurences in the world. This map is taken from the World Ocean Review \cite{Bucker2014}, and shows the data of \citet{Wallmann2012}.}
 \label{fig:hydrate_map}
 \end{figure}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\draw[very thick,->] (0,6) -- (8,6) node[midway, above] (temptext) {Temperature};
+\draw[very thick,->] (0,6) -- (0,0) node[midway, above, rotate=90] (depthtext) {Depth (pressure)};
+\draw[step=1cm,gray,very thin] (0,0) grid (8,6);
+\foreach \x in {0,1,2,3,4, 5, 6}
+    \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {};
+\foreach \y in {0,1,2,3,4, 5, 6}
+    \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {};
+\draw[name path=stability] (0, 4.5) .. controls (3.0, 4.5) and (4, 3.5) .. (4, 0); % Stability
+\draw[name path=geoterm] (0, 6) -- (2, 3.0) -- (6, 0); % Geoterm parmafrost
+\draw[dashed] (0, 3) -- (8, 3) node[above, xshift=-1.7cm] (textpermafrost) {Base of permafrost};
+\fill[blue!40!white!, name intersections={of=stability and geoterm}]
+	(intersection-1) .. controls (2.8, 4.2) and (3.565, 3.6) .. (intersection-2) -- (2, 3.0) -- (intersection-1);
+\draw[name path=stability, very thick, postaction={decorate, decoration={text along path, text align=center, raise=2pt, text={Hydrate phase boundary}}}] (0, 4.5) .. controls (3.0, 4.5) and (4, 3.5) .. (4, 0); % Stability
+\draw[red, name path=geoterm, very thick, postaction={decorate, decoration={text along path, text align=left, raise=-10pt, text={Geotherm.}}}](2, 3.0) -- (6, 0); % Geoterm parmafrost
+\draw[red, very thick] (0, 6) -- (2, 3.0);
+\draw[dashed, very thick, blue] (0, 4.45) -- (8, 4.45);
+\draw[dashed, very thick, blue] (0, 1.55) -- (8, 1.55);
+\draw [decorate,decoration={brace,amplitude=10pt,mirror,raise=4pt},yshift=0pt]
+(8 ,1.55) -- (8, 4.45) node [black,midway,xshift=0.8cm, rotate=90] {GHSZ};
+\end{tikzpicture}
+\caption{Methane hydrate stability zone in permafrost.}
+\label{fig:stability_permafrost}
+\end{figure}
+
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\draw[very thick,->] (0,6) -- (8,6) node[midway, above] (temptext) {Temperature};
+\draw[very thick,->] (0,6) -- (0,0) node[midway, above, rotate=90] (depthtext) {Depth (pressure)};
+\draw[step=1cm,gray,very thin] (0,0) grid (8,6);
+\foreach \x in {0,1,2,3,4, 5, 6}
+    \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {};
+\foreach \y in {0,1,2,3,4, 5, 6}
+    \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {};
+\draw[name path=stability] (0, 4) .. controls (3.0, 4) and (4, 3.5) .. (4, 0); % Stability
+\draw[name path=watertemp] (5, 6) to [out=190, in=85] (2, 3.0) -- (6, 0) ; 
+\draw[dashed] (0, 3) -- (8, 3) node[above, xshift=-1.7cm] (textpermafrost) {Sea floor};
+\fill[blue!40!white!, name intersections={of=stability and watertemp}]
+	(intersection-1) to [out=-15, in=96] (intersection-2) -- (2, 3.0) to [out=85, in=250] (intersection-1);
+\draw[name path=stability, very thick, postaction={decorate, decoration={text along path, text align=center, raise=2pt, text={Hydrate phase boundary}}}] (0, 4) .. controls (3.0, 4) and (4, 3.5) .. (4, 0); % Stability
+\draw[red, name path=geoterm, very thick, postaction={decorate, decoration={text along path, text align=left, raise=-10pt, text={Geotherm.}}}](2, 3.0) -- (6, 0); % Geoterm parmafrost
+\draw[red, very thick] (5, 6) to [out=190, in=85] (2, 3.0) -- (6, 0) ; ;
+\draw[dashed, very thick, blue] (0, 3.8) -- (8, 3.8);
+\draw[dashed, very thick, blue] (0, 1.55) -- (8, 1.55);
+\draw [decorate,decoration={brace,amplitude=10pt,mirror,raise=4pt},yshift=0pt]
+(8 ,1.55) -- (8, 3.8) node [black,midway,xshift=0.8cm, rotate=90] {GHSZ};
+\end{tikzpicture}
+\caption{Methane hydrate stability conditions to the left of the phase boundary.  The zone between the horizontal dashed lines is the hydrate stability zone.}
+\label{fig:stability_seawater}
+\end{figure}
+
 
 \section{Molecular structure}
 Different hydrate structures form based on the size of the guest molecules. These structures are characterized by what kinds of cages they contain. The cages are described with the notation $x^y$ where $x$ is the number of faces of a cetain type, and $y$ describes the type of face by the number of corners on that face of that type. The most common structures for clathrates with one type of guest molecule are the so called structure I (sI) and structure II (sII). These structures, along with the cages that form them, are illustrated in figure \ref{fig:methane_hydrate_structure}. The sI structure contains $5^{12}$ and $5^{12}6^2$ cages in ratio $1:3$, the sII structure contains $5^{12}$ and $5^{12}6^4$ cages in ratio $2:1$.  
