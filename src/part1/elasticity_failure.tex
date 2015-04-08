@@ -3,14 +3,14 @@
  To have a framework to discuss failure and fracture in methane hydrates, I will introduce some theory of elasticity and failure in linear elastic materials. This will also be needed in order to be explicit about how stresses and strains are imposed on the model systems.
 
  \section{Linear elasticity}
-I will start by introducing the general tensor form of Hooke's law, and then provide the simplifications resulting from looking at an isotropic material. This presentation will take Hooke's law as a given, but it can be derived for example with an energy approach as in \citet[p.105]{Buehler2008}.
+In general, methane hydrates are anisotropic materials. However, they are sufficiently isotropic to be treated as isotropic in this work. I will start by introducing the general tensor form of Hooke's law , and then provide the simplifications resulting from looking at an isotropic material. This presentation will take Hooke's law as a given, but it can be derived for example with an energy approach as in \citet[p.105]{Buehler2008}.
 
 \subsection{Stress and strain}
-Linear elasticity is based on an idea that deformations on a material will result in a linear reaction in terms of forces from that material. \emph{Strain}, $\epsilon$, is a deformation, and it is defined as the relative elongation of a body;
+Linear elasticity is based on the idea that deformations on a material will result in a linear reaction in terms of forces from that material. \emph{Strain}, $\epsilon$, is a deformation, and the \emph{normal} strain is defined as the relative elongation of a body;
 \begin{equation}
 	\epsilon = \frac{l-l_0}{l_0}
 \end{equation}
-Where $l_0$ is the equilibrium length of that body and $l$ is the final length. Actually, this strain is only \emph{normal strain}. Additionally, the body can be subjected to \emph{shear strain}. Shear strain can be defined as the in-plane component of the difference in midpoint position between two facing end planes of an infinitesimal cubic element divided by the equilibrium distance between these planes.
+Where $l_0$ is the equilibrium length of that body and $l$ is the final length. Additionally, the body can be subjected to \emph{shear strain}. Shear strain can be defined as the in-plane component of the difference in midpoint position between two facing end planes of an infinitesimal cubic element divided by the equilibrium distance between these planes.
 
 It is common to use an index notation that clarifies on what plane a strain is present, and in which direction. Strains are denoted $\epsilon_{ij}$ where the first index says what planes are involved in the strain (the index denotes a vector perpendicular to the plane), and the second index says in what direction the strain is present. For instance: $\epsilon_{yy}$ is the relative elongation of the distance between the $xz$ end-planes of an infunitesimal cubic element, whereas $\epsilon_{xy}$ is the $y$-component of the distance between the midpoint of the left and right $yz$-planes divided by the $x$-component of the equilibrium distance between these points.
 
@@ -31,11 +31,11 @@ Stresses cause strains and vice versa. This is reflected in the generalized Hook
 	\sigma_{ij} = c_{ijkl}\epsilon_{kl}
 \end{equation}
 This law relates the Cauchy stress tensor $\sigma_{ij}$ to the strain tensor $\epsilon_{kl}$ in a linearly elastic material. All material properties are contained in the stiffnes tensor $c_{ijkl}$.
-In this form, Hooke's law basically states that ``each component of the cauchy stress tensor depends linearly on \emph{all} components of the strain tensor''. 
+In this form, Hooke's law basically states that each component of the cauchy stress tensor depends linearly on \emph{all} components of the strain tensor. 
 
-Hooke's law contains two tensors of rank 2 with 9 components each, and one tensor of rank 4 with 81 componens. Luckily, there are symmetries to be exploited. First, the Cauchy stress tensor is symmetric, which leads to $c_{ijkl} = c_{jikl}$. Second, the strain tensor is symmetric, so $c_{ijkl} = c_{ijlk}$. This means we are left with 6 independent combinations of each of $ij$ and $kl$, and a total of 36 components. 
+Hooke's law contains two tensors of rank 2 with 9 components each, and one tensor of rank 4 with 81 componens. Fortunately, there are symmetries to be exploited. First, the Cauchy stress tensor is symmetric, which leads to $c_{ijkl} = c_{jikl}$. Second, the strain tensor is symmetric, so $c_{ijkl} = c_{ijlk}$. This means we are left with 6 independent combinations of each of $ij$ and $kl$, and a total of 36 components. 
 
-Using the rank reduction method of Voigt, the stess and strain matrices can be written as vectors:
+Using the rank reduction method of Voigt (\cite{voigt1928lehrbuch}, or any standard book on elasticity), the stess and strain matrices can be written as vectors:
 \begin{equation}
 	\uline{\sigma} = 
 	\begin{pmatrix}
@@ -73,7 +73,6 @@ Using the rank reduction method of Voigt, the stess and strain matrices can be w
 	\end{pmatrix}
 	\label{eq:epsilon_def}
 \end{equation}
-
 For the same reasons, the stiffness tensor can be recuced to rank 2 (I choose not to write out the complete stiffness tensor, only the reduced one):
 \begin{equation}
 	\vec{C} =
@@ -90,12 +89,11 @@ Hooke's law can now be written as a matrix equation:
 \begin{equation}
 	\vec{\sigma} = \vec{C}\vec{\epsilon}
 \end{equation}
-
 It actually turns out that the stiffness matrix is symmetric, because stress and strain are work-conjugates:
 \begin{equation}
 	\sigma_i = \frac{\partial u}{\partial \epsilon_i}
 \end{equation}
-Where $u$ is the energy density associated with the stress-strain configuration.
+Where $u$ is the energy volume density associated with the stress-strain configuration.
 Insering this into Hooke's law gives:
 \begin{equation}
 	C_{ij}=\frac{\partial^2 u}{\partial \epsilon_i \partial \epsilon_j} = \frac{1}{V} \frac{\partial^2 U}{\partial \epsilon_i \partial \epsilon_j} 
@@ -130,23 +128,18 @@ When representing the stress and strain matrices in practice, it is common to di
 	\epsilon_{xx} \\ \epsilon_{yy} \\ \epsilon_{zz} \\ \epsilon_{yz} \\ \epsilon_{xz} \\ \epsilon_{xy}
 	\end{pmatrix}
 \end{equation}
-
-Where the shear stress components have changed from $\sigma$ to $\epsilon$. This is the notation I will use.
+Where the shear stress components have changed from $\sigma$ to $\tau$. This is the notation I will use.
 
 \subsection{Isotropic materials}
 An isotropic matrial is a material where the stiffness properties does not depend on space directions in the material. Isotropic materials can be described by two independent parameters, for example Youngs modulus $E$ and poissons ratio $\nu$. 
-
 Young's modulus can be defined as:
 \begin{equation}
 	E = \frac{\sigma_{xx}}{\epsilon_{xx}}
 \end{equation}
-
-Where $\sigma$ is a stress applied in the same direction as the strain is measured. This strain is known as \emph{normal strain}. Since the directions don't matter in isotropic materials, I have chosen to define Young's modulus along the x-axis. When an isotropic material is subjected to tensile stress, and becomes longer, it will simultaneously contract in the directions normal to the applied tension. This is known as \emph{lateral strain}. The ratio of lateral strain to normal strain is known as \emph{Poisson's ratio}:
-
+Where $\sigma_{xx}$ is a normal stress applied in the same direction as the normal strain $\epsilon_{xx}$ is measured. This strain is known as \emph{normal strain}. Since the directions don't matter in isotropic materials, I have chosen to define Young's modulus along the x-axis. When an isotropic material is subjected to tensile stress, and becomes longer, it will simultaneously contract in the directions normal to the applied tension. This is known as \emph{lateral strain}. The ratio of lateral strain to normal strain is known as \emph{Poisson's ratio}:
 \begin{equation}
 	\nu = -\frac{\epsilon_{yy}}{\epsilon_{xx}} = -\frac{\epsilon_{zz}}{\epsilon_{xx}}
 \end{equation}
-
 As promised, these two properties shall completely describe the elastic material. The stiffness tensor of an isotropic material is:
 \begin{equation}
 	\vec{C} = 
@@ -187,7 +180,7 @@ There are conditions where a three-dimensional elastic problem can be analyzed a
 For plane strain, we allow a nonzero stress component $\sigma_{33}$. Likewise, for plane stress we allow a nonzero strain component $\epsilon_{33}$. However, these components can only be results of the analysis, they shall not enter the analysis. 
 
 \subsection{Elastic moduli}
-As mentioned earlier, an isotropic material can be uniquely described by two constants. It is common to choose two of the following (list from Wikipedia):
+As mentioned earlier, an isotropic material can be uniquely described by two constants. They can for example be two of the following (there are other possible constants):
 \begin{itemize}
 \item Bulk modulus, $K$
 \item Young's modulus, $E$
@@ -196,7 +189,6 @@ As mentioned earlier, an isotropic material can be uniquely described by two con
 \item Poisson's ratio, $\nu$
 \item P-wave modulus, $M$
 \end{itemize}
-
 Below, I write the definitions of bulk modulus and shear modulus and give their relation to Young's modulus and Poisson's ratio, as this is useful to calculate elastic wave velocities in materials.
 
 The shear modulus is defined as the ratio of shear stress to shear strain:
@@ -207,11 +199,12 @@ The shear modulus can be related to Young's modulus and Poisson's ratio by:
 \begin{equation}
 	G = \frac{E}{2(1+\nu)}
 \end{equation}
+
 The bulk modulus $K$ is defined as:
 \begin{equation}
 	K = \rho\frac{\dd P}{\dd \rho}
 \end{equation}
-Where $P$ is hydrostatic pressure, $P = \frac{1}{3} \left(\sigma_{xx}+\sigma_{yy}+\sigma_{zz}\right)$, when $\sigma_{xx} = \sigma_{yy} = \sigma_{zz}$.
+Where $P$ is hydrostatic pressure, $P = \frac{1}{3} \left(\sigma_{xx}+\sigma_{yy}+\sigma_{zz}\right)$, when $\sigma_{xx} = \sigma_{yy} = \sigma_{zz}$. $\rho$ is the mass density of the material.
 The bulk modulus can be related to Young's modulus and Poisson's ratio by:\begin{equation}
 	K = \frac{E}{3(1-2\nu)}
 \end{equation}
@@ -232,15 +225,16 @@ These relations can be used to find elastic properties from acoustic measurement
 
 
 \section{Linear elastic fracture mechanics}
-Linear elastic fracture mechanics (LEFM) deals with fracture in linear elastic materials. The simplest version of this theory assumes that fracture is governed by two equivalent properties: The stress intensity factor $K$, and the energy release rate $G$. The main goal of this section is to introduce these concepts in a way that is sufficient for simple comparison with simulation data. 
+Linear elastic fracture mechanics (LEFM) deals with fracture in linear elastic materials. The simplest version of this theory assumes that fracture is governed by two equivalent properties: The stress intensity factor $K$, and the energy release rate $G$. Here, I introduce the background for these concepts.
 
 \subsection{Brittle and ductile materials}
-In materials science, it is common to distinguish between brittle and ductile materials. According to Wikipedia, a material i brittle if it ``breaks without significant strain'', whereas ductility is ``a solid material's ability to deform under tensile stress''. Deformation in this context is plastic. It is actually hard to come along a more satisfying definition -- ductility and brittleness seems to be the kind of knowledge that everyone in the field have, but no one writes down as an equation. Throughout this thesis, I will use the term brittle -- by which i will be meaning ideally brittle -- in two ways. First, the intuitive definition: A material is brittle if it can be elastically deformed and suddenly breaks over essentialy no change in the strain applied to it. Secondly, a definition that will be clearer later in this section: A material is brittle if the strain energy needed to break it is only slightly higher than the energy needed to open the projected crack surface of the crack that is created when the material fails.
+In materials science, it is common to distinguish between brittle and ductile materials. A material i brittle if it ``breaks without significant strain'' (Wikipedia, brittle). Brittleness can also be described as ``an inability to deform plastically'' \cite{benham1996mechanics}. whereas Ductility is a solid material's ability to deform plastically \cite{benham1996mechanics}. It is actually hard to come along a more satisfying definition -- ductility and brittleness seems to be the kind of knowledge that everyone in the field have, but no one writes down as an equation. Throughout this thesis, I will use the term brittle -- by which i will be meaning ideally brittle -- in two ways. First, the intuitive definition: A material is brittle if it can be elastically deformed and suddenly breaks over essentialy no change in the strain applied to it. Secondly, a definition that will be clearer later in this section: A material is brittle if the strain energy needed to break it is only slightly higher than the energy needed to open the projected crack surface of the crack that is created when the material fails. An illustration of brittle and ductile fracture in terms of potential energy stored in the system during loading and failure is shown in figure \ref{fig:idealized_fracture}.
 
 \begin{figure}
 \centering
 \includegraphics[width=\textwidth]{../figures/thesis/idealized_fracture_e_pot.pdf}
-\caption{Potential energy as a function of applied strain for systems held at a constant temperature. The figure shows three idealized examples of failure. (a) and (b) are brittle, (c) is ductile. In (a), the system is loaded adiabatically, and reaches a stress state where $G_c = 2\gamma_s$ and breaks. No energy is lost to plastic deformation or heat. In (b), the system is loaded isothermally and breaks at $G_c > 2\gamma_s$. There is no plastic deformation, but heat flows in and out of the material. In (c), the system is continously deforming plastically through the straining process -- the material is very ductile. Note that it is not possible to see the amount of energy lost to plastic deformation from (c). The plateau in all figures represents a state where a crack propagated through the whole system -- the system is divided into two parts -- so additional straining does not contribute potential energy. }
+\caption{Potential energy as a function of applied strain for systems held at a constant temperature. The figure shows three idealized examples of failure. (a) and (b) are brittle, (c) is ductile. In (a), the system is loaded adiabatically, and reaches a stress state where $\mathcal{G}_c = 2\gamma_s$ and breaks. No energy is lost to plastic deformation or heat. In (b), the system is loaded isothermally and breaks at $\mathcal{G}_c > 2\gamma_s$. There is no plastic deformation, but heat flows in and out of the material. In (c), the system is continously deforming plastically through the straining process -- the material is very ductile. Note that it is not possible to see the amount of energy lost to plastic deformation from (c). The plateau in all figures represents a state where a crack propagated through the whole system -- the system is divided into two parts -- so additional straining does not contribute potential energy. }
+\label{fig:idealized_fracture}
 \end{figure}
 
 \subsection{Modes of loading}
@@ -253,8 +247,23 @@ There are three different modes of crack separation: I =`opening', II = `sliding
 \end{figure}
 
 \subsection{Failure criteria}
-As is many fields, the first recorded studies are the ones of Leonardo da Vinci. Leonardo discovered that short iron wires are stronger than long iron wires. A common interpretation is that random flaws make the iron wires weaker at some points, and that a longer wire has a higher probability of a weak spot than a long one. More precisely: The strength will be governed by the largest flaw, and the expected size of the largest flaw grows with the wire length. A major goal of LEFM is to be able to predict the failure of structures: what is the pressure required to break a sample of a material? The first somewhat successful attempt to predict failure was the efforts of Inglis. He introduced the concept of stress concentration at a crack tip to find the fracture toughness of brittle materials. Specifically, he found that for an elliptical crack on an infinite sheet, the local stress at the crack tip as a function of the faraway tensile stress was:
-
+As is many fields, the first recorded studies are the ones of Leonardo da Vinci. da Vinci discovered that short iron wires are stronger than long iron wires. A common interpretation is that random flaws make the iron wires weaker at some points, and that a longer wire has a higher probability of a weak spot than a long one. More precisely: The strength will be governed by the largest flaw, and the expected size of the largest flaw grows with the wire length. A major goal of LEFM is to be able to predict the failure of structures: what is the pressure required to break a sample of a material? The first somewhat successful attempt to predict failure was the efforts of Inglis \cite{inglis1913stresses}. He introduced the concept of stress concentration at a crack tip to find the fracture toughness of brittle materials. Specifically, he found that for an elliptical crack on an infinite sheet (figure \ref{fig:elliptical_crack}, the local stress at the crack tip as a function of the faraway tensile stress was:
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\draw  (0, 0) -- (0, 6) -- (6, 6) -- (6, 0) -- cycle;
+\draw[very thick](3, 3) ellipse (0.5cm and 1.5cm);
+\foreach \i in {1,2,...,5}
+{
+	\draw[thick,->] (0, \i) -- (-1, \i);
+	\draw[thick,->] (6, \i) -- (7, \i);
+}
+\draw [decorate,decoration={brace,amplitude=6pt,mirror,raise=16pt},yshift=0pt]
+(3 ,1.5) -- (3, 4.5) node [black,midway,xshift=1.3cm] {$2a$};
+\end{tikzpicture}
+\caption{Elliptical crack in an ``infinite'' plate.}
+\label{fig:elliptical_crack}
+\end{figure}
 \begin{equation}
 	\sigma_{\text{cracktip}} = 2\sigma_{\text{faraway}}\sqrt{\frac{a}{\rho}}
 	\label{eq:stress_consentration}
@@ -292,7 +301,7 @@ Setting the cracktip stress from equation \ref{eq:stress_consentration} equal to
 \end{equation}
 This is the Inglis formula for the fracture stress on a large sheet with a crack of width $2a$.
 
-In 1920, Griffith improved on the flaw-approach, but instead of building a theory from the atomic level, he assumed the following: A crack will propagate from a flaw if the strain energy that will be released during crack growth is higher than the corresponging surface energy associated with the created crack surface. The surface energy density is denoted $\gamma_s$ and have units of energy per area. Griffith's approach works well for ideally brittle materials. The formula for critical faraway stress with Griffiths theory is:
+In 1920, Griffith improved on the flaw-approach \cite{griffith1920phenomena}, but instead of building a theory from the atomic level, he assumed the following: A crack will propagate from a flaw if the strain energy that will be released during crack growth is higher than the corresponging surface energy associated with the created crack surface. The surface energy density is denoted $\gamma_s$ and have units of energy per area. Griffith's approach works well for ideally brittle materials. The formula for critical faraway stress with Griffiths theory is:
 \begin{equation}
 	\sigma_f = \sqrt{\frac{2E\gamma_s}{\pi a}}
 \end{equation}
@@ -311,7 +320,7 @@ For reference, I also include the formula for the fracture stress of a penny-sha
 \end{equation}
  
 
- Irwin refined Griffiths approach, and introduced the \emph{energy release rate}, $\mathcal{G}$. The energy release rate is a property of the elastic state of a linearly elastic material. According to Irwin, a crack will propagate when $\mathcal{G}$ becomes larger than a material-specific value $\mathcal{G}_c$ -- the \emph{critical} energy release rate. This differs from Griffith's theory, since the critical energy release rate doesn't necessarily have to be the same as the surface energy. For a straight crack of width $2a$ (no longer required to be elliptic) on an infinite plate subjected to tensile stress, the energy release rate is:
+ Irwin refined Griffiths approach, and introduced the \emph{energy release rate} rate \cite{irwin2onset}, $\mathcal{G}$. The energy release rate is a property of the elastic state of a linearly elastic material. According to Irwin, a crack will propagate when $\mathcal{G}$ becomes larger than a material-specific value $\mathcal{G}_c$ -- the \emph{critical} energy release rate. This differs from Griffith's theory, since the critical energy release rate doesn't necessarily have to be the same as the surface energy. For a straight crack of width $2a$ (no longer required to be elliptic) on an infinite plate subjected to tensile stress, the energy release rate is:
 
 \begin{equation}
 	\mathcal{G} = \frac{\pi \sigma^2 a}{E}
@@ -321,7 +330,7 @@ This is purely a relation concerning how a linear elastic material distributes e
 
 Notice that the formula for energy release rate is actually equivalent to the Griffith formula, equation \ref{eq:griffith_finite_sheet}, except that the surface energy $2\gamma_s$ is swapped with the energy release rate.
 
-Irwin also introduced another property, which is equivalent to the energy release rate, namely the \emph{stress intensity factor}, $K$. The stress intensity factor is a constant of proportionality between the applied stress on a crack and the stress distribution around the crack tip. This is very similar to the approach of Inglis, but it not only concerns the strength of a single atomic bond, but rater the whole stress distribution. So unlike Inglis' theory, the stress intensity factor is a continuum property. For mode I loading, the stress intensity factor is defined by:
+Irwin also introduced another property, which is equivalent to the energy release rate, namely the \emph{stress intensity factor}, $K$. The stress intensity factor is a constant of proportionality between the applied stress on a crack and the stress distribution around the crack tip. This is very similar to the approach of Inglis, but it not only concerns the strength of a single atomic bond, but rater the whole stress distribution. So unlike Inglis' theory, the stress intensity factor is a continuum property. For mode I loading, the stress intensity factor $K_I$ is defined by:
 \begin{equation}
 	\lim_{r \to 0} \sigma_{ij}^I = \frac{K_I}{\sqrt{2\pi r}} f_{ij}(\theta)
 \end{equation}
@@ -332,7 +341,7 @@ Like the energy release rate, the stress intensity factor can take a critical va
 For the sake of history, a quick and dirty summary of the development of linear elastic fracture mechanics: Leonardos random flaws inspired Inglis to calculate the stress concentration around sharp cracks in an atomistic approach. Griffith thought an energy balance was a better, and that earned him a prefactor. He created the same theory as Inglis, but got rid of the atomistic view. Irwin decoupled the theory from the actual surface energy and also introduced the stress intensity factor, which is almost like the Inglis' stress concentration, but it is more rigorously defined and fits in a continuum theory.
 
 \subsection{Stress intensity factors in anisotropic materials}
-This section was originally written in case the methane hydrate was to be analysed as an anisotropic material. That will not happen, but the section is kept to show how quicly the calculations get messy when considering anisotropic materials. Having obtained the fracture area and the energy release rate. a generalized irwin formula can be used to calculate the stress intensity factor \cite{Laubie2014}:
+This section was originally written in case the methane hydrate was to be analysed as an anisotropic material. That will not happen, but the section is kept to show how quicly the calculations get messy when considering anisotropic materials. Having obtained the fracture area and the energy release rate. A generalized irwin formula can be used to calculate the stress intensity factor \cite{Laubie2014}:
 
 \begin{equation}
 	\mb{\mathcal{G}} = \pi \vec{K}^T [\vec{H}] \vec{K} 
