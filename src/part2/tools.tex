@@ -245,6 +245,27 @@ I was not going to use the surface functions, so I only needed to implement {\tt
 \caption{An elliptic crack carved out using {\tt region eprism}}
 \end{figure}
 
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\draw (0, 0) rectangle (4, 6);
+\draw[very thick] (0,0) -- (4, 0);
+\draw[very thick] (0,6) -- (4, 6);
+\draw[name path=myellipse, red, dashed] (2, 3) ellipse (0.25cm and 1cm);
+\foreach \x in {1,2,...,50} 
+{
+	\pgfmathrandominteger{\a}{0}{400}
+	\pgfmathrandominteger{\b}{0}{600}
+	\pgfmathrandominteger{\c}{0}{359}
+	\draw (\a/100,\b/100) -- ++(\c:0.2);
+}
+\draw[name path=line1] (2.2, 3.3) -- (2.4, 3.3);
+\fill[red, name intersections={of=line1 and myellipse}] (intersection-1) circle (0.05cm);
+\end{tikzpicture}
+\caption{Illustration of the crack tracer method.}
+\label{fig:crack_tracer_method}
+\end{figure}
+
 \subsection{Usage}
 
 \section{General Utility Lattice Program}
