@@ -239,10 +239,11 @@ For expansion of the simulation box along the x-axis, the strain integral (nomin
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Large simulations of fracture}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+Larger simulations allow for statistically more robust results. During crack initiation in the previous simulations, only a few particles near the crack tip ended up being essential to the crack initiation. Even though the periodic boundary condition allows for the crack to be thought of as infinitely deep, the low number of particles makes the crack initiation vulnerable to statistical fluctuations. With thicker systems, more particles reside in the region near the crack tip, resulting in better statistics. An obvious drawback of larger simulations, is the added computational cost. Also, the amounts of data increase drastically if per-particle properties are to be stored. My approach has been to post-process trajectory data from simulations, which means I have had to deal with large amounts of data. This has actually been a challenge when working with large simulations, and has rewuired close attention to efficiency in file handling, both to reduce the cpu-time of analyses, and to keep the memory demands on an acceptable level.
 \subsection{Complete analysis of a single simulation}
 \label{sec:complete_analysis_single_simulation}
-In this subsection, I use the analysis tools that were presented in the tools section to analyze \emph{one} simulation. This simulation will be referred to as the \emph{full-analysis simulation}. The analyzes here will be representative of how data is obtained when showing up in later results where data from several simulations are used together to say something more general.
+
+In the following, I use the analysis tools that were presented in the tools section to analyze \emph{one} simulation. This simulation will be referred to as the \emph{full-analysis simulation}. The analyzes here will be representative of how data is obtained when showing up in later results where data from several simulations are used together to say something more general.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../pictures/system_1048.pdf}

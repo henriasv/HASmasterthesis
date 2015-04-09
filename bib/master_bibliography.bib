@@ -15,6 +15,46 @@ volume = {326},
 year = {2009}
 }
 
+@article{HUMP96,
+  author={William Humphrey and Andrew Dalke and Klaus Schulten},
+  title={{VMD} -- {V}isual {M}olecular {D}ynamics},
+  journal={Journal of Molecular Graphics},
+  year=1996,
+  volume=14,
+  pages={33-38},
+  note={},
+  tbstatus={Published.},
+  techrep={},
+  tbreference={222}
+}
+
+@article{shinoda2004rapid,
+  title={Rapid estimation of elastic constants by molecular dynamics simulation under constant stress},
+  author={Shinoda, Wataru and Shiga, Motoyuki and Mikami, Masuhiro},
+  journal={Physical Review B},
+  volume={69},
+  number={13},
+  pages={134103},
+  year={2004},
+  publisher={APS}
+}
+
+@article{Plimpton1995,
+abstract = {Three parallel algorithms for classical molecular dynamics are presented. The first assigns each processor a fixed subset of atoms; the second assigns each a fixed subset of inter–atomic forces to compute; the third assigns each a fixed spatial region. The algorithms are suitable for molecular dynamics models which can be difficult to parallelize efficiently — those with short–range forces where the neighbors of each atom change rapidly. They can be implemented on any distributed–memory parallel machine which allows for message–passing of data between independently executing processors. The algorithms are tested on a standard Lennard–Jones benchmark problem for system sizes ranging from 500 to 100,000,000 atoms on several parallel supercomputers—the nCUBE 2, Intel iPSC/860 and Paragon, and Cray T3D. Comparing the results to the fastest reported vectorized Cray Y–MP and C90 algorithm shows that the current generation of parallel machines is competitive with conventional vector supercomputers even for small problems. For large problems, the spatial algorithm achieves parallel efficiencies of 90\% and a 1840–node Intel Paragon performs up to 165 faster than a single Cray C90 processor. Trade–offs between the three algorithms and guidelines for adapting them to more complex molecular dynamics simulations are also discussed. This},
+author = {Plimpton, Steve},
+doi = {10.1006/jcph.1995.1039},
+file = {:Users/henriksveinsson/Documents/Mendeley Desktop/jcompphys95.pdf:pdf},
+issn = {00219991},
+journal = {Journal of Computational Physics},
+keywords = {body problem,molecular dynamics,n,parallel computing},
+number = {June 1994},
+pages = {1--19},
+title = {{Fast Parallel Algorithms for Short – Range Molecular Dynamics}},
+volume = {117},
+year = {1995}
+}
+
+
 @article{Bhattacharya2009,
 abstract = {We report the development of a realistic molecular model for mesoporous silica SBA-15, which includes both the large cylindrical mesopores and the smaller micropores in the pore walls. The methodology for modeling the SBA-15 structure involves molecular and mesoscale simulations combined with geometrical interpolation techniques. First, a mesoscale model is prepared by mimicking the synthesis process using lattice Monte Carlo simulations. The main physical features of this mesoscale pore model are then carved out of an atomistic silica block; both the mesopores and the micropores are incorporated from the mimetic simulations. The calculated pore size distribution, surface area, and simulated TEM images of the model structure are in good agreement with those obtained from experimental samples of SBA-15. We then investigate the adsorption of argon in this structure using Grand Canonical Monte Carlo (GCMC) simulations. The adsorption results for our SBA-15 model are compared with those for a similar model that does not include the micropores; we also compare with results obtained in a regular cylindrical pore. The simulated adsorption isotherm for the SBA-15 model shows semiquantitative agreement with the experimental isotherm for a SBA-15 sample having a similar pore size. We observe that the presence of the micropores leads to increased adsorption at low pressure compared to the case of a model without micropores in the pore walls. At higher pressures, for all models, the filling proceeds via the monolayer-multilayer adsorption on the mesopore surface followed by capillary condensation, which is mainly controlled by the mesopore diameter and is not influenced by the presence of the micropores.},
 author = {Bhattacharya, Supriyo and Coasne, Benoit and Hung, Francisco R. and Gubbins, Keith E.},
@@ -1125,12 +1165,12 @@ year = {1998}
   publisher={ACS Publications}
 }
 
-@ONLINE{lammps:input_commands,
+@ONLINE{lammps:documentation,
 author = {sandia.gov},
-title = {LAMMPS Input Commands},
-month = {October},
-year = {2013},
-howpublished = {\url{http://lammps.sandia.gov/doc/99/input_commands.html}}
+title = {LAMMPS Documentation},
+month = {April},
+year = {2015},
+howpublished = {\url{http://lammps.sandia.gov/doc/Manual.html}}
 }
 
 @ONLINE{lammps:guide:pittsburg,

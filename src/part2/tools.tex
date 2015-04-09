@@ -15,12 +15,12 @@ Step 1 can also be partially covered by LAMMPS. First, LAMMPS have several built
 
 I found it useful to distinguish between step 3 and step 4 even though the difference is not too obvious. One way of explicitly separating them is by the tools used in each process. Post-processing is done by another tool than the tool that presents the data for analysis. 
 
-The difference between steps 3 and 4 is not as clear as the difference between the other steps. I define it the following way. Post-processing is the processing of data prior to visualization. Analysis is the act of visualizing data that is already processed, and using that data to draw conclusions from the simulations. 
+The difference between steps 3 and 4 is not as clear as the difference between the other steps. I define it the following way. Post-processing is the processing of data prior to visualization. Analysis is the act of visualizing data that is already processed, and using that data to draw conclusions from the simulations. I will use Visual Molecular Dynamics (VMD) \cite{HUMP96} for visualization, and custom tools I develop myself in MATLAB, PYTHON and C++ for data analysis.
 
 In the following sections of this chapter, I give an introduction to LAMMPS that contains the features that will be used later on, and then describe post-processing tools that I have developed. 
 
 \section{LAMMPS}
-Lammps, Large-scale Atomic/Molecular Massively Parallel Simulator, is a tool for (possibly) large particle-style simulations - mainly molecular dynamics. Lammps is a massive open source project, and its main features are developed and maintained at Sandia National Laboratories in the United States. 
+LAMMPS \cite{Plimpton1995}, Large-scale Atomic/Molecular Massively Parallel Simulator, is a tool for (possibly) large particle-style simulations - mainly molecular dynamics. Lammps is a massive open source project, and its main features are developed and maintained at Sandia National Laboratories in the United States. 
 
 \subsection{Input files}
 Lammps input files are a set of commands to be executed. Some commands are only valid in the right order. The structure of such a file is:
@@ -70,7 +70,7 @@ fix fxnpt all npt temp 300.0 300.0 100.0 x 400.0 400.0 100.0
 # ----------------- Run Section -----------------
 run   5000
 \end{lstlisting}
-First, units are chosen. The meaning of {\tt real} units is best checked in the documentation. The choice of units has consequences for all physical properties that are to be set, such as temperature and interaction energies. On line 3, the simulation is set to be three-dimensional, and on line 4, all three boudaries are set to be periodic. {\tt atom\_style} limits what kinds of interactions are possible to use for a simulation using the particular input file. Full flexibility is obtaied here by setting {\tt atom\_style full}. {\tt pair\_style} sets the potential for the non-bonding interactions, as described in \ref{sec:non_bonding_potentials}. Many types of {\tt pair\_style} potentials are available, and they can also be combined -- but with caution -- using the concept of hybrid pair styles. The {\tt kspace\_style} sets the long-range solver. Here it is set to P$^3$M, which is the only available long range solver in LAMMPS for the TIP4P water model. Then the bonding potential models are set to be harmonic (line 8-9). Lorentz-Berthelot combination rules are imposed with the command {\tt mix arithmetic}. The {\tt read\_data} command reads a LAMMS data file to import initial positions and bonding specification for all particles in the simulation. On lines 16-23, the coefficients for all the interactions are set. The first two arguments are the types of particles for which the coefficient shall be utilized, and the rest are the actual coefficients in an order dictated by the documentation of that specific potential. For the potentials here, the first coefficient is an energy, and the second eiter a distance or an angle. Then, two groups of particles are defined for convenience, and on line 27, the holonomic contraints on the water molecules are set to be handled by the SHAKE-algorithm. {\tt a 1 b 1} means that bonds of type 1 and angles of type 1 are to be constrained. The existence of these types of bonds and angles are set in the data file. Then, on line 29, the {\tt dump} command sets how the positions and velocities of particles is to be written to file. Here, all particles are set to be dumped to the file {\tt trajectory.lammpstrj} every fifth timestep. Then all particles are given an initial velocity from the Boltzmann distribution (gaussian in each coordinate), and in line 32, the simulation is chosen to be run in the isothermic-isobaric ensemble (NPT). The {\tt run} command on the final line sets the number of timesteps to be simulated.
+First, units are chosen. The meaning of {\tt real} units is best checked in the documentation \cite{lammps:documentation}. The choice of units has consequences for all physical properties that are to be set, such as temperature and interaction energies. On line 3, the simulation is set to be three-dimensional, and on line 4, all three boudaries are set to be periodic. {\tt atom\_style} limits what kinds of interactions are possible to use for a simulation using the particular input file. Full flexibility is obtaied here by setting {\tt atom\_style full}. {\tt pair\_style} sets the potential for the non-bonding interactions, as described in \ref{sec:non_bonding_potentials}. Many types of {\tt pair\_style} potentials are available, and they can also be combined -- but with caution -- using the concept of hybrid pair styles. The {\tt kspace\_style} sets the long-range solver. Here it is set to P$^3$M, which is the only available long range solver in LAMMPS for the TIP4P water model. Then the bonding potential models are set to be harmonic (line 8-9). Lorentz-Berthelot combination rules are imposed with the command {\tt mix arithmetic}. The {\tt read\_data} command reads a LAMMS data file to import initial positions and bonding specification for all particles in the simulation. On lines 16-23, the coefficients for all the interactions are set. The first two arguments are the types of particles for which the coefficient shall be utilized, and the rest are the actual coefficients in an order dictated by the documentation of that specific potential. For the potentials here, the first coefficient is an energy, and the second eiter a distance or an angle. Then, two groups of particles are defined for convenience, and on line 27, the holonomic contraints on the water molecules are set to be handled by the SHAKE-algorithm. {\tt a 1 b 1} means that bonds of type 1 and angles of type 1 are to be constrained. The existence of these types of bonds and angles are set in the data file. Then, on line 29, the {\tt dump} command sets how the positions and velocities of particles is to be written to file. Here, all particles are set to be dumped to the file {\tt trajectory.lammpstrj} every fifth timestep. Then all particles are given an initial velocity from the Boltzmann distribution (gaussian in each coordinate), and in line 32, the simulation is chosen to be run in the isothermic-isobaric ensemble (NPT). The standard thermostat for NPT in LAMMPS is Nosé--Hoover both for the temperature and the pressure. The actual equations that are used, are the ones from \citet{shinoda2004rapid}.  The {\tt run} command on the final line sets the number of timesteps to be simulated.
 
 \subsubsection{Data files}
 It is usually a good idea to have all atom input information i a file separate from the input file, and read it with the data\_read command. An atom data file shall contain positions and velocities for all particles. In addition, if some atoms are parts of specific molecules, this is decleared. All bonds and angles (and dihedrals and so on ..) that are meant to support interactions between specific particles must be decleared. In addition, it is possible to insert coefficients for the different interactions. However, it is not possible to declare atom\_style, pair\_style or any other style in the data files. This has to be done in the input file, and it is important that the number of coefficients in the data file is compatible with the interaction potential chosen in the input file. 
@@ -166,7 +166,7 @@ Angles
 
 The first lines are ignored by Lammps, so the first line to be interpreted is line 3. The first section, line 3-8, contains information about what is supposed to be contained in this file. The next section defines the bounds on the simulation domain. Then comes a definition of the masses for the two atom types that were decleared in the first section. In the section called PairIJ Coeffs, parameters for pair\_style interactions are set. The last line in this section tells that pair\_style interactions between particles of type 2 and 2 in this simulations have parameters 0.16275, 3.1643 and 10. The first two parameters in the 1 1 and 1 2 interactions have value 0, which tells us that these don't interact pair\_style. The bond coefficient section decleares a bond with id 1. If there were to be additional types of bonded interactions, they would be numbered from 2 and so on. If the bond\_style is set to harmonic, the parameters for the first bond tells that the equilibrium distance in this harmonic bond is 0.9572, but that the coefficient for the harmonic force is 0. The reason for the coefficient to be zero in this specific case, is that the bond is to be rigid, and rigidity is handled later, by a fix-command. The angle coeffs section follows the same pattern as the bond coeffs. Th contents of the Atoms section can vary, depending on the atom\_style used in the simulation. This setup is for atom\_style full. Line 35 tells that atom number 721 belongs to molecule number 241. It is of type 2 (oxygen in this case), and has charge -1.04844. Then comes xyz positions, and an nx ny nz counter telling how many times the atom has passed each periodic wall. Velocities are self-explanatory. The bonds section lists all the bonds that are defined in the simulation. In this case it is O-H-bonds in water. line 63 tells that the first such bond is of type 1 (as defined in bond coeffs), and that it creates a bonded interaction between atoms 721 and 722. The angles section is similar, but it takes three atoms to make an angle, with the vertex in the middle. This type of declaration is quite powerful. We have only defined that we have some water molecules, and that they support bonded and angular interactions, as well as pair\_style interactions. That means we can use any potential (supported by lammps) that have these restrictions. The only thing that has to be changed, are the coefficients for the different interactions. If one wishes to change potentials regularly, it can be a good idea to put coefficients in a file together with the declaration of potentials, using the {\tt $<$pair, bond, angle$>$\_coeff } commands. 
 
-
+\begin{comment}
 \subsection{Computes in lammps}
 \subsubsection{Pressure}
 LAMMPS calculates the symmetric stress tensor for the system during each timestep, and stores it as a 6-element vector. The formula used for caculation is:
@@ -175,28 +175,16 @@ LAMMPS calculates the symmetric stress tensor for the system during each timeste
 \end{equation}
 Rigid sets of atoms with the SHAKE algorith are accounted in this calculation. In practice, fix SHAKE adds forces to the atoms before integration to account for their holonomic constraints. These forces are included in the virial when calculating the pressure. 
 
-
-All commands are available from the LAMMPS documentation \cite{lammps:input_commands}. A very good beginners guide for LAMMPS \cite{lammps:guide:pittsburg}
-
 \section{Optimizations in LAMMPS}
 \subsection{OpenMP}
 OpenMP support is implemented in the USER-OMP package. This has turned out not to be entirely stable. (Random crashes with cannot compute pppm)
 \subsection{Processor layout and partitions}
 {\tt run\_style verlet/split} distributes force calculations over two partitions of processors. These partitions must be defined either using the {\tt processor} command or the {\tt partition} command. {\tt verlet\_split} depends on the REPLICA package. 
+\end{comment}
 
-
-\section{Extending LAMMPS}
-LAMMPS was designed to be easily extendable, and in my opinion that turns out to be true.
-
-I have made @number extension to LAMMPS.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Region {\tt eprism} -- elliptical prism}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Extending LAMMPS to cut elliptical prisms}
 \label{subsec:reg_eprism}
-I have written a simple extension to LAMMPS, which enables med to define regions formed like elliptical prisms. This is needed to carve out elliptical holes for my simulations. 
-
-The main contents of this extension is:
+LAMMPS was designed to be easily extendable, and in my opinion that turns out to be true. How to create extensions is explained in the section \emph{Modifying \& extending LAMMPS} in the LAMMPS documentation \cite{lammps:documentation}. I have made \emph{one} extension to LAMMPS, to be able to cut elliptical prisms. LAMMPS already contain features to remove atoms if they are defined to be in a group, so I only need to implement a way to define elliptical prismatic regions. The main contents of this extension is a function that determines wheter a particle with a position $(x, y, z)$ is inside or outside the region:
 
 \begin{lstlisting}[language=c++]
 int RegEprism::inside(double x, double y, double z) 
@@ -206,17 +194,14 @@ int RegEprism::inside(double x, double y, double z)
 	return ( (dx/a)*(dx/a)+(dy/b)*(dy/b) ) < 1.0;
 }
 \end{lstlisting}
-
-The extension is a class that inherits from {\tt class Region}. 
-From the class definition of class region it can be seen that its subclasses are required to implement three functions:
+The whole extension is implemented as a class that inherits from the LAMMPS {\tt class Region}. From the class definition of class region it can be seen that its subclasses are required to implement three functions:
 
 \begin{lstlisting}[language=c++]
 virtual int inside(double, double, double) = 0;
 virtual int surface_interior(double *, double) = 0;
 virtual int surface_exterior(double *, double) = 0;
 \end{lstlisting}
-
-I was not going to use the surface functions, so I only needed to implement {\tt inside(...)}. I left the other two as dummy functions returning {\tt false}. Using this region with LAMMPS functionality that requires knowledge of the region surface can result in undefined behavior.
+I am not going to use the surface functions, so I only need to implement {\tt inside(...)}. I leave the other two as dummy functions returning {\tt false}, which means this reagion will be incompatible with other LAMMPS functionality if it requires knowledge of the surface properties of the region.
 
 \begin{figure}
 \centering
@@ -226,6 +211,10 @@ I was not going to use the surface functions, so I only needed to implement {\tt
 
 
 \subsection{Usage}
+The usage of this extension is fairly straightforward. After compiling LAMMPS with the {\tt eprism} extension, an elliptical prismatic region can be defined by the following command:
+\begin{lstlisting}[language=LammpsInput]
+region <name> eprism <center x> <center y> <length x> <length y>
+\end{lstlisting}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Crack tracer}
@@ -234,7 +223,7 @@ Measuring the area of a crack surface is far from a trivial task. Due to the fra
 
 
 \subsection{Algorithm}
-I have implemented a Monte-Carlo crack tracer based on the theory of @cite1970isj to measure the solvent-accessible area of a system of particles. The basic idea is that every point in space is defined as either part of the \emph{void} or part of the \emph{wall} based on the following definition: A void point is a point for which there exist no particles within a distance $r_p$. Points that are not part of the void are parts of the wall. The Monte-Carlo method I employ is as follows: $N$ line segments of length $\Delta l$ and uniformly random orientation and position in space are drawn. A surface point is detected if one of the edges is in the void while the other is in the wall. The solvent-accessible surface area of the system can then be calculated with the following formula:
+I have implemented a Monte-Carlo crack tracer to measure the solvent-accessible area of a system of particles. The basic idea is that every point in space is defined as either part of the \emph{void} or part of the \emph{wall} based on the following definition: A void point is a point for which there exist no particles within a distance $r_p$. Points that are not part of the void are parts of the wall. The Monte-Carlo method I employ is as follows: $N$ line segments of length $\Delta l$ and uniformly random orientation and position in space are drawn. A surface point is detected if one of the edges is in the void while the other is in the wall. The solvent-accessible surface area of the system can then be calculated with the following formula:
 
 \begin{equation}
 A_{ss}(r_p) = 2V\frac{n_s(r_p)}{N\Delta l}
@@ -268,11 +257,11 @@ where $n_s$ is the total number of void--wall crossings of an arbitrary set of s
 	\pgfmathresult ;
 }
 \end{tikzpicture}
-\caption{Illustration of the crack tracer method. Here, 400 line segments of length \SI{0.4}{\centi\meter} are drawn. The line segments appear to have different lengths since they also have a component perpendicular to the paper plane.  If thinking in two dimensions, the area of this system $\SI{6}{\centi\meter} \times \SI{12}{\centi\meter}$ takes the role of the volume, and the surface area becomes a length. The calculated surface length is then: $2\times \SI{72}{\centi\meter\squared} \frac{6}{400\times \SI{0.3}{\centi\meter}} = \SI{5.4}{\centi\meter}$. The true circumference of the crack in this example is around \SI{6.5}{\centi\meter}.}
+\caption{Illustration of the crack tracer method. Here, 400 line segments of length \SI{0.4}{\centi\meter} are drawn. The line segments appear to have different lengths since they also have a component perpendicular to the paper plane. Red dots indicate the intersection of a line segment with the crack surface.  If thinking in two dimensions, the area of this system, $\SI{6}{\centi\meter} \times \SI{12}{\centi\meter}$, takes the role of the volume, and the surface area becomes a length. The calculated surface length is then: $2\times \SI{72}{\centi\meter\squared} \frac{6}{400\times \SI{0.3}{\centi\meter}} = \SI{5.4}{\centi\meter}$. The true circumference of the crack in this example is around \SI{6.5}{\centi\meter}.}
 \label{fig:crack_tracer_method}
 \end{figure}
 
-Figure \ref{fig:crack_tracer_method} shows the method in action. The blue area is the wall and the white are is the void. 
+Figure \ref{fig:crack_tracer_method} shows the method in action, with the blue area as the wall and the white area as the void. 
 
 \subsection{Implementation}
 \paragraph{Cell lists}
@@ -293,10 +282,14 @@ As mentioned, there are two parameters to be chosen when applying this technique
 \end{figure}
 
 
-\section{Stress measurement (crude)}
-I output the stress tensor for each particle averaged over @Ndump steps. These values are put on a 2D grid, and averaged for each cell on that grid. This kind of measurement is not necessarily useful for methane hydrates, as the characteristic size is large (12 Å) so that the grid must necessarily be coarse. @IsThisTrue?@TurnsOutToBetrue. It actually turns out that i get the best results by using the same number of grid points as there are unit cells in each direction. This is close to averaging over each unit cell, which should give units that are comparable. Slightly lower or higher resolutions of the grid give artifacts @insertfigure and much higher resolutions results in very few atoms contributing to each grid cell, which gives bad statistics and useless results. 
+\section{Stress measurement}
+I output the stress tensor for each particle, usually averaged over some hundreds of integration steps. These values are put on a 2D grid, and averaged for each cell on that grid. This kind of measurement is not necessarily useful for methane hydrates, as the characteristic size is large (12 Å) so that the grid must necessarily be coarse, but the measurement can be interesting to illustrate the stress field, and check that it is qualitatively similar to the stress fields in continuum fracture mechanics. It turns out that the best results are obtained by using the same number of grid points as there are unit cells in each direction, which is not surprising, since This erases the inhomogenieties occuring within each unit cell. Slightly lower or higher resolutions of the grid result in serious artefacts and much higher resolutions results in very few atoms contributing to each grid cell, which gives bad statistics and useless results. The stressfield from a representative simulation of a strained methane hydrate with a crack in it, measured with different resolutions of the averaging grid, is shown in figure \ref{fig:artefacts}.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/stressfield_artefacts.pdf}
 \caption{Measured stress fields in the xy-plane with different resolutions of the cell grid. The modeled system is $24\times 24\times 12$ S1 unit cells. We see that $N=24$ and $N=12$ works well. $N=48$ gives a checkered pattern, but it is possible to see the stress field. The hichest resolution available without ertefacts is the number of unit cells in each direction.}
+\label{fig:artefacts}
 \end{figure}
+
+\section{Other tools}
+In addition to the tools already mentioned, I have implemented several shorter pieces of code to create plots and to calculate various properties like the diffusion constant and the viscosity in the model. I choose not to describe these in detail.
