@@ -106,9 +106,15 @@ Before performing serious simulations, I do preliminary simulations to find out 
 Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain for four simulations where S1 methane hydrates of 24x24x1 unit cells were gradually subjected to a strain of between 0.045 and 0.1 (see figure caption for simulation details). Then, the system was left on its own. In three of the systems, a crack spanned the yz-plane after the simulation was finished. The two others had seen no visible crack growth.
 
 \begin{framed}
-\paragraph{Visual experience of the crack propagation}
+\paragraph{Visual experience of the crack propagation (figure \ref{fig:thin_crack})}
 First, the system slightly contracts (NPT allows volume change). The system comes to rest, and some methane molecules diffuse out of near-wall cages to the hole that was carved out during initiation. After \SI{100}{\pico\second} straining starts. The system expands along the x-axis at a constant rate during \SI{50}{\pico\second},which corresponds to a very high strain rate if though of in macroscopic terms. More methane fills the crack, as its volume increases when the crack gets wider -- but the crack length remains the same during expansion. The system has now reached is the desired strain. Methane molecules bounce back and fourth inside the crack, and the crack edges seem jittery. Suddenly, a hydrogen bond near a crack tip breaks -- flucuations from methane molecules and lattice vibrations have made the system unstable. When the first bond breaks, the next bond along the crack axis can't hold it. Bonds near the other crack edge breaks. Then bonds break one after the other on both edges of the crack -- the crack propagates. In a matter of tens of picoseconds, both crack edges reach the periodic boundary. During crack propagation, clathrate cages are ripped apart. Water molecules remain stuck to the wall, while methane is released, and fills the void between the two pieces of methane hydrate (well, actually, because of the periodic boundary, there is still only \emph{one} piece of methane hydrate). The crack is not traveling straight in one direction: It first starts traveling between columns of sI cells before it turns and continues to propagate in the middle of hydrate cells, ripping apart big cages. Just after the crack has propagated, the methane hydrate oscillates with a spatial amplitude of the same order as the void width. During the following hundreds of picoseconds, the oscillations damp out -- the system is approaching a new equilibrium.
 \end{framed}
+
+\begin{figure}
+\includegraphics[width=\textwidth]{../pictures/slim_system.pdf}
+\caption{Fracture of a system of $24 \times 24 \times 1$ sI unit cells. The fracture pattern is more complex than that of the thicker system: The upper crack changes from propagating between columns of unit cells to propagating in the middle of a column of unit cells, breaking big cages instead of small ones.}
+\label{fig:thin_crack}
+\end{figure}
 
 From the visuals, I move on to preliminary calculations of the surface energy and the critial energy release rate. The surface energy can be estimated as the change in potential energy from the equilibrated system before straining to the system of methane hydrate and free methane after crack propagation. The energy release rate can be estimated as the change in potential energy during crack propagation. If $\Delta U_c$ is the change in potential energy during crack propagation, and $\Delta U_s$ is the change in potential energy from befor straining to after crack propagation, then the formulas for $G_c$ and $\gamma_s$ read:
 
@@ -120,7 +126,7 @@ From the visuals, I move on to preliminary calculations of the surface energy an
 	\gamma_s \approx \frac{\Delta U}{2 L_y L_z}
 \end{equation}
 
-Where the $\frac{1}{2}$ factor is because the crack opens two surfaces. The thermalization for all four of the simulations are equal, with an average potential energy of $\SI{-2.8112}{\femto\joule}$ on the plateau (40--100 \si{\pico\second}). The average potential energy after crack propagation was $\SI{-2.7970}{\femto\joule}$, with almost no variation among the simulations. This yields an energy difference of \SI{1.42d-17}{\joule}. Using the simulation box side face area (measured values: $L_y = \SI{288.8}{\angstrom}$, $L_z = \SI{12.04}{\angstrom}$) as an estimate of the crack size, the estimated surface energy is $\gamma_s = \SI{0.204}{\joule\per\meter\squared}$. Since the energy level required to start a crack is not well defined from figure \ref{fig:proof_of_concept_crack}, the critical energy release rate estimate is coarser. Reading off a potential energy of around \SI{-2.765}{\femto\joule}, the estimated critical energy release rate is \SI{1.3}{\joule\per\meter\squared}. This corresponds to, using equation \ref{eq:energy_release_to_stress_intensity_isotropic} for the stress intensity in isotropic materials, a critical stress instensity factor of $K_{Ic} = 0.10 \text{ MPam}^{\frac{1}{2}}$ (Using $E=\SI{7.1}{\giga\pascal}$ and $\nu = 0.4$). Unfourtunately, we shall see that this method for finding the fracture toughness is wrong because of how the energy was measured. More about that later in the chapter. For reference, the fracture toughness of real freshwater ice is around $K_{Ic} = 0.10 \text{ MPam}^{\frac{1}{2}}$. 
+Where the $\frac{1}{2}$ factor is because the crack opens two surfaces. The thermalization for all four of the simulations are equal, with an average potential energy of $\SI{-2.8112}{\femto\joule}$ on the plateau (40--100 \si{\pico\second}). The average potential energy after crack propagation was $\SI{-2.7970}{\femto\joule}$, with almost no variation among the simulations. This yields an energy difference of \SI{1.42d-17}{\joule}. Using the simulation box side face area (measured values: $L_y = \SI{288.8}{\angstrom}$, $L_z = \SI{12.04}{\angstrom}$) as an estimate of the crack size, the estimated surface energy is $\gamma_s = \SI{0.204}{\joule\per\meter\squared}$. Since the energy level required to start a crack is not well defined from figure \ref{fig:proof_of_concept_crack}, the critical energy release rate estimate is coarser. Reading off a potential energy of around \SI{-2.765}{\femto\joule}, the estimated critical energy release rate is \SI{1.3}{\joule\per\meter\squared}. This corresponds to, using equation \ref{eq:energy_release_to_stress_intensity_isotropic} for the stress intensity in isotropic materials, a critical stress instensity factor of $K_{Ic} = 0.10 \text{ MPam}^{\frac{1}{2}}$ (Using $E=\SI{7.1}{\giga\pascal}$ and $\nu = 0.4$). Unfourtunately, we shall see that this method for finding the fracture toughness is wrong because of how the energy was measured. More about that later in the chapter. For reference, the fracture toughness of real freshwater ice is around $K_{Ic} = 0.10 \text{ MPam}^{\frac{1}{2}}$ \cite{benham1996mechanics}. 
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/proof_of_concept_poteng_strain.pdf}
@@ -138,6 +144,9 @@ v_c = \frac{1}{2L_z}\frac{\dd A_c}{\dd t}
 @MeasureCrackInTimeForTheseSimulations
 
 \paragraph{Summary of concept simulations} The results from this initial simulation indicate that methane hydrate under these conditions are very brittle on the tens-of-picoseconds scale, in the sense that they do not at all plastcally deform to withstand strain. They either deform elastically, or they fail. There is also indications that the time before fracture depends on the applied strain in a systematic way. A close look at the potential energy curve of the simulation in figure \ref{fig:proof_of_concept_crack} that did not end in rupture reveals that the potential energy is actually slowly decreasing. Whether this is a sign of a coming fracture, strengthening rearrangements of particles -- which could imply some ductility -- or something else, remains to be investigated. 
+
+\subsection{Observation of special feature -- a cavity in front of the crack tip}
+In one of the simulations, I discovered a strange feature: A cavity formed in front of the crack prior to failure and overall crack propagation. This feature has been discussed by for example \citet{Bouchbinder2004}.
 
 \subsection{Arising questions}
 Several quiestion arise as a result of the proof-of-concept runs:
@@ -353,14 +362,9 @@ The study of finite size effects has not yet gotten much attention in this work,
 Most notably, the crack propagation in the big system is more predictable than that in the small system. Particularly, the crack tip in the small simulations can change direction for a short time, and then continue propagating in the y-direction but in another column of unit cells than it did before. Similar behavior has not been observed this in the large system.
 
 
-\begin{figure}
-\includegraphics[width=\textwidth]{../pictures/slim_system.pdf}
-\caption{Fracture of a system of $24 \times 24 \times 1$ sI unit cells. The fracture pattern is more complex than that of the thicker system: The upper crack changes from propagating between columns of unit cells to propagating in the middle of a column of unit cells, breaking big cages instead of small ones.}
-\end{figure}
-
 To systematically study this effect, I compare the crack surface area in simulations with systems of different thicknesses, but with the same strain rate. A chaotic crack should leave a larger crack surface area than a straight one.
 
-\section{Investiagting simulations with no system-spanning crack}
+\section{Investigating simulations with no system-spanning crack}
 All simulations up to now has had a production time of \SI{400}{\pico\second}, but as there is a waiting time before fracture starts, there might be potential of having fracture in the non-fractures systems if the simulation is sufficiently long. It is also possible that something else will happen. The crack can for example change shape and strengthen the sample. It is also possible that a much slower crack can propagate, possibly not reaching the periodic boundary if the strain does not contribute enough energy to open a surface spanning the whole yz-plane. 
 
 In this section, I look at a simulation very similar to the one described in section \ref{sec:complete_analysis_single_simulation}. The onsly difference is that the strain level after \SI{150}{\pico\second} is 0.045, and the temperature is \SI{280}{\kelvin}. No system spanning crack is obseved during the \SI{400}{\pico\second} after straining. There is, however, a small increase in the surface area, as can be seen in figure @insertFigure. 
@@ -393,6 +397,19 @@ Since the system doesn't seem tom have equilibrated (the potential energy is sti
 \subsection{Waiting time for fracture}
 In the simulations with $T=\SI{260}{\kelvin}$, the waiting time was whort for the highly strained samples, and the samples subjected to too little strain didn't fracture. Between these extremes, there was no general rule that higher strains gave shorter waiting times. The simulations with $T=\SI{280}{\kelvin}$, on the other hand, showed more systematic behavior, and generally shorter waiting times. It is possible that the variation in waiting time is smaller when temperature increases, and especially when exceeding the melting temperature of pure water in the given model.
 
+\begin{figure}
+\centering
+\includegraphics[width=12cm]{../figures/thesis/area_speed_stress_all.pdf}
+\caption{Crack area (top panel), crack speed (middle panel) and tensile stress (lower panel). Simulation temperatures are \SI{260}{\kelvin} (solid lines) and \SI{280}{\kelvin} (dashed lines). Strains: 0.044 (blue) 0.045 (orange), 0.046 (yellow), 0.0465 (violet), 0.047 (green), 0.0475 (cyan), 0.048 (purple). The colors are the same as in the legend of figure \ref{fig:fracture_theory_compare}. }
+\label{fig:area_speed_stress_all}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics[width=12cm]{../figures/thesis/area_speed_stress_all_zoomed.pdf}
+\caption{Crack area (top panel), crack speed (middle panel) and tensile stress (lower panel). The panels are the same as the ones in \ref{fig:area_speed_stress_all}, but they are significantly zoomed.}
+\end{figure}
+
 \subsection{Crack tip speed}
 There is a significant relationship between the crack tip speed and the strain before fracture. 
 
@@ -416,7 +433,7 @@ Parameters & Surface energy \\
 Figure \ref{fig:fracture_theory_compare} shows the global tensile stress in the \SI{280}{\kelvin} simulations plotted against the crack length. The results agree well with the Griffith thory for brittle solids. It might be that this plot can aid the understanding of two separate mechanisms for fracture. some process slowly increases the crack width and reduces the tensile stress, until -- at some point -- the crack width-tensile stress configuration is such that it allows for rapid crack growth. This should be determined by whether the simulation follows a less steep slope than some critical line, which is probably close to the finite width Griffith line.
 \begin{figure}
 \centering
-\includegraphics[width=12cm]{../figures/thesis/fracture_theory_compare.pdf}
+\includegraphics[width=12cm]{../figures/thesis/stress_area_lefm.pdf}
 \caption{Relationship between tensile stress and crack width during dynamic runs. Markers indicate where critial fracture is estimated to have started (judgement call from looking at the fracture speed). It is the position of the markers that determine whether this is a good agreement with Griffith or Inglis theory. The crack width is estimated as $A_s/2L_z$, and it is clear that it is over-estimated at the end of the simulation (at full crack opening). It is not clear whether the crack length is over-estimated at the early stages of crack propagation. When straining is finished, which is at the point where the stress reaches its maximum, the crack area is quite exactly estimated to the length of the crack that was carved out, namely \SI{40}{\angstrom}. The theory curves (Inglis and Griffith) are calculated using $E=\SI{7.1}{\giga\pascal}$ and $\gamma_s = \SI{0.21}{\joule\per\meter\squared}$ The finite width curve is made using equation \ref{eq:griffith_finite_sheet}. The legend indicate the maximum strain level in each simulation, and the diffenrent theoretical curves.}
 \label{fig:fracture_theory_compare}
 \end{figure}
