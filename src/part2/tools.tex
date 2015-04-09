@@ -31,8 +31,8 @@ Lammps input files are a set of commands to be executed. Some commands are only 
 \item \tb{Settings:} Define the parameters of the particle interactions. Create output objects for thermodynamic data and particle trajectories etc. Optionally create particle velocities. Create the integrator (which can contain a thermostat).
 \item \tb{Run:} Run the simulation.
 \end{enumerate}
-\paragraph{Example file}
 
+A small example of how a LAMMPS file for running a simulation with TIP4P/Ice water and united-atom methane is shown below. The initial positions are expected to come from a LAMMPS data file (explained later).
 \begin{lstlisting}[language=LammpsInput]
 # ----------------- Init Section -----------------
 units 			real
@@ -54,15 +54,15 @@ pair_coeff	2 	2	0.0 		0.0
 pair_coeff	1 	2 	0.0 		0.0
 bond_coeff  1 	0.0 0.9572
 angle_coeff 1 	0.0 104.52
-group water type 1 2
-fix	fShakebond	water 	shake 	0.0001 100 0 a 1 b 1
-pair_coeff 3 	3 	 0.29391 	3.73
-group methane type 3
+pair_coeff  3 	3 	 0.29391 	3.73
 pair_coeff 	1 3 	0.18 	3.44
 pair_coeff 	2 3 	0.0 	0.0
 
-dump myDump all custom 5 output_x_barostat.lammpstrj id element x y z vx vy vz
-dump_modify myDump element O H C
+group water type 1 2
+group methane type 3
+fix	fShakebond	water 	shake 	0.0001 100 0 a 1 b 1
+
+dump myDump all custom 5 trajectory.lammpstrj id element x y z vx vy vz
 
 velocity all create 300.0 32352 rot yes mom yes dist gaussian
 fix fxnpt all npt temp 300.0 300.0 100.0 x 400.0 400.0 100.0
@@ -70,22 +70,7 @@ fix fxnpt all npt temp 300.0 300.0 100.0 x 400.0 400.0 100.0
 # ----------------- Run Section -----------------
 run   5000
 \end{lstlisting}
-
-Many properties already have a default value, and only values that have the wrong default-value or are not set need to de defined.
-
-\paragraph{atom\_style}
-Atom style limits what kinds of interactions are possible to use for a simulation using the particular input file. Full flexibility is obtaied with {\tt atom\_style full}.
-
-\paragraph{pair\_style}
-Pair style interactions in LAMMPS are interactions using non-bonding potentials, as described in \ref{sec:non_bonding_potentials}. Many types of {\tt pair\_style} potentials are available, and they can also be combined -- but with caution -- using the concept of hybrid pair styles.
-
-\paragraph{bond\_style}
-This is 
-
-\paragraph{angle\_style}
-BlaBla
-
-The style commands have complementary {\tt \_coeff}-commands to thes the coefficients for the potentials. The number of coefficients and their role depend on the specific potential that is chosen with the {\tt \_style}-command.
+First, units are chosen. The meaning of {\tt real} units is best checked in the documentation. The choice of units has consequences for all physical properties that are to be set, such as temperature and interaction energies. On line 3, the simulation is set to be three-dimensional, and on line 4, all three boudaries are set to be periodic. {\tt atom\_style} limits what kinds of interactions are possible to use for a simulation using the particular input file. Full flexibility is obtaied here by setting {\tt atom\_style full}. {\tt pair\_style} sets the potential for the non-bonding interactions, as described in \ref{sec:non_bonding_potentials}. Many types of {\tt pair\_style} potentials are available, and they can also be combined -- but with caution -- using the concept of hybrid pair styles. The {\tt kspace\_style} sets the long-range solver. Here it is set to P$^3$M, which is the only available long range solver in LAMMPS for the TIP4P water model. Then the bonding potential models are set to be harmonic (line 8-9). Lorentz-Berthelot combination rules are imposed with the command {\tt mix arithmetic}. The {\tt read\_data} command reads a LAMMS data file to import initial positions and bonding specification for all particles in the simulation. On lines 16-23, the coefficients for all the interactions are set. The first two arguments are the types of particles for which the coefficient shall be utilized, and the rest are the actual coefficients in an order dictated by the documentation of that specific potential. For the potentials here, the first coefficient is an energy, and the second eiter a distance or an angle. Then, two groups of particles are defined for convenience, and on line 27, the holonomic contraints on the water molecules are set to be handled by the SHAKE-algorithm. {\tt a 1 b 1} means that bonds of type 1 and angles of type 1 are to be constrained. The existence of these types of bonds and angles are set in the data file. Then, on line 29, the {\tt dump} command sets how the positions and velocities of particles is to be written to file. Here, all particles are set to be dumped to the file {\tt trajectory.lammpstrj} every fifth timestep. Then all particles are given an initial velocity from the Boltzmann distribution (gaussian in each coordinate), and in line 32, the simulation is chosen to be run in the isothermic-isobaric ensemble (NPT). The {\tt run} command on the final line sets the number of timesteps to be simulated.
 
 \subsubsection{Data files}
 It is usually a good idea to have all atom input information i a file separate from the input file, and read it with the data\_read command. An atom data file shall contain positions and velocities for all particles. In addition, if some atoms are parts of specific molecules, this is decleared. All bonds and angles (and dihedrals and so on ..) that are meant to support interactions between specific particles must be decleared. In addition, it is possible to insert coefficients for the different interactions. However, it is not possible to declare atom\_style, pair\_style or any other style in the data files. This has to be done in the input file, and it is important that the number of coefficients in the data file is compatible with the interaction potential chosen in the input file. 
@@ -179,14 +164,8 @@ Angles
 
 \end{lstlisting}
 
-This requires some explanation. The first lines are ignored by Lammps, so the first line to be interpreted is line 3. The first section, line 3-8, contains information about wat is supposed to be contained in this file. The next section defines the bounds on the simulation domain. Then comes a definition of the masses for the two atom types that were decleared in the first section. In the section called PairIJ Coeffs, parameters for pair\_style interactions are set. The last line in this section tells that pair\_style interactions between particles of type 2 and 2 in this simulations have parameters 0.16275, 3.1643 and 10. The first two parameters in the 1 1 and 1 2 interactions have value 0, which tells us that these don't interact pair\_style. The bond coefficient section decleares a bond with id 1. If there were to be additional types of bonded interactions, they would be numbered from 2 and so on. If the bond\_style is set to harmonic, the parameters for the first bond tells that the equilibrium distance in this harmonic bond is 0.9572, but that the coefficient for the harmonic force is 0. The reason for the coefficient to be zero in this specific case, is that the bond is to be rigid, and rigidity is handled later, by a fix-command. The angle coeffs section follows the same pattern as the bond coeffs. Th contents of the Atoms section can vary, depending on the atom\_style used in the simulation. This setup is for atom\_style full. Line 35 tells that atom number 721 belongs to molecule number 241. It is of type 2 (oxygen in this case), and has charge -1.04844. Then comes xyz positions, and an nx ny nz counter telling how many times the atom has passed each periodic wall. Velocities are self-explanatory. The bonds section lists all the bonds that are defined in the simulation. In this case it is O-H-bonds in water. line 63 tells that the first such bond is of type 1 (as defined in bond coeffs), and that it creates a bonded interaction between atoms 721 and 722. The angles section is similar, but it takes three atoms to make an angle, with the vertex in the middle. This type of declaration is quite powerful. We have only defined that we have some water molecules, and that they support bonded and angular interactions, as well as pair\_style interactions. That means we can use any potential (supported by lammps) that have these restrictions. The only thing that has to be changed, are the coefficients for the different interactions. If one wishes to change potentials regularly, it can be a good idea to put coefficients in a file together with the declaration of potentials, using the {\tt $<$pair, bond, angle$>$\_coeff } commands. 
+The first lines are ignored by Lammps, so the first line to be interpreted is line 3. The first section, line 3-8, contains information about what is supposed to be contained in this file. The next section defines the bounds on the simulation domain. Then comes a definition of the masses for the two atom types that were decleared in the first section. In the section called PairIJ Coeffs, parameters for pair\_style interactions are set. The last line in this section tells that pair\_style interactions between particles of type 2 and 2 in this simulations have parameters 0.16275, 3.1643 and 10. The first two parameters in the 1 1 and 1 2 interactions have value 0, which tells us that these don't interact pair\_style. The bond coefficient section decleares a bond with id 1. If there were to be additional types of bonded interactions, they would be numbered from 2 and so on. If the bond\_style is set to harmonic, the parameters for the first bond tells that the equilibrium distance in this harmonic bond is 0.9572, but that the coefficient for the harmonic force is 0. The reason for the coefficient to be zero in this specific case, is that the bond is to be rigid, and rigidity is handled later, by a fix-command. The angle coeffs section follows the same pattern as the bond coeffs. Th contents of the Atoms section can vary, depending on the atom\_style used in the simulation. This setup is for atom\_style full. Line 35 tells that atom number 721 belongs to molecule number 241. It is of type 2 (oxygen in this case), and has charge -1.04844. Then comes xyz positions, and an nx ny nz counter telling how many times the atom has passed each periodic wall. Velocities are self-explanatory. The bonds section lists all the bonds that are defined in the simulation. In this case it is O-H-bonds in water. line 63 tells that the first such bond is of type 1 (as defined in bond coeffs), and that it creates a bonded interaction between atoms 721 and 722. The angles section is similar, but it takes three atoms to make an angle, with the vertex in the middle. This type of declaration is quite powerful. We have only defined that we have some water molecules, and that they support bonded and angular interactions, as well as pair\_style interactions. That means we can use any potential (supported by lammps) that have these restrictions. The only thing that has to be changed, are the coefficients for the different interactions. If one wishes to change potentials regularly, it can be a good idea to put coefficients in a file together with the declaration of potentials, using the {\tt $<$pair, bond, angle$>$\_coeff } commands. 
 
-
-
-\subsection{Interaction Potentials}
-
-\subsection{Settings}
-\subsubsection{The fix command}
 
 \subsection{Computes in lammps}
 \subsubsection{Pressure}
@@ -245,26 +224,6 @@ I was not going to use the surface functions, so I only needed to implement {\tt
 \caption{An elliptic crack carved out using {\tt region eprism}}
 \end{figure}
 
-\begin{figure}
-\centering
-\begin{tikzpicture}
-\draw (0, 0) rectangle (4, 6);
-\draw[very thick] (0,0) -- (4, 0);
-\draw[very thick] (0,6) -- (4, 6);
-\draw[name path=myellipse, red, dashed] (2, 3) ellipse (0.25cm and 1cm);
-\foreach \x in {1,2,...,50} 
-{
-	\pgfmathrandominteger{\a}{0}{400}
-	\pgfmathrandominteger{\b}{0}{600}
-	\pgfmathrandominteger{\c}{0}{359}
-	\draw (\a/100,\b/100) -- ++(\c:0.2);
-}
-\draw[name path=line1] (2.2, 3.3) -- (2.4, 3.3);
-\fill[red, name intersections={of=line1 and myellipse}] (intersection-1) circle (0.05cm);
-\end{tikzpicture}
-\caption{Illustration of the crack tracer method.}
-\label{fig:crack_tracer_method}
-\end{figure}
 
 \subsection{Usage}
 
@@ -275,13 +234,45 @@ Measuring the area of a crack surface is far from a trivial task. Due to the fra
 
 
 \subsection{Algorithm}
-I have implemented a Monte-Carlo crack tracer based on the theory of @cite1970isj to measure the solvent-accessible area of a system of particles. The basic idea is that every point in space is defined as either part of the \emph{void} or part of the \emph{wall} based on the following definition: A void point is a point for which there exist no particles within a distance $r_p$. Points that are not part of the void are parts of the wall. The Monte-Carlo method I employ is as follows: $N$ line segments of length $\Delta l$ and uniformly random orientation and position in space are drawn. A surface point is detected if one of the edges is in the void while the other is in the wall, and is identified as the midpoint of the line segment. The solvent-accessible surface area of the system is then, based on @cite1971:
+I have implemented a Monte-Carlo crack tracer based on the theory of @cite1970isj to measure the solvent-accessible area of a system of particles. The basic idea is that every point in space is defined as either part of the \emph{void} or part of the \emph{wall} based on the following definition: A void point is a point for which there exist no particles within a distance $r_p$. Points that are not part of the void are parts of the wall. The Monte-Carlo method I employ is as follows: $N$ line segments of length $\Delta l$ and uniformly random orientation and position in space are drawn. A surface point is detected if one of the edges is in the void while the other is in the wall. The solvent-accessible surface area of the system can then be calculated with the following formula:
 
 \begin{equation}
 A_{ss}(r_p) = 2V\frac{n_s(r_p)}{N\Delta l}
 \end{equation}
+Which is a simplified version of the formula used in \citet{Bhattacharya2009}. $n_s$ is the number of surface points detected amond $N$ line segments. $V$ is the volume of the system. The length $\Delta l$ is the only numerical resolution parameter for this measure, and has to be small compared to $r_p$ in order to capture the surface structure. Note that one could in principle draw line segments of different lengths. The denominator just have to be the sum of the length of all line segments. Actually, the formula can be written
+\begin{equation}
+	A_{ss}(r_p) = 2V\frac{n_s(r_p)}{L}
+\end{equation}
+where $n_s$ is the total number of void--wall crossings of an arbitrary set of straight line segments of total length $L$.
 
-Where $n_s$ is the number of surface points detected amond $N$ line segments. $V$ is the volume of the system. The length $\Delta l$ is the only numerical resolution parameter for this measure, and has to be small compared to $r_p$ in order to capture the surface structure. 
+\begin{figure}
+\centering
+\begin{tikzpicture}
+\filldraw[blue!40!white] (0, 0) rectangle (6, 12);
+\draw[very thick] (0,0) -- (6, 0);
+\draw[very thick] (0,12) -- (6, 12);
+\fill[name path=myellipse, white] (3, 6) ellipse (0.4cm and 1.4cm);
+\pgfmathsetseed{1138}
+\foreach \x in {1,2,...,400} 
+{
+	\pgfmathrandominteger{\a}{0}{600}
+	\pgfmathrandominteger{\b}{0}{1200}
+	\pgfmathrandominteger{\c}{0}{359}
+	\pgfmathrandominteger{\d}{0}{180}
+	\pgfmathsetmacro{\length}{0.4*cos(\d)}
+	%\def\length{\pgfmathresult}
+	\draw[name path=myline] (\a/100,\b/100) -- ++(\c:\length);
+	\def\n{0}
+	\fill [execute at begin node={\global\let\n=\n}, name intersections={of = myline and myellipse, total=\n}];
+	\pgfmathifthenelse{\n==1}{"\noexpand\fill [red] (intersection-1) circle (2pt)"}{"\noexpand\fill [blue] (2, 2) circle (0pt)"}
+	\pgfmathresult ;
+}
+\end{tikzpicture}
+\caption{Illustration of the crack tracer method. Here, 400 line segments of length \SI{0.4}{\centi\meter} are drawn. The line segments appear to have different lengths since they also have a component perpendicular to the paper plane.  If thinking in two dimensions, the area of this system $\SI{6}{\centi\meter} \times \SI{12}{\centi\meter}$ takes the role of the volume, and the surface area becomes a length. The calculated surface length is then: $2\times \SI{72}{\centi\meter\squared} \frac{6}{400\times \SI{0.3}{\centi\meter}} = \SI{5.4}{\centi\meter}$. The true circumference of the crack in this example is around \SI{6.5}{\centi\meter}.}
+\label{fig:crack_tracer_method}
+\end{figure}
+
+Figure \ref{fig:crack_tracer_method} shows the method in action. The blue area is the wall and the white are is the void. 
 
 \subsection{Implementation}
 \paragraph{Cell lists}
