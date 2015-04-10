@@ -1,54 +1,56 @@
 \chapter{Summary and conclusions}
 \label{ch:summary_conclusions}
-In chapter \ref{ch:state_of_the_science}, I presented the current state of the science of methane hydrates. The goal of this thesis has been to develop a protocol for imposing and studying fracture in methane hydrates, and to use this protocol to characterize the fracture and improve the understanding of this process. The simulation method I use, molecular dynamics with classical potentials for atomistic interations, sets clear limits for the robustness of the results. Quantitatively, the results are probably way off, since the potential was not specificall developed to reproduce the correct mechanical properties og growth- and dissociation rates of methane hydrates. However, since the potential can comfort the structure of the methane hydrate, and is able to sponaneously grow the hydrate, the qualitative properties arising from this model can be of interes. Particularly, governing mechanisms in the failure of methane hydrates can be identified. The property that can be most usefully extracted from molecular dynamics simulations, is probably the interplay between the external stress on a crack and the behavior of individual molecules close to the crack tip. 
+In chapter \ref{ch:state_of_the_science}, I presented the current state of the science of methane hydrates, and noticed that there have been no molecular dynamics studies on frature of methane hydrates. The goal of this thesis has been to develop a protocol for imposing and studying fracture in methane hydrates, and to use this protocol to characterize the fracture and improve the understanding of this process. The simulation method I use, molecular dynamics with classical potentials for atomistic interations, sets clear limits for the robustness of the results. Quantitatively, the results are probably way off, since the potential was not specificall developed to reproduce the correct mechanical properties og growth- and dissociation rates of methane hydrates. However, since the potential can comfort the structure of the methane hydrate, and is able to sponaneously grow the hydrate, the qualitative properties arising from this model can be of interest. Particularly, governing mechanisms in the failure of methane hydrates can be identified. The property that can be most usefully extracted from molecular dynamics simulations, is probably the interplay between the external stress on a crack and the behavior of individual molecules close to the crack tip. 
 
 In this chapter, I summarize my findings and the conclusions I draw from them.
 
-\section{Summary of findings}
-I have found that methane hydrates are brittle under rapid loading conditions, from the observation that they either remain intact or fail completely, and that the strain difference between these two scenarios is small. Additionally, the applied strain energy is close to the surface energy of the crack surface after failure. When the hydrate fail, methane is almost immidiately released, but only from a narrow region fo the wall close to the crack pore space. It seems, but based on a limited amount of statistics, that the crack initiation process is more predictable for higher than for lower temperatures. Furtermore, the critical crack length vs. the applied stress can more robustly characterize failure than a waiting time after appying a certain strain. This observation likely results from the dissociation process being more prominent at higher temperatures, specifically at temperatures above the melting temperature of water in the applied model. The stress--crack length curve after loading and before rapid failure has a well-defined slope. 
+\section{Summary and conclusions}
+Hovedoppsummering av hva jeg har gjort og hovedoppførselen til systemet.
+I have found that methane hydrates behave almost ideally brittle under rapid loading conditions, from the observation that they either remain intact or fail completely, and that the difference in strain separating these two scenarios is small. Additionally, the applied strain energy is close to the surface energy of the crack surface after failure. When the hydrate fail, methane is almost immidiately released, but only from a narrow region fo the wall close to the crack pore space. Even though the required strain for failure seems quite well defined, the rupture is nort immidiate at this strain level. There is a waiting time from straining until rupture. It seems, but based on a limited amount of statistics, that this waiting time is more predictable for higher than for lower temperatures. At least in the sense that a lower strain gives a longer waiting time. This observation likely results from the slow dissociation process (melting) being more prominent at higher temperatures, specifically at temperatures above the melting temperature of water in the applied model.  Furtermore, the critical crack length vs. the applied stress seems to more robustly characterize failure than a waiting time after appying a certain strain: The stress--crack length curve after loading and before rapid failure has a well-defined slope. 
 
-In this study, the cracks have been stable, but since the model system was short, the crack speed was probably transient all the way, which means crack instabilities could not be studied because cracks were not allowed to propagate long enogh to gain a sufficient crack speed to facilitate crack instabilities.
+Methane hydrates appear significantly more brittle in my simulations than in experiments. This is likely due to slow processes not getting sufficient time to reorganize the material to withstand the strain. It is also likely that the pureness of the structure of the hydrate in my simulations make it more brittle.
 
-Notes for the summary
-\begin{itemize}
-\item Someting on dissociation-activated fracture.
-\item Reading data from disk is a bottleneck when analyzing data post-simulation. 
-\end{itemize}
+I propose that the fracture tougness and the ductility of methane hydrates under tensile loading is higly temperature-dependent.
 
-\section{Conclusions and discussion}
+In this study, crack instabilities has not been prominent. Since the model system was short, the crack speed was probably transient all the way, resulting in the cracks never gaining sufficient speed to facilitate instabilities.	
+
 Notes for the conclusion
 \begin{itemize}
-\item Since $\mathcal{G}_c = 2\gamma_s$ the methane hydrates are very brittle in my simulations. (the details of the methane-water interaction might be crucial). OPLS-AA should be tested.
 \item I speculate that hydrate dissociation in the presence of fracture is highly dependent on slow dissociation, which means the fracture toughness likely highly depend on the pressure and temperature, which drive the non-fracture-induced dissociation. This fits well with experimental observations, namely that the compressional strength increases with decreasing temperature, increasing confining pressure and increasing density.
-\item It is actually quite remarkable that temperature is so important for fracture at these low temperatures.
 \end{itemize}
 
 Since methane hydrates don't appear to be brittle in experiments, it is reasonable to assume that slower processes are important to the mechanical properties. This leads to the main finding of this thesis: Slow processes impacts the failure of methane hydrates. Even under the rapid loading conditions dictated by the limitations of the method, slow dissociation of the hydrate was important for the crack initiation.
 %
 In furter investigations, it will probably be fruitful to characterize quantitaively the relation between the stress configuration on the hydrate and the dissociation rates. 
 
-Regarding the robustness of my results, I think that a twofold approach is necessary. First, LAMMPS is well tested, and since I ended up using mostly the core features of LAMMPS. This package should be stable, and since I only use TIP4P water and a pure Lennard-Jones methane, it is highly likely that the simulation actually simulate the model I want it to simulate. Then is the question of the model itself. And the model is probably not well suited to make accurate predictions of the fracture properties of methane hydrates. The high Poisson ratio clearly indicate that the mechanical properties is not well represented. But since TIP4P/Ice + UAM has proved to reasonably calculate growth and dissociation of methane hydrates, I think it is reasonable to conclude that the fracture initiation is highly influenced by slow dissociation processes. Confirmation using other potentials and looking more closely on effects of the methane in the initial crack will probably be needed to conclude definitely.
+\section{Discussion}
+@Limitations of the model/system. Clean ssytem, pure crystal, no salt. What can be learned? Developed methods? Interesting observations? 
+Regarding the robustness of my results, I think that a twofold approach is necessary. First, LAMMPS is well tested, and since I ended up using mostly the core features of LAMMPS. This package should be stable, and since I only use TIP4P water and a pure Lennard-Jones methane, it is likely that the program simulate the model I want it to simulate. Then is the question about the model itself. And the model is probably not well suited to make accurate predictions of the fracture properties of methane hydrates. The high Poisson ratio clearly indicate that the mechanical properties are not well represented. But since TIP4P/Ice + UAM has proved to reasonably calculate growth and dissociation of methane hydrates, it is reasonable to speculate that the fracture initiation is highly influenced by slow dissociation processes. 
 
 The methods of this
-@Limitations
+
+Quantum effects not here.
+
+Time scales. Strain rate high because of the simulation method, not the realistic geological setting. Some processes are too slow to be seen. 
+
 In molecular dynamics, simulations extend over small scales both in time and space. Therefore, only rapid processes are available, thus the findings of this work are only valid on small and short scale.
 
 The most profound limitation in the molecular dynamics approach is the representation of the interatomic interactions by classical potentials. Even with infinite computer power, the value of a simulation rely heavily on the quality and applicability of the potentials. The hydrogen bonding of water impose extra diffuculties when designing water potentials. Especially properties that are not easy to fit empirically, such as the behavior under high stresses and strains, can be hard to assess.
 
 \section{Outlook}
+The mechanism of slow dissociation leading to fast crack propagation should be investigated using other potentials, to be confident that mechanism is not an artefact of the specific potential.
+
 \begin{itemize}
 \item Furter investigations to confirm the two stages of dissociation: Thermally activated crack growth (slow) and strain-activate crack growth (fast). Particularly, a study of the dissociation properties under the extreme conditions near the crack tip would be interesting to eludicate the interplay between the fast and slow fracture mechanisms.
 \item Other potentials -- the problem with high poisson ratio. It might be a good idea to parametrize a water model that reproduces reasonable elastic features of the empty hydrate lattice, and then, using ab-initio calculations fit a methane-water potential.
 \item Experimental ductility of methane hydrates: Is there a timescale at which methane hydrates become ductile, or perhaps heterogeneities can make sure that methane hydrates can sustain a global strain comparable to the yield strain of the perfect crystal, but with pores of methane forming inside the material. 
 \item Develop a fracture analysis package for LAMMPS: Since so large amounts of data are needed for fracture analysis, it is probably a good idea to do big analyses live.
-\item Implement support for TIP4P with P$^3$M and triclinic box to control shear stress.
-\item Reparametrize the TIP4P model for the study of methane hydrates.
 \end{itemize}
 
-The works presented in this thesis represents some first steps into modeling fracture of methane hydrates using molecular dynamics. In terms of different systems to model, I propose the following:
+The works presented in this thesis represents some first steps into modeling fracture of methane hydrates using molecular dynamics. In terms of other systems to model, I propose the following:
 %
 \begin{itemize}
-\item Less ordered structures.
+\item Less ordered structures, i.e. not replications of a unit cell.
 \item Changing the hydration number. Molecular dynamics simulations can shed light on how the cage occupancy influence the mechanical properties of methane hydtates.
 \item Defects of different geometries.
 \item Other loading modes.
@@ -58,5 +60,14 @@ There are also more profund problems concering the modeling. First-principles st
 
 There are a number of possible paths for furter investigations. I will start by addressing remedies to handle the limitations discussed above , and end by ..
 
+On the more practical part, I propose some features that would be convenient to have in the simulation package:
+\begin{itemize}
+\item TIP4P water with P$^3$M and triclinic box. This combination is currently not supported in LAMMPS, disallowing to impose shear stress by the method of \citet{Parrinello1981}.
+\item LAMMPS extensions to perform more of the analysis during simulation, to be able to analyse cracks with high time resolution.
+\end{itemize}
+ 
 
+\section{Erfaringer}
+
+\section{Ending remarks}
 Knowledge on a molecular level only become practically interesting if is is possible to scale it to macroscopic quantities it in some way or another. Purely scientifically, the role of molecular dynamics calculations on methane hydrates is probably to provide clues about what processes should be included in upscaled models -- models that gain access to longer and larger scaler by ignoring more details than the lower-scale model. This is crucial when considering the questions, whose answers can impact peoples lives: Can, and how can, methane hydrates be used as an energy resource? Can methane hydrates cause uncontrolable climate change, or devastating underwater landslides, and can we prevent it? 

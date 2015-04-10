@@ -223,16 +223,17 @@ Measuring the area of a crack surface is far from a trivial task. Due to the fra
 
 
 \subsection{Algorithm}
-I have implemented a Monte-Carlo crack tracer to measure the solvent-accessible area of a system of particles. The basic idea is that every point in space is defined as either part of the \emph{void} or part of the \emph{wall} based on the following definition: A void point is a point for which there exist no particles within a distance $r_p$. Points that are not part of the void are parts of the wall. The Monte-Carlo method I employ is as follows: $N$ line segments of length $\Delta l$ and uniformly random orientation and position in space are drawn. A surface point is detected if one of the edges is in the void while the other is in the wall. The solvent-accessible surface area of the system can then be calculated with the following formula:
+I have implemented a Monte-Carlo crack tracer to measure the solvent-accessible area of a system of particles. The basic idea is that every point in space is defined as either part of the \emph{void} or part of the \emph{wall} based on the following definition: A void point is a point for which there exist no particles within a distance $r_p$. Points that are not part of the void are parts of the wall. The Monte-Carlo method I employ is as follows: $N$ line segments of length $\Delta l$ and uniformly random orientation and position in space are drawn. A surface point is detected if one of the edges is in the void while the other is in the wall. The line segments must be sufficiently short to only cross the void--wall interface once. The solvent-accessible surface area of the system can then be calculated with the following formula:
 
 \begin{equation}
 A_{ss}(r_p) = 2V\frac{n_s(r_p)}{N\Delta l}
+\label{eq:crack_tracer}
 \end{equation}
-Which is a simplified version of the formula used in \citet{Bhattacharya2009}. $n_s$ is the number of surface points detected amond $N$ line segments. $V$ is the volume of the system. The length $\Delta l$ is the only numerical resolution parameter for this measure, and has to be small compared to $r_p$ in order to capture the surface structure. Note that one could in principle draw line segments of different lengths. The denominator just have to be the sum of the length of all line segments. Actually, the formula can be written
+Which is a simplified version of the formula used in \citet{Bhattacharya2009}. $n_s$ is the number of surface points detected among $N$ line segments. $V$ is the volume of the system. The length $\Delta l$ is the only numerical resolution parameter for this measure, and has to be small compared to $r_p$ in order to capture the surface structure. Note that one could in principle draw line segments of different lengths. The denominator just have to be the sum of the length of all line segments. Actually, the formula can be written
 \begin{equation}
 	A_{ss}(r_p) = 2V\frac{n_s(r_p)}{L}
 \end{equation}
-where $n_s$ is the total number of void--wall crossings of an arbitrary set of straight line segments of total length $L$.
+$n_s$ is now the total number of void--wall crossings of an arbitrary set of straight line segments of total length $L$. Each line is now allowed to cross the void--wall interface arbitrarilt many times, provided that the total number is added to $n_s$.
 
 \begin{figure}
 \centering
