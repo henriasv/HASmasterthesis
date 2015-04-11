@@ -3,7 +3,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Introduction}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Molecular dynamics is a method for simulating systems of point particles. It is assumed that the particles behave classically; each particle obeys Newtons second law $\sum \mb{F} = m\ddot{\rvec}$. The forces are calculated using interaction potentials, and each particle can in priciple interact with all other particles in the system:
+Molecular dynamics is a method for simulating systems of point particles. It is assumed that the particles behave classically; each particle obeys Newtons second law $\sum \mb{F} = m\ddot{\rvec}$. The forces are calculated using interaction potentials, and each particle can in principle interact with all other particles in the system:
 \begin{equation}
 	\mb{F}_i = -\nabla U_i(\rvec^N)
 \end{equation}
@@ -18,13 +18,13 @@ There are also details concerning computational efficiency. To be able to simula
 
 \section{Potentials}
 
-In molecular dynamics, it is natural to define two types of interactions, and therefore two types of potentials, based on how they relate groups of atoms. \emph{Non-bonding interactions} depend on the spatial configurations of each possible set of particles of a specific kind, for example all triplets of Si-atoms or all HOO triplets (sorted that way). \emph{Bonding interactions} depend on the spatial configuration of specific predfined sets of particles. The total potential is the sum of the contributions from these potentials: 
+In molecular dynamics, it is natural to define two types of interactions, and therefore two types of potentials, based on how they relate groups of atoms. \emph{Non-bonding interactions} depend on the spatial configurations of each possible set of particles of a specific kind, for example all triplets of Si-atoms or all HOO triplets (sorted that way). \emph{Bonding interactions} depend on the spatial configuration of specific predefined sets of particles. The total potential is the sum of the contributions from these potentials: 
 
 \begin{equation}
 	U_{\text{tot}} = U_{\text{non-bonding}} + U_{\text{bonding}} 
 \end{equation}
 
-These definitions should not be confused with the distiction between covalent and non-covalent bonds i chemistry, even though it is common that bonding interactions in molecular dynamics represent covalent bonds.
+These definitions should not be confused with the distinction between covalent and non-covalent bonds i chemistry, even though it is common that bonding interactions in molecular dynamics represent covalent bonds.
 
 \subsection{Non-bonding potentials}
 \label{sec:non_bonding_potentials}
@@ -34,7 +34,7 @@ The Lennard-Jones potential is simple and widely used. For two particles separat
 	U_{LJ} = 4\varepsilon\left[\left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^{6}\right]
 \end{equation}
 (Do not confuse $\sigma$ and $\epsilon$ with stress and strain in elasticity).
-The first term represents Pauli repulsion, and the second represents van der Waals attraction. $\sigma$ is a characteristic length which is close to the equilibrium distance between two particles. $\varepsilon$ is the depth of the potentiall well -- a measure of the strength of the interaction. The Lennard-Jones potential is computationally attractive because there is no need to calculate square roots of distances between particles. The Lennard-Jones potential is given in terms of reduced units. Since most studies of Lennard-Jones systems report results in these units, the equations defining some properties in reduced units are included in table \ref{tbl:lj_parameters}.
+The first term represents Pauli repulsion, and the second represents van der Waals attraction. $\sigma$ is a characteristic length which is close to the equilibrium distance between two particles. $\varepsilon$ is the depth of the potential well -- a measure of the strength of the interaction. The Lennard-Jones potential is computationally attractive because there is no need to calculate square roots of distances between particles. The Lennard-Jones potential is given in terms of reduced units. Since most studies of Lennard-Jones systems report results in these units, the equations defining some properties in reduced units are included in table \ref{tbl:lj_parameters}.
 
 \begin{table}
 \centering
@@ -73,7 +73,7 @@ Bonded potentials only apply for a specific group of particles. A simple two-par
 \begin{equation}
 	U_{HB} = k(r - r_0)^2
 \end{equation}
-Where $r_0$ is the equilibrium distance between the particles and $k$ is a constant of propotionality.
+Where $r_0$ is the equilibrium distance between the particles and $k$ is a constant of proportionality.
 
 A simple three-particle bonding potential, which is often used in combination with the harmonic bond potential is the harmonic angle potential:
 \begin{equation}
@@ -83,7 +83,7 @@ A simple three-particle bonding potential, which is often used in combination wi
 These two latter potentials are common for creating small molecules that will not take part in chemical reactions, such as water in ice simulations. Sometimes these potential are taken to the limit of $k\to\infty$ creating rigid particles. The rigidity is then treated with dedicated algorithms.
 
 \section{Time integration}
-In order to solve the newtonian equations of motion numerically, a discrete scheme is needed. For particles in conservative fields -- fields in classical molecular dynamics are conservative -- the velocity Verlet scheme is usually preferred \cite[p.69]{frenkel2001understanding}. 
+In order to solve the Newtonian equations of motion numerically, a discrete scheme is needed. For particles in conservative fields -- fields in classical molecular dynamics are conservative -- the velocity Verlet scheme is usually preferred \cite[p.69]{frenkel2001understanding}. 
 
 \subsection{Velocity Verlet}
 The velocity Verlet algorithm is:
@@ -91,7 +91,7 @@ The velocity Verlet algorithm is:
 	\rvec(t+\Delta t) &=& \rvec(t) + \dot\rvec(t)\Delta t + \frac{1}{2}\frac{\mb{F}(t)}{m}\Delta t^2 \\
 	\dot\rvec(t + \Delta t) &=& \dot\rvec(t) + \frac{1}{2} \frac{\mb{F}(t) + \mb{F}(t+\Delta t)}{m}\Delta t
 \end{align*}
-The velocity Verlet integrator is symplectic. Being symplectic can be defined in a very strict mathematical way, but for the purposes of this work, it is sufficient to note that a symplectic integrator conserves a Hamiltonian that is only slightly perturbed relative to the Hamiltonian from which it tries to solve Hamiltons equations. This in turn means that in practice it conserves energy. Therefore the velocity Verlet algorithm can be used to sample the microcanonical ensemble (NVE).
+The velocity Verlet integrator is symplectic. Being symplectic can be defined in a very strict mathematical way, but for the purposes of this work, it is sufficient to note that a symplectic integrator conserves a Hamiltonian that is only slightly perturbed relative to the Hamiltonian from which it tries to solve Hamilton's equations. This in turn means that in practice it conserves energy. Therefore the velocity Verlet algorithm can be used to sample the microcanonical ensemble (NVE).
 
 \section{Simulation box}
 MD simulations can in principle be performed in infinite space, but it is usually best to confine the simulation to a specified region. Most commonly, the simulation is performed in a box with periodic boundary conditions (PBC). In PBC, a particle that leaves the simulation box reappears on the opposite side of the simulation box, keeping its velocity. At any point in time, the position of a particle can be measured in any \emph{periodic image} by going through the periodic boundary as many times as wanted before actually measuring the position. The position of a particle in the simulations box, ignoring the periodic boundary condition is the \emph{local cell} position of that particle, and the simulation box itself is thought of as the \emph{local cell}. Note that a particle comes back to the local cell when it goes through the periodic boundary. The whole concept of the image cells is introduced to be able to handle interactions correctly. The most immidiate complication introduced by PBC is that there are now several ways to go from one atom to another, depending on what periodic image positions of the particle positions are used. This has consequences for the force calculation. The usual solution is to apply the so-called \emph{minimum image convention}, which means that each pair of particles is counted only once, and the distance vector is chosen to be the shortest one. In practice, the minimum image is calculated by first checking the non-periodic distance. Then, for each component of the difference vector, it is checked if the absolute value of that component can be reduced by adding or subtracting the simulation box length along that component.

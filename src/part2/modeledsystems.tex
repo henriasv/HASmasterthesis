@@ -56,7 +56,26 @@ Figures \ref{fig:stress_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones} 
 \subsection{S1 methane hydrate with TIP4P/ICE+UAM}
 To my knowledge, there are no published estimates of Youngs modulus and Poissons ratio for the TIP4P/ICE+UAM model of methane hydrates. Therefore, I seek to make crude estimates of these quantities in dynamic simulations. I apply a constant strain rate by continously rescaling particle positions in one direction during MD-simulations. The other directions are kept under a constant pressure with anisotropic barostatting.
 Figure \ref{fig:stress_strain_11_11_11_tip4p_ice_uam} shows the stress strain relationships and corresponding estimates of Youngs modulus for a system of 11x11x11 S1 unit cells subjected to strain rates of \SI{5d-7}{\per\femto\second} and \SI{2d-7}{\per\femto\second}. By extrapolating the results to quasistatic strain, Youngs modulus is estimated to \SI{7.1}{\giga\pascal}. 
-Figure \ref{fig:strain_strain_11_11_11_y_z_poisson_tip4p_ice_uam} shows the relationship between applied strain along the x-axis and the measured strain along the other axes. It is not outrageous to assume S1 methane hydrate to be isotropic. Under this assumption, and by extrapolation to quasisatic strain, I estimate the poisson ratio for this model of S1 methane hydrate to be $\nu = 0.41$. 
+Figure \ref{fig:strain_strain_11_11_11_y_z_poisson_tip4p_ice_uam} shows the relationship between applied strain along the x-axis and the measured strain along the other axes. It is not outrageous to assume S1 methane hydrate to be isotropic. Under this assumption, and by extrapolation to quasisatic strain, I estimate the poisson ratio for this model of S1 methane hydrate to be $\nu = 0.41$. Putting the calculated values for Young's modulus and Poisson's ratio, along with the density calculated in \citet{Ning2010}, $\rho = \SI{0.919}{\kilo\gram\per\liter}$ into the equations for shear and pressure waves give the elastic wave speeds for the methane hydrate: $v_s=\SI{3800}{\meter\per\second}$ and $v_p = \SI{1660}{\meter\per\second}$. From the Poisson's ratio and the shear wave speed, the Rayleigh wave speed can be calculated using the following approximate formula from \cite{0957-4484-16-6-N01}:
+\begin{equation}
+v_R = v_s(0.874 + 0.196\nu − 0.043\nu^{2} − 0.055\nu^{3}),
+\end{equation}
+resulting in a rayleigh wave speed of $v_R = \SI{1570}{\meter\per\second}$.
+The mechanical properties obtained for methane hydrates in the TIP4P/Ice + UAM model are given in table \ref{tbl:mechanical_from_simulation}.	
+\begin{table}
+\centering
+\caption{Mechanical properties of the methane hydrate in the TIP4P/Ice + UAM model measured under isothermal tensile strain with zero confining pressure.}
+\label{tbl:mechanical_from_simulation}
+\begin{tabular}{cc}
+Property & Value \\
+\hline
+Young's modulus, $E$ & \SI{7.1}{\giga\pascal} \\
+Poisson's ratio, $\nu$ & 0.41 \\
+Shear wave speed, $v_s$ & \SI{3780}{\meter\per\second} \\
+Pressure wave speed $v_p$ & \SI{1650}{\meter\per\second} \\
+Rayleigh wave speed $v_R$ & \SI{1570}{\meter\per\second} \\
+\end{tabular}
+\end{table}
 
 \begin{figure}
 \centering
