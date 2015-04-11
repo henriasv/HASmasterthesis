@@ -69,16 +69,13 @@ Having measured both the shear viscosity and the diffusivity well within the unc
 The methane model is simply a Lennard-Jones model, and I will use it with a sutoff and no long-range corrections. Young's modulus and Poissons ratio for the Lennard-Jones model will be verified when I check my protocol for measuring elastic properties in molecular dynamics. I an confident that LAMMPS treats the Lennard-Jones potential correctly, and I will have confirmation that my parameter input is correct if Young's modulus is correct (which it turns out to be).
 
 \section{Stabilizing methane hydrates}
-The TIP4P/ICE potential should be able to stabilize a methane hydrate stucture. Therefore, I prepared an S1 hydrate using positions priovided by \citet{Takeuchi2013}. These positions were derived using the TIP4P (no suffix) potential, and are not expected to be an equilibrium configuration for TIP4P/ICE. The hydrate turns out to equilibrate nicely – although some water molecules turn around – using a Nosé-Hoover NPT thermostat with a temperature rising from $0$ to \SI{30}{\kelvin}. The reason for using a rising temperature rather than an energy minimization, is that the energy minimization schemes don't work with the SHAKE-algorithm in LAMMPS, as discussed in section \ref{sec:shake} about the SETTLE algorithm.
+The TIP4P/ICE potential should be able to stabilize a methane hydrate stucture. Therefore, I prepared an S1 hydrate using positions priovided by \citet{Takeuchi2013}. These positions were derived using the TIP4P (no suffix) potential, and are not expected to be an equilibrium configuration for TIP4P/ICE. The hydrate turns out to equilibrate nicely – although some water molecules turn around – using a Nosé-Hoover NPT thermostat with a temperature rising from $0$ to \SI{30}{\kelvin}. The reason for using a rising temperature rather than an energy minimization, is that the energy minimization schemes don't work with the SHAKE-algorithm in LAMMPS.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../snapshots/first_stable_hydrate.pdf}
 \caption{Methane hydrate at low temperature. Rendered with VMD}
 \label{fig:part2:first_hydrate}
 \end{figure}
-
-\section{Three-phase equilibrium line for methane hydrate}
-Three-phase equilibrium simulations have been performed to check whether the model system is in the same ballpark as systems from the literature. Simulations have been performed on a system similar to the one in \cite{Conde2010}.
 
 \begin{comment}
 \section{Nucleation of methane hydrates?}
