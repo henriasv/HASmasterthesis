@@ -401,7 +401,16 @@ But, even though measuring the number of free methanes by mean squared displacem
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 All simulations until now have been run at $T=\SI{260}{\kelvin}$. This is a relatively low temperature, and specificly, it is lower than the melting point of water for the TIP4P/ICE water model. I start by running a few simulations in the large system, $24\times 24\times 12$ sI unit cells, and report results. From then I will decide on wheter to furter investigate temperature changes.
 
+The new simulations are run at a temperature \SI{280}{\kelvin}, which is higher than the melting point of the TIP4P/Ice water model. 
 
+Since the total crack area is limited by the cross-sectional area of the simulation box, I choose to look at the amount of rfee methane in these simulations. Figure \ref{fig:released_methane_temp} shows the amound of free methane in simulations with various values of the strain level, and two different temperatures. It is clear that the amount of free methane gets higher when the temperature gets higher, but it is unclear whether the amount freed \emph{during} fracture is different. The clearest tendency is that methane is freed more quickly before and after crack propagation when the temperature is higher. 
+
+\begin{figure}
+\centering
+\includegraphics[width=12cm]{../figures/thesis/released_methane_temp.pdf}
+\caption{Released for different strain levels with $T = \SI{260}{\kelvin}$ (dashed lines) and $T = \SI{280}{\kelvin}$ (solid lines). The amount of free methane gets significantly higher with the increased temperature.}
+\label{fig:released_methane_temp}
+\end{figure}
 
 \section{Effects of the system thickness}
 The study of finite size effects has not yet gotten much attention in this work, but from visual inspection of simulations with different thicknesses $L_z$, it is clear that there are finite thickness effects. Until now, two system sizes has been studied: A thickness of one sI unit cell and a thickness of 12 sI unit cells. 
