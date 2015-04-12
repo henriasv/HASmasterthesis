@@ -1,13 +1,127 @@
 \chapter{Input file templates}
 \label{ch:templates}
-To be able to do many simulations of the same kind, but with either different paramenters of different random seed (to collect statistics), I have defined a way to make simulation templates. I have also made a (small) Python module {\tt template\_expander} that can be used to efficiently create systematic series of simulations from a template. My workflow has been: 
+To be able to do many simulations of the same kind, but with either different parameters of different random seed (to collect statistics), I have defined a way to make simulation templates. I have also made a (small) Python module {\tt template\_expander} that can be used to efficiently create systematic series of simulations from a template. My workflow has been: 
 
 \begin{enumerate}
 \item Write a LAMMPS input script and check that it runs.
 \item Substitute some commands and variables with custom identifiers.
 \item Apply {\tt template\_expander} to create a series of simulations.
 \end{enumerate}
+This way of doing simulations has turned out to be efficient. I don't provide the code for {\tt template\_expander} here, but it is available upon request.
 
 \section{Template format}
+The template format is very simple. The file is written just like a regular input file, but with the exception that some properties are marked with an `@'. These are to be substituted by simulation parameters by the {\tt template expander}.
+To illustrate the template, I give the file that was used for the fracture simulations in this work. The first `@'-identifier is on line 13. 
+\begin{lstlisting}[language=LammpsInput]
+units					real
+dimension 		3
+boundary 			p p p 
+atom_style 		full
+pair_style 		lj/cut/tip4p/long 1 2 1 1 0.1577 10.0
+kspace_style	pppm/tip4p 1.0e-4
+bond_style 		harmonic
+angle_style		harmonic
+pair_modify		mix arithmetic # Lorenz-Berthelot mixing rules
+
+
+read_data "s1_unit_cell_tip4p_ice.data"
+variable Nx equal @Nx
+variable Ny equal @Ny
+variable Nz equal @Nz
+replicate ${Nx} ${Ny} ${Nz}
+
+pair_coeff 	1 	1 	0.21084 	3.1668
+pair_coeff 	2 	2		0.0 		0.0
+pair_coeff  1 	2 	0.0 		0.0
+pair_coeff 	3 	3 	0.29391 	3.73
+
+
+bond_coeff  	1 	1000.0 	0.9572
+angle_coeff 	1 	1000.0 	104.52
+
+group water 		type	1 	2
+group methane 	type	3
+
+
+variable dumpFrequency equal 300
+
+compute methaneMsd methane msd com yes
+compute waterMsd water msd com yes
+
+compute perAtomStress all stress/atom NULL
+fix fperAtomStress all ave/atom 1 ${dumpFrequency} ${dumpFrequency} c_perAtomStress[1] c_perAtomStress[2] c_perAtomStress[3] c_perAtomStress[4] c_perAtomStress[5] c_perAtomStress[6]
+
+thermo 1
+thermo_style custom step time etotal ke temp pe ebond eangle edihed eimp evdwl ecoul elong press density lx ly lz pxx pyy pzz pxy pxz pyz c_waterMsd[4] c_methaneMsd[4]
+
+dump myDump all custom ${dumpFrequency} trajectory.lammpstrj id element x y z vx vy vz f_fperAtomStress[1] f_fperAtomStress[2] f_fperAtomStress[3] f_fperAtomStress[4] f_fperAtomStress[5] f_fperAtomStress[6] 
+dump_modify myDump element O H C
+
+variable T equal @temperature
+variable Tdamp equal 1000.0
+variable Pdamp equal 1000.0
+variable P equal 1
+
+variable Nthermalize equal 1e5
+variable Nerate equal @Nerate
+variable Nproduction equal @Nproduction
+
+variable crackWidth equal @crackWidth
+variable crackLength equal @crackLength
+
+timestep @timeStep
+neigh_modify delay 0 every 1 check yes
+
+# Cut a vertical crack in the middle of the sample
+variable xmid equal "(xlo+xhi)/2.0"
+variable ymid equal "(ylo+yhi)/2.0"
+variable zlo1 equal "zlo"
+variable zhi1 equal "zhi"
+
+region crackHole eprism ${xmid} ${ymid} $(v_crackWidth/2.0) $(v_crackLength/2.0)
+
+delete_atoms region crackHole mol yes
+
+fix	fShake	water 	shake 	1.0e-4  100	0 	a 	1 	b 	1
+fix fxnpt all npt temp ${T} ${T} ${Tdamp} x $P $P ${Pdamp} y $P $P ${Pdamp} z $P $P ${Pdamp} drag 1.0
+run ${Nthermalize}
+write_restart restart.*
+
+unfix fxnpt
+fix fxnvt all nvt temp ${T} ${T} ${Tdamp} drag 1.0
+fix fErate all deform 1 x scale @maxStrain remap x
+run ${Nerate}
+write_restart restart.*
+
+unfix fErate
+run ${Nproduction}
+write_restart restart.*
+\end{lstlisting}
 
 \section{Python implementation}
+In order to fill in for the properties that are to be varied, properties are put in a dictionary and sent to the {\tt template\_expander} module.
+\begin{lstlisting}[language=Python]
+# script using template expander
+
+from template_expander import template_expander
+import os
+
+sys_vars = {}
+sys_vars['Nx'] = [24]
+sys_vars['Ny'] = [24]
+sys_vars['Nz'] = [12]
+sys_vars['Nerate'] = ['5e4']
+sys_vars['Nproduction'] = ['4e5']
+sys_vars['crackLength'] = [40.0]
+sys_vars['crackWidth'] = [6.0]
+sys_vars['maxStrain'] = [1.047, 1.048]
+sys_vars['timeStep'] = [1.0]
+base_time_limit = 18.0
+base_tasks = 20*15
+input_folder = os.environ['TEMPLATEHOME']+'/s1_hydrate_crack'
+input_file = 's1_hydrate_crack.in'
+output_folder = os.environ['OUTPUTHOME']+'/systematic_cracks_ellipsehole_thick'
+
+template_expander(input_folder, input_file, sys_vars, output_folder, base_time_limit, base_tasks, account='myAccount')
+\end{lstlisting}
+ 

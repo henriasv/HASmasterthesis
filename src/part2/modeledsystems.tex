@@ -57,8 +57,8 @@ Figures \ref{fig:stress_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones} 
 
 \subsection{sI methane hydrate with TIP4P/ICE+UAM}
 To my knowledge, there are no published estimates of Young's modulus and Poisson's ratio for the TIP4P/ICE+UAM model of methane hydrates. Therefore, I seek to make crude estimates of these quantities in dynamic simulations. I apply a constant strain rate by continuously rescaling particle positions in one direction during MD-simulations. The other directions are kept under a constant pressure with anisotropic barostatting.
-Figure \ref{fig:stress_strain_11_11_11_tip4p_ice_uam} shows the stress strain relationships and corresponding estimates of Young's modulus for a system of 11x11x11 sI unit cells subjected to strain rates of \SI{5d-7}{\per\femto\second} and \SI{2d-7}{\per\femto\second}. By extrapolating the results to quasi-static strain, Young's modulus is estimated to \SI{7.1}{\giga\pascal}. 
-Figure \ref{fig:strain_strain_11_11_11_y_z_poisson_tip4p_ice_uam} shows the relationship between applied strain along the x-axis and the measured strain along the other axes. It is not outrageous to assume sI methane hydrate to be isotropic. Under this assumption, and by extrapolation to quasisatic strain, I estimate the poisson ratio for this model of sI methane hydrate to be $\nu = 0.41$. Putting the calculated values for Young's modulus and Poisson's ratio, along with the density calculated in \citet{Ning2010}, $\rho = \SI{0.919}{\kilo\gram\per\liter}$ into the equations for shear and pressure waves give the elastic wave speeds for the methane hydrate: $v_s=\SI{3800}{\meter\per\second}$ and $v_p = \SI{1660}{\meter\per\second}$. From the Poisson's ratio and the shear wave speed, the Rayleigh wave speed can be calculated using the following approximate formula from \cite{0957-4484-16-6-N01}:
+Figure \ref{fig:stress_strain_11_11_11_tip4p_ice_uam} shows the stress strain relationships and corresponding estimates of Young's modulus for a system of 11x11x11 sI unit cells subjected to strain rates of \SI{5d-7}{\per\femto\second} and \SI{2d-7}{\per\femto\second}. By extrapolating the results to quasi-static strain, Young's modulus is estimated to \SI{7.1}{\giga\pascal}.
+Figure \ref{fig:strain_strain_11_11_11_y_z_poisson_tip4p_ice_uam} shows the relationship between applied strain along the x-axis and the measured strain along the other axes. It is not outrageous to assume sI methane hydrate to be isotropic. Under this assumption, and by extrapolation to quasisatic strain, I estimate the poisson ratio for this model of sI methane hydrate to be $\nu = 0.41$. Putting the calculated values for Young's modulus and Poisson's ratio, along with the density calculated in \citet{Ning2010}, $\rho = \SI{0.919}{\kilo\gram\per\liter}$ into the equations for shear and pressure waves give the elastic wave speeds for the methane hydrate: $v_s=\SI{3780}{\meter\per\second}$ and $v_p = \SI{1650}{\meter\per\second}$. From the Poisson's ratio and the shear wave speed, the Rayleigh wave speed can be calculated using the following approximate formula from \cite{0957-4484-16-6-N01}:
 \begin{equation}
 v_R = v_s(0.874 + 0.196\nu − 0.043\nu^{2} − 0.055\nu^{3}),
 \end{equation}
@@ -66,7 +66,7 @@ resulting in a rayleigh wave speed of $v_R = \SI{1570}{\meter\per\second}$.
 The mechanical properties obtained for methane hydrates in the TIP4P/Ice + UAM model are given in table \ref{tbl:mechanical_from_simulation}.	
 \begin{table}
 \centering
-\caption{Mechanical properties of the methane hydrate in the TIP4P/Ice + UAM model measured under isothermal tensile strain with zero confining pressure.}
+\caption{Mechanical properties of the methane hydrate in the TIP4P/Ice + UAM model measured under isothermal tensile strain with zero confining pressure. The elastic wave speeds are derived from Young's modulus and Poisson's ratio.}
 \label{tbl:mechanical_from_simulation}
 \begin{tabular}{cc}
 Property & Value \\
@@ -102,29 +102,24 @@ Rayleigh wave speed $v_R$ & \SI{1570}{\meter\per\second} \\
 
 
 \subsection{Simulation protocol}
-@VerifyThatThisIsADescriptionOfHantal2014
-It is not at all obvious how to perform simulations to determine the fracture toughness. \citet{Hantal2014} performed NVT simulations and imposed a series of small deformations to their sample. After each deformation, they minimized the system, and then ran molecular dynamics for \SI{10}{\pico\second}. I have tried to use the same protocol, but find that for my system, the impact on the energy distribution among the degrees of freedom is too large when performing minimizations between the deformations. this results in a system farther out of equlilibrium that the deformed but not minimized system. Therefore, a possible protocol:
-
+Several approaches can be applied to determine the fracture toughness in molecular dynamics. \citet{Hantal2014} performed NVT simulations and imposed incremental deformations to their sample. After each deformation, they minimized the system, and then ran molecular dynamics for \SI{10}{\pico\second}. I tried to use the same protocol, but found that for my system, the impact on the energy distribution among the degrees of freedom was too large when performing minimizations between the deformations. this resulted in a system farther out of equlilibrium than the deformed system before minimization. Therefore, a possible protocol is:
 \begin{enumerate}
 \item Equilibrate the system NVT (Molecular dynamics)
 \item Perform small deformation
 \item Reequilibrate the system NVT (Molecular dynamics)
-\item If the strain i low: Return to 2. If the strain is high: continue.
-\item Molecular dynamics run to wait for failure
-\item If failure does not occur, or crack length stabilizes: Return to 2. 
+\item Molecular dynamics run (NVT) to wait for failure
+\item Return to 2 or end the simulation. 
 \end{enumerate}
+This approach was also tested, but it turned out that the waiting times were unpredictable -- it was hard to set a reasonable waiting time for step 4. This resulted in additional deformations being applied \emph{during} fracture. 
 
-However there are problems here: The waiting time when waiting for failure must be carefully chosen, and if it turns out that critical and sub-critical failure are hard to distinguish, or even impossible to define, then waiting times can be arbitrarly long. 
+A simpler protocol -- and I believe this to be a good way to study this particular system -- is to subject the sample to a constant strain rate until it reaches some pre-defined strain, and then wait for a crack to propagate. This is simple to do, and is also close to experimental conditions, except that the strain rate must necessarily be much higher in MD simulations than in experiments. The downside of this method is that only a single strain level will be tested in each simulation, but if there exits wating times for fracture that depend on the applied strain, then there has to be done individual simulation for each strain level.
 
-From the latter discussion, I propose to exploit the possible time problem, and investigate the dependence on strain and temperature on the crack velocity and the waiting time before fracture occurs. The latter is possibly computationally expensive to get sufficient statistic to make any confident statements. 
-
-A simpler protocol -- and I believe this to be a good way to study this particular system -- is to subject the sample to a constant strain rate, then wait for a crack to propagate. This is simple to do, and is also close to experimental conditions. The downside is that the loading is varying during fracture, disturbing measurements of properties like crack velocity at constant loading. It is, however, reasonable to believe that at low strain rates, these effects will be small, if not negligible. This can also be solved by setting the strain rate to zero at some predefined strain level, which is estimated from experience, and can be systematically varied. 
-
+I propose to exploit the possible time problem, and investigate how the crack velocities and waiting times for fracture depend on the applied strain and temperature. It will probably be very computationally demanding to obtain good statistics, but I believe that some tendencies can be identified without spending too many cpu-hours.
 
 \subsection{Proof-of-concept simulations}
-Before performing serious simulations, I do preliminary simulations to find out whether the protocol proposed in the latter section can produce interesting results. I do simulations on a relatively small and quasi two-dimensional system -- the system is only one unit cell thick -- to keep computational costs down. The total computational cost for tuning in on parameters and getting rid of bugs and blunders has been about $10^4$ cpu hours.
+Before performing large simulations, I do preliminary, smaller, simulations to find out whether the protocol proposed in the latter section can produce useful results. I do simulations on the thinnest possible system consisting of sI unit cells -- the system is only one unit cell thick -- to keep computational costs down. The total computational cost for tuning in on parameters and getting rid of bugs and blunders has been around $10^4$ cpu hours.
 
-Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain for four simulations where sI methane hydrates of 24x24x1 unit cells were gradually subjected to a strain of between 0.045 and 0.1 (see figure caption for simulation details). Then, the system was left on its own. In three of the systems, a crack spanned the yz-plane after the simulation was finished. The two others had seen no visible crack growth.
+The simplest way to identify whether a crack has propagated, it turns out, is to check the potential energy curve. The potential energy of the system goes down when the system fractures. Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain for four simulations where sI methane hydrates of 24x24x1 unit cells were gradually subjected to a strain of between 0.045 and 0.1 (see figure caption for simulation details). Then, the system was left on its own. In three of the systems, a crack spanned the yz-plane after the simulation was finished. The two others had seen no visible crack growth.
 
 \begin{framed}
 \paragraph{Visual experience of the crack propagation (figure \ref{fig:thin_crack})}
@@ -212,7 +207,10 @@ There are also several technical problems that can be addressed:
 
 Each of these questions will require substantial efforts to be answered, and I will only have time to address a few of them. In the sections to come, I focus on @insertHere. I will essentially ignore the technical issues for now. If I find something interesting, the tecknical issues will of course be part of the verification -- but I find it unjustifiable to spend time and cpu core hours on these issues before I have found anything interesting that needs thorough verification.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Energy considerations -- the thermodynamics of expanding the simulation box}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\label{sec:energy_considerations}
 The result that $\mathcal{G}_c > 2\gamma_s$ to the extent that was seen from the preliminary results is peculiar -- and actually wrong. In the last section, I only considered the potential energy to estimate the fracture toughness, since fracture mechanics dictates that the fracture toughness should be the amount of potential energy released per projected crack surface area opened. But really, it is the Helmholtz free energy release rate that should be used for fracture toughness calculations -- potential energy in fracture mechanics is not necessarily the same as in molecular dynamics. A more thorough analysis solves the problem of methane hydrates seeming very brittle while having $\mathcal{G}_c > 2\gamma_s$, and the conclusion, which we shall see, is that we actually have $\mathcal{G}_c \approx 2\gamma_s$.
 
 Let's consider expanding the simulation box along the x-axis. This corresponds to perform work on the system:
@@ -252,18 +250,28 @@ When the crack propagates, the stress in the methane hydrate is released, and th
 	\mathcal{G}_c = V \frac{\int_0^{E_{\text{final}}}\uuline{\Sigma}(E) : \dd \uuline{E}}{\int_0^{E_{\text{final}}} \dd A_{crack}}
 	\label{eq:hantal_critical_energy_release_rate}
 \end{equation}
-
-
+%
 This is in principle sufficient to determine the critical energy release rate for any mode of loading, provided that the conditions for using Equation \ref{eq:hantal_critical_energy_release_rate} to estimate the critical energy release rate are met. 
-For expansion of the simulation box along the x-axis, the strain integral (nominator) is equivalent to \ref{eq:work_expansion}. The area integral (denominator) is just the crack area in time, which can be estimated using the crack tracer described in @ref. 
+For expansion of the simulation box along the x-axis, the strain integral (nominator) is equivalent to \ref{eq:work_expansion}. The area integral (denominator) is just the crack area in time, which can be estimated using the crack tracer described in \ref{ch:tools}.
+
+Using equation \ref{eq:hantal_critical_energy_release_rate} to measure the strain energy, I can recalculate the fracture toughness. I run a series of new simulations to be able to pinpoint the strain level at which the hydrate fails. Figure \ref{fig:pot_strain_eng_l1} shows the potential energy \emph{and} the strain energy from a simulation where the strain before crack propagation was 0.048. This particluar simulation is chosen because it is the simulation with the lowest required strain level to support a crack in a series of simulations with a strain increment of 0.001. The strain energy in this simulation is \SI{0.01455}{\femto\joule}. The cross-sectional area of this simulation is $\SI{12.04}{\angstrom} \times \SI{288.8}{\angstrom}$, so my current best estimate of the critical energy release rate is $\mathcal{G}_c = \SI{0.42}{\joule\per\meter\squared}$. That corresponds to a fracture toughness of $K_{Ic} = 0.060$ MPam$^\frac{1}{2}$.
+
+
+
+\begin{figure}
+\centering
+\includegraphics[width=12cm]{../figures/thesis/pot_strain_eng_24_24_1.pdf}
+\caption{Potential energy and strain energy from a simulation where the strain before crack propagation is 0.048. The strain energy difference from before to after straining is \SI{0.01455}{\femto\joule}.}
+\label{fig:pot_strain_eng_l1}
+\end{figure} 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Large simulations of fracture}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-Larger simulations allow for statistically more robust results. During crack initiation in the previous simulations, only a few particles near the crack tip ended up being essential to the crack initiation. Even though the periodic boundary condition allows for the crack to be thought of as infinitely deep, the low number of particles makes the crack initiation vulnerable to statistical fluctuations. With thicker systems, more particles reside in the region near the crack tip, resulting in better statistics. An obvious drawback of larger simulations, is the added computational cost. Also, the amounts of data increase drastically if per-particle properties are to be stored. My approach has been to post-process trajectory data from simulations, which means I have had to deal with large amounts of data. This has actually been a challenge when working with large simulations, and has rewuired close attention to efficiency in file handling, both to reduce the cpu-time of analyses, and to keep the memory demands on an acceptable level. Also, the amount of data that can be outputted is limited. Outputting all positions and velocities in a simulation of $10^6$ particles require around \SI{50}{\mega\byte} per timestep. That becomes \SI{50}{\tera\byte\per\nano\second} for a timetep of \SI{1}{\femto\second}.
-\subsection{Complete analysis of a single simulation}
+Larger simulations allow for statistically more robust results. During crack initiation in the previous simulations, only a few particles near the crack tip ended up being essential to the crack initiation. Even though the periodic boundary condition allows for the crack to be thought of as infinitely deep, the low number of particles makes the crack initiation vulnerable to statistical fluctuations. With thicker systems, more particles reside in the region near the crack tip, resulting in better statistics. An obvious drawback of larger simulations, is the added computational cost. Also, the amounts of data increase drastically if per-particle properties are to be stored. My approach has been to post-process trajectory data from simulations, which means I have had to deal with large amounts of data. This has actually been a challenge when working with large simulations, and has rewuired close attention to efficiency in file handling, both to reduce the cpu-time of analyses, and to keep the memory demands on an acceptable level. Also, the amount of data that can be outputted is limited. Outputting all positions and velocities in a simulation of $10^6$ particles require around \SI{50}{\mega\byte} per timestep. That becomes \SI{50}{\tera\byte\per\nano\second} for a timetep of \SI{1}{\femto\second}. 
 \label{sec:complete_analysis_single_simulation}
 
+\subsection{Complete analysis of a single simulation}
 In the following, I use the analysis tools that were presented in the tools section to analyze \emph{one} simulation. This simulation will be referred to as the \emph{full-analysis simulation}. The analyzes here will be representative of how data is obtained when showing up in later results where data from several simulations are used together to say something more general.
 
 \begin{figure}
@@ -368,12 +376,6 @@ A more straightforward approach, which is more computationally demanding, is to 
 \end{figure}
 
 
-\paragraph{Problems with this method}
-\begin{itemize}
-\item Some methanes jump in and out of clathrate cages. 
-\item Instant number of free methanes is not available.
-\end{itemize}
-
 \subsection{Results on free methane}
 Figure \ref{fig:free_methane_diff_l} shows the amount of free methane during simulation for two different thicknesses of the system. The number of free methanes is rescaled using the number of sI unit cells per cross section parallell to the crack. With full occupancy, the number of methanes per sI cell is 8, and if a whole plane of unit cells released their methanes, that would yield a number of 8 free methanes after rescaling. The number of free methanes shows no significant variance with the system thickness. This is a bit surprising, since the crack propagation has seemed more jittery for thinner systems, which could have led to mer methane being released. It might still be an effent, but in that case the effect must be small. 
 
@@ -456,7 +458,7 @@ In the simulations with $T=\SI{260}{\kelvin}$, the waiting time was whort for th
 \begin{figure}
 \centering
 \includegraphics[width=12cm]{../figures/thesis/area_speed_stress_all.pdf}
-\caption{Crack area (top panel), crack speed (middle panel) and tensile stress (lower panel). Simulation temperatures are \SI{260}{\kelvin} (solid lines) and \SI{280}{\kelvin} (dashed lines). Strains: 0.044 (blue) 0.045 (orange), 0.046 (yellow), 0.0465 (violet), 0.047 (green), 0.0475 (cyan), 0.048 (purple). The colors are the same as in the legend of figure \ref{fig:fracture_theory_compare}. }
+\caption{Crack area (top panel), crack speed (middle panel) and tensile stress (lower panel). Simulation temperatures are \SI{260}{\kelvin} (solid lines) and \SI{280}{\kelvin} (dashed lines). Strains: 0.044 (blue) 0.045 (orange), 0.046 (yellow), 0.0465 (violet), 0.047 (green), 0.0475 (cyan), 0.048 (cardinal red). The colors are the same as in the legend of figure \ref{fig:fracture_theory_compare}. }
 \label{fig:area_speed_stress_all}
 \end{figure}
 
@@ -470,18 +472,23 @@ In the simulations with $T=\SI{260}{\kelvin}$, the waiting time was whort for th
 There is a significant relationship between the crack tip speed and the strain before fracture. 
 
 \subsection{Free methane}
-Methane is freed almost instantly during crack propagation, which is opposed to the possibility of a very sharp crack where methane would have to diffuse out of their cages after crack propagation. It is also worth noting that the proportion of methane that is freed during rapid surface area growth is of the same order as the proportion of surface area that is grown during rapid area growth. That means methane is quickly released -- it does not stay in the mydrate lattice and then diffuse out.
+Methane is freed almost instantly during crack propagation, which is opposed to the possibility of a very sharp crack where methane would have to diffuse out of their cages after crack propagation. It is also worth noting that the proportion of methane that is freed during rapid surface area growth is of the same order as the proportion of surface area that is grown during rapid area growth. That means methane is quickly released -- it does not stay in the hydrate lattice and then diffuse out.
 
 
-\subsection{Surface energy}
-Measured surface energy for different configurations:
+\subsection{Surface energy and fracture toughness}
+The same exercise of measuring the critical energy release rate of the hydrate as in section \ref{sec:energy_considerations} has been done for other system thicknesses and for the increased temperature. I have also read off the corresponding surface energy from figures like figure \ref{fig:pot_strain_eng_l1}. Since the surface energy is fluctuating, these results are uncertain, but they can at least be used to say that the critical energy release rate is approximately two times the surface energy, which classifies the hydrate as brittle. The results are summarized in table \ref{tbl:fracture_surface}. Since the surface energy in this work is gotten by simply checking the potential energy difference, it is unclear what it means. The free methane filling the crack can contribute energy that should probably rather be included in the crack-driving energy than in the crack-resisting energy, but I have not been investigating this possible effect. Since the free methane + ice system has a lower density than the methane hydrate, methane is likely to contribute to driving cracks. The tendency that the surface enegy is higher than half the energy release rate for the high temperature system is quite robust, indicating that the pore methane is indeed playing a role.
 
 \begin{table}
 \centering
-\begin{tabular}{c|c}
-Parameters & Surface energy \\
+\caption{Surface energies and critical energy release rates from this work. The critical energy release rates must be taken as upper estimates, since a finer resolution in the strain increment could reveal lower strains supporting crack propagation.}
+\label{tbl:fracture_surface}
+\begin{tabular}{c|c|c}
+Parameters & Surface energy & Critical energy release rate \\
 \hline
-\SI{280}{\kelvin}, $L_Z = \SI{145}{\angstrom}$ & \SI{0.21 \pm 0.01}{\joule\per\meter\squared}
+\SI{260}{\kelvin}, $L_Z = \SI{12}{\angstrom}$ &\SI{0.19}{\joule\per\meter\squared} & \SI{0.42}{\joule\per\meter\squared} \\
+\SI{260}{\kelvin}, $L_Z = \SI{24}{\angstrom}$ &\SI{0.20}{\joule\per\meter\squared} & \SI{0.37}{\joule\per\meter\squared} \\
+\SI{260}{\kelvin}, $L_Z = \SI{144}{\angstrom}$ & \SI{0.20}{\joule\per\meter\squared} & \SI{0.40}{\joule\per\meter\squared}\\
+\SI{280}{\kelvin}, $L_Z = \SI{145}{\angstrom}$ & \SI{0.21}{\joule\per\meter\squared} & \SI{0.38}{\joule\per\meter\squared}
 \end{tabular}
 \end{table}
 

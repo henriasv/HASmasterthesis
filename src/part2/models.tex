@@ -2,20 +2,18 @@
 \label{ch:models}
 With the theoretical framework of molecular dynamics in place, I go on to introduce specific potentials, and choose which one to use to model cracks in methane hydrates. This chapter bridges the theory presentation to my work. 
 
-Some force fields are developed with one specific application in mind, while others give a general functional form that can be parametrized for a wide range of applications. Examples of the latter are the AMBER force field \cite{Cornell1995} and the OPLS force field \cite{Jorgensen1988}. The OPLS force field will be explained in more detail. It is also common to distingush these force fields from the water potentials that are used along with them. Since water is complicated to model, it is best treated separately. In this chapter I will describe the TIP4P water model and the SPC water model.
+Some force fields are developed with one specific application in mind, while others give a general functional form that can be parametrized for a wide range of applications. Examples of the latter are the AMBER force field \cite{Cornell1995} and the OPLS force field \cite{Jorgensen1988}. The OPLS force field will be explained in more detail. It is also common to distinguish these force fields from the water potentials that are used along with them. Since water is complicated to model, it is best treated separately. In this chapter I will describe the TIP4P water model and briefly mention the SPC water model.
 
 \section{Criteria for a sufficient model}
-I will model fracture of methane hydrates. If the methane hydrates are pure, i.e. no sediments nearby, it is reasonable to assume that noe chemical reactions will take place. Conversely, if the hydrate are to be modeled near for example a silicon oxide surface, chemical reactions can be important. Since chemical reactions are not expected to occur in pure hydrates, bonding potentials can be used for covalent bonds. The transferable interpotential models (TIP-models) are popular models that use bonding potentials for the OH-bonds. For applications on fracture, it is important that mechanical properties are reasonably represented. 
+I will model fracture of methane hydrates. If the methane hydrates are pure, i.e. no sediments nearby, it is reasonable to assume that no chemical reactions will take place. Conversely, if the hydrates are to be modeled near for example a silicon oxide surface, chemical reactions can be important. Since chemical reactions are not expected to occur in pure hydrates, bonding potentials can be used for covalent bonds. The transferable interpotential models (TIP-models) are popular models that use bonding potentials for the OH-bonds. For applications on fracture, it is important that mechanical properties are reasonably represented. 
 
-Since this is the first time I choose a molecular dynamics potential, I will use a model that other people have shown to work. Specifically, I choose the model that was able to spontaneously nucleate methane hydrates in MD simulations. Thus the strategy is to use a model that successfully reproduced some feature of methane hydrates to study another feature. This means that the model cannot be immidiately trusted, and this study is just as much a test of whether the model I choose is suitable for studying fracture of methane hydrates as an actual study of fracture.
-
-First an overview of some models.
+Since this is the first time I choose a molecular dynamics potential, I will use a model that other people have shown to work. Specifically, I choose the model that has been shown to spontaneously nucleate methane hydrates in molecular dynamics simulations \cite{Walsh2009}. Thus the strategy is to use a model that successfully reproduced some feature of methane hydrates to study another feature. This means that the model cannot be immediately trusted, and this study is just as much a test of whether the model I choose is suitable for studying fracture of methane hydrates as an actual study of fracture.
 
 \section{Water models}
 
-Molecular dynamics water models most commonly contain eiter 3 or 4 interaction sites. Sometimes 5 or 6 sites are used, but they are more computationally expensiv and less common. The 5- and 6-site models were developed later than the 3- and 4-site models, which might also be a reason why they are less popular. A clear difference between 5- and 6-site models and the ones with fewer sites, are the L-sites, which enables the model to give more structure to the energy surface of the \emph{water dimer} \cite{Mahoney2000}. A selection of common site configurations are given in figure \ref{fig:water_models}. 
+Molecular dynamics water models most commonly contain either 3 or 4 interaction sites. Models with 5 or 6 sites exist, but they are more computationally expensive and less commonly in use. The 5- and 6-site models were developed later than the 3- and 4-site models, which might also be a reason why they are less popular. A clear difference between 5- and 6-site models and the ones with fewer sites, are the two L-sites -- two charged sites near the oxygen site -- which gives more structure to the energy surface of the \emph{water dimer} \cite{Mahoney2000}. A selection of common site-configurations are given in figure \ref{fig:water_models}. 
 
-All the water models illustrated in figure \ref{fig:water_models} have their mass placed on the oxygen and hydrogen sites. Additionally, there is a positive charge on each hydrogen atom. The negative charge associatied with the oxygen atom is either put on the atom itself (3-site model) or in its entirety moved to one, two or three massless sites (4-, 5- and 6-site models) called M-site and/or L-sites. These massless sites distribute the force acting on them betwenn the massive particles when the equations of motion are integrated.
+All the water models illustrated in figure \ref{fig:water_models} have their mass placed on the oxygen and hydrogen sites. Additionally, there is a positive charge on each hydrogen atom. The negative charge associated with the oxygen atom is either put on the atom itself (3-site model) or in its entirety moved to one, two or three massless sites (4-, 5- and 6-site models) called M-site and/or L-sites. These massless sites distribute the force acting on them among the massive particles when the equations of motion are integrated.
 
 For simple water models (which are widely used), there are Coulomb interactions between charged sites, and Lennard--Jones interactions between the oxygens. Some models also include a Lennard--Jones interaction between the hydrogen sites, but that is less common.
 
@@ -33,10 +31,10 @@ For simple water models (which are widely used), there are Coulomb interactions 
 \end{figure}
 
 \subsection{SPC water model}
-The SPC water model is a 3-site model with a different spatial configuration than the experimental configuration of the nuclei of the water molecule. Rather than using the experimental HOH angle of \SI{104.52}{\degree}, is uses the ideal tetrahedral angle of \SI{109.47}{\degree}. 
+The SPC water model \cite{berendsen1981interaction} is a 3-site model with a different spatial configuration than the experimental configuration of the nuclei of the water molecule. Rather than using the experimental HOH angle of \SI{104.52}{\degree}, is uses the ideal tetrahedral angle of \SI{109.47}{\degree}. The sites retain their experimental masses. The interactions in this model is a Lennard--Jones interaction between oxygens, and a Coulomb force between both OH-pairs and HH-pairs, provided that they belong to different molecules. The water molecule itself is usually kept rigid, but there exist parameters for a flexible version of the potential.
 
 \subsection{TIP4P water model}
-The TIP4P water model was introduced by \citet{Jorgensen1983} in 1983. Since then, the model has gone through several reparametrizations. The TIP4P/2005 parameter set has been found to give the best overall performance in water smulations, but there also exist a parametrization specifically made for the solid phases of water: TIP4P/ICE, parametrized by \citet{Abascal2005}. TIP4P was used by \citet{Matsumoto2002} in the first successful simulation of nucleation of ice crystals in molecular dynamics, and TIP4P/ICE was used by \citet{Walsh2009} in the first successful simulation of spontaneous methane hydrate nucleation. 
+The TIP4P water model was introduced by \citet{Jorgensen1983} in 1983. Since then, the model has gone through several parameterizations. The TIP4P/2005 parameter set has been found to give the best overall performance in water simulations, but there also exist a parametrization specifically made for the solid phases of water: TIP4P/ICE, parametrized by \citet{Abascal2005}. TIP4P was used by \citet{Matsumoto2002} in the first successful simulation of nucleation of ice crystals in molecular dynamics, and TIP4P/ICE was used by \citet{Walsh2009} in the first successful simulation of spontaneous methane hydrate nucleation. 
 
 TIP4P is a rigid water model with 4 sites for each water molecule: One O-site, two H-sites, and a site commonly referred to as the M-site. This corresponds to the second model from the left in figure \ref{fig:water_models}. The M-site is supposed to slightly move the oxygen charge, and it is situated on the bisector of the H-O-H angle. The parameters for the spatial configuration as well as the masses of hydrogen and oxygen are taken from experimental observations, and were listed in table \ref{tb:intro:h2odata}. The HOH-angle and the OH-bonds are rigid. The electrostatic interactions are coulombic, and the oxygen--oxygen interaction is a Lennard--Jones interaction. The parameters are given in table \ref{tbl:tip4p_ice}. For reference, parameters for the original TIP4P model and the 2005 reparametrization are given in table \ref{tbl:tip4p_parameters}.
 
@@ -66,10 +64,10 @@ To be explicit about the functional forms of the TIP4P model, I give them below:
 	E_{\si{\elementarycharge}} & = \frac{\si{\elementarycharge\squared}}{4\pi\varepsilon_0} \sum_{a, b} \frac{q_aq_b}{r_{ab}}
 	\label{eq:part1:electrostaticpotential}
 \end{align} 
-The Lennard--Jones interaction is between oxygens, and the electrostatic interaction is between all charged sites of different molecules (but not beteen siten belonging to the same molecule).
+The Lennard--Jones interaction is between oxygens, and the electrostatic interaction is between all charged sites of different molecules (but not between sites belonging to the same molecule).
 
 \begin{table}
-\caption{Parameters for the different parametrizations in the TIP4P family.}
+\caption{Parameters for the different parameterizations in the TIP4P family.}
 \label{tbl:tip4p_parameters}
 \begin{tabular}{c|c|c|c}
 Description & Symbol & TIP4P & TIP4P/2005 \\ 
@@ -99,7 +97,7 @@ Where the individual energy contributions are defined as follows:
 
 For the torsion contribution, $\phi$ is the dihedral angle (the angle between two planes) defined by three vectors connecting four atoms. The torsion contribution given here is slightly simplified compared to the original OPLS force field, but it \emph{is} the version that is implemented in LAMMPS.
 
-The nonbonded interaction is a Lennard--Jones plus a Coulombic potential. The prefactor $f$ is the so-called \emph{fudge factor}, and is $0.5$ for particles that are three bonds apart. Closer than 3 three bonds it is zero, and otherwise it is 1.
+The non-bonded interaction is a Lennard--Jones plus a Coulombic potential. The prefactor $f$ is the so-called \emph{fudge factor}, and is $0.5$ for particles that are three bonds apart. Closer than 3 three bonds it is zero, and otherwise it is 1.
 
 All interaction-sites are centered on the atoms, i.e. there are no massless sites like in the water models.
 
@@ -127,7 +125,7 @@ Lennard-Jones characteristic distance & $\sigma_{MM}$ & \SI{3.73}{\angstrom}
 
 
 \section{Combining particles of different species in a model}
-Having different potentials, for different aggregate particles (such as TIP4P/ICE), we want a way to combine them in a model containing both species. For electrostatic interactions, the combination rules are straightforward, as they follow from Coulombs law. For Lennard-Jones interactions, combination rules don't appear automatically, and in principle one has to fit parameters for each unique pair of particles. Luckily, perople have worked out formulas that work reasonably well without going into an extensive parameter fitting exercise. 
+Having different potentials for different aggregate particles (such as TIP4P/ICE), we need a way to combine them in a model containing both species. For electrostatic interactions, the combination rules are straightforward, as they follow from Coulombs law. For Lennard-Jones interactions, combination rules don't appear automatically, and in principle one has to fit parameters for each unique pair of particles. Fortunately, formulas that work reasonably well without going into an extensive parameter fitting exercise have already been developed. 
 
 One simple way, which is the one that is used in \citet{Walsh2009}, is to use the following rules from two sets of parameters ($\varepsilon_{ii}$, $\sigma_{ii}$) and ($\varepsilon_{jj}$, $\sigma_{jj}$) for interactions between two particles of the same species i or j, on to a set of parameters ($\varepsilon_{ij}$, $\sigma_{ij}$) for interactions between one particle of each species:
 \begin{align}
@@ -137,7 +135,7 @@ One simple way, which is the one that is used in \citet{Walsh2009}, is to use th
 These are called Lorentz--Berthelot combination rules.
 
 \section{TIP4P-ICE + OPLS-UA methane}
-The necessary ingredients for a potential model for methane hydrates are now presented: A water model, a methane model, and a way to make the water and the methane interact with each other. This model is essentially a description of the total energy of a system consisting of particles with known positions and momenta. The next step is to decide on what kinds of systems to model, i.e. what are the initial positions going to be, and that are the thermodynamic conditions going to be during simulation?
+The necessary ingredients for a potential model for methane hydrates are now presented: A water model, a methane model, and a way to make the water and the methane interact with each other. The model is illustrated in figure \ref{fig:tip4p_ice_uam}. This model is essentially a description of the total energy of a system consisting of particles with known positions and momenta. The next step is to decide on what kinds of systems to model, i.e. what are the initial positions going to be, and that are the thermodynamic conditions going to be during simulation?
 
 \begin{figure}
 \centering
@@ -152,12 +150,13 @@ The necessary ingredients for a potential model for methane hydrates are now pre
 %\draw [red, <<->>, very thick] (h2o1.south) -- (h2o2.south);
 %\draw [green, >>-<<, very thick] (h2o1.south) + (0.1, 0) -- (h2o2.south west);
 \end{tikzpicture}
-\caption{Lennard-jones interactions between methane and water in the TIP4P + OPLS-UA methane model. The hydrogens on the methane are not present in the model. The circle around the methane indicates that it is \emph{one} particle. Coulombic interactions are not indicated, but they are between the H- and M-sites of the two water molecules.}
+\caption{Lennard-jones interactions between methane and water in the TIP4P + OPLS-UA methane model. The hydrogens on the methane are not present in the model. The circle around the methane indicates that it is \emph{one} particle. Coulombic interactions are not indicated, but they act between the H- and M-sites of the two water molecules.}
+\label{fig:tip4p_ice_uam}
 \end{figure}
 
 
 \section{A system for studying fracture of methane hydrates}
-It was suggested by \citet{Ning2012} to find basic mechanical properties like Young's modulus and Poisson's ratio and the fracture toughness of methane hydrates using molecular dynamics. Particulary, they propose to study methane hydrates with a dislocation subjected to tensile stress. Since I have not found any studies on the tensile strength of methane hydrates using molecular dynamics, I choose to model a system close to the simplest case in fracture mechanics: A rectancular prismatic piece of methane hydrate with an artificial elliptical prismatic crack spanning its z-direction. This system will be subjected to tensile strain normal to the crack plane. Apart from the crack that is carved out, the hydrate lattice will be fully occupied with methane molecules. Figure \ref{fig:system_fracture} illustrates this system. Studies of partly occupied lattices are left for future work. Imposing shear stress would also be of immidiate interest, but unfortunately, the current distribution of LAMMPS do not support a non-orthogonal simulation box if the TIP4P water model is going to be used with long-range forces.
+It was suggested by \citet{Ning2012} to find basic mechanical properties like Young's modulus and Poisson's ratio and the fracture toughness of methane hydrates using molecular dynamics. Particularly, they propose to study methane hydrates with a dislocation subjected to tensile stress. Since I have not found any studies on the tensile strength of methane hydrates using molecular dynamics, I choose to model a system close to the simplest case in fracture mechanics: A rectangular prismatic piece of methane hydrate with an artificial elliptical prismatic crack spanning its z-direction. This system will be subjected to tensile strain normal to the crack plane. Apart from the crack that is carved out, the hydrate lattice will be fully occupied with methane molecules. Figure \ref{fig:system_fracture} illustrates this system. Studies of partly occupied lattices are left for future work. Imposing shear stress would also be of immediate interest, but unfortunately, the current distribution of LAMMPS do not support a non-orthogonal simulation box if the TIP4P water model is going to be used with long-range forces.
 
 \begin{figure}
 \centering
@@ -177,6 +176,6 @@ It was suggested by \citet{Ning2012} to find basic mechanical properties like Yo
 	\draw (\i, 6.0) -- (\i-0.2, 6.2);
 }
 \end{tikzpicture}
-\caption{Illustration of the model system. The blue area is initially a pure sI methane hydrate crystal, and the area inside the red dashed ellipse an empty crack.}
+\caption{Illustration of the model system. The blue area is initially a pure sI methane hydrate crystal, and the area inside the red dashed ellipse an empty crack. The system will be subjected to tensile strain in the directions of the arrows. The other edges of the simulation box will be kept fixed.}
 \label{fig:system_fracture}
 \end{figure}
