@@ -4,70 +4,72 @@
 \label{ch:modeledsystems}
 In this chapter, I work out how to do simulations of the system described in chapter \ref{ch:models}, and analyze simulations in the pursuit of answering the questions raised in chapter \ref{sec:research_questions}.
 
-The first step is to work out basic properties of the model I study. Curiously, I have not found any records of the shear viscosity and the self-diffusion coefficient in the TIP4P/Ice water model, so I start by calculating those quantities. Since studies of mechanical properties of methane hydrates modeled with TIP4P/ICE+UAM are scarce, I continue by working out even the most basic mechanical properties of the model: Poisson's ratio and Young's modulus. In order to be sure that the methods I use to estimate the mechanical properties work, I start by checking the method using the known values for a Lennard-Jones crystal as a benchmark, before finding the mechanical properties of the methane hydrate. Then I continue with studying fracturing processes in methane hydrates.
+The first step is to work out basic properties of the model I study. Curiously, I have not found any records of the shear viscosity and the self-diffusion coefficient in the TIP4P/Ice water model, so I start by calculating those quantities. Since studies of mechanical properties of methane hydrates modeled with TIP4P/Ice + united atom methane (UAM) are scarce, I continue by working out even the most basic mechanical properties of the model: Poisson's ratio and Young's modulus. In order to be sure that the methods I choose for estimating the mechanical properties work, I start by checking the methods on a Lennard-Jones crystal, and benchmark my results against known parameters from the literature. Then i apply the methods to calculate the mechanical properties of the methane hydrate. When the mechanical properties are obtained, I continue with studying fracture in methane hydrates.
 
 \section{Shear viscosity and diffusivity of the water model}
-I have not succeeded in finding values for the shear viscosity and diffusivity of bulk liquid water modeled with TIP4P/ICE. To measure these properties, I run simulations similar to the ones I ran to calculate verify the same properties for the TIP4P/2005 potential. Figure \ref{fig:viscosity_green_kubo_tip4p_ice} shows the Green-Kubo relation for the viscosity using 5 independent pressure components from 4 independent simulations with different simulation box sizes. Based on these data, I estimate the shear viscosity of TIP4P/ICE to $\eta_{GK} = \text{\SI{1.63\pm 0.05}{\milli\pascal\second}}$, where the uncertainty is estimated in the same way as for the same calculation on the TIP4P/2005 model. Figure \ref{fig:diffusivity_comparison_tip4p_ice_2005} shows the self-diffusivity as a function of the inverse simulation box length in the TIP4P/Ice-model on the same axes as the results for TIP4P/2005 that was obtained in chapter \ref{ch:verification}. The self-diffusion constant of TIP4P/Ice is estimated to $D_0 = \SI{4.0 \pm 0.1}{\meter\squared\per\second}$.
+I have not succeeded in finding values for the shear viscosity and diffusivity of bulk liquid water modeled with TIP4P/Ice. To measure these properties, I run simulations like the ones I ran to calculate and verify the same properties for the TIP4P/2005 potential, namely bulk simulations of water. Figure \ref{fig:viscosity_green_kubo_tip4p_ice} shows the Green-Kubo relation for the shear viscosity (equation \ref{eq:GK_shear_viscosity}) using 5 independent pressure components from 4 independent simulations with different simulation box sizes. The 5 pressure components are averaged and go into a single line, so each line in the figure represents the average of the pressure components of a single simulation. Based on these data, I estimate the shear viscosity of TIP4P/Ice to $\eta_{GK} = \text{\SI{1.63\pm 0.05}{\milli\pascal\second}}$, where the uncertainty is estimated in the same way as for the equivalent calculation on the TIP4P/2005 model; as the standard deviation arising from the set of values obtained by reading the value of the integrated autocorrelation function at \SI{8}{\pico\second} for each simulation. The self-diffusion constant is calculated with the Einstein relation (equation \ref{eq:Einstein_diffusivity}): Figure \ref{fig:diffusivity_comparison_tip4p_ice_2005} shows the self-diffusivity as a function of the inverse simulation box length in the TIP4P/Ice-model on the same axes as the results for TIP4P/2005 that was obtained in chapter \ref{ch:verification}. The self-diffusion constant of TIP4P/Ice is estimated to $D_0 = \SI{4.0 \pm 0.1}{\meter\squared\per\second}$.
 
 \begin{figure}
 \centering
-\includegraphics[width=10cm]{../figures/thesis/viscosity_green_kubo_tip4p_ice.pdf}
-\caption{Shear viscosity for TIP4P/ICE at \SI{300}{\kelvin} and $\rho = \text{\SI{0.98}{\gram\per\cubic\cm}}$. Each thin line shows the average of the 5 independent pressure component. The thich line is the average of 4 independent simulations. The viscosity is estimated to $\eta_{GK} = \text{\SI{1.63\pm0.05}{\milli\pascal\second}}$}
+\includegraphics[width=11cm]{../figures/thesis/viscosity_green_kubo_tip4p_ice.pdf}
+\caption{Shear viscosity for TIP4P/Ice at \SI{300}{\kelvin} and $\rho = \text{\SI{0.98}{\gram\per\cubic\cm}}$. Each thin line shows the average of the 5 independent pressure component. The thich line is the average of 4 independent simulations. The viscosity is estimated to $\eta_{GK} = \text{\SI{1.63\pm0.05}{\milli\pascal\second}}$}
 \label{fig:viscosity_green_kubo_tip4p_ice}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=10cm]{../figures/thesis/diffusivity_comparison_tip4p_ice_2005.pdf}
-\caption{Linear regression of self diffusion coefficients as a function of inverse simulation box length. Results for TIP4P/2005 (blue) were already reported in the verification section. The self-diffusion coefficient for TIP4P/ICE is estimated to $D_0 = \SI{4.0 \pm 0.1 d-9}{\meter\squared\per\second}$}
+\includegraphics[width=11cm]{../figures/thesis/diffusivity_comparison_tip4p_ice_2005.pdf}
+\caption{Linear regression of self diffusion coefficients as a function of inverse simulation box length. Results for TIP4P/2005 (blue) were already reported in the verification section. The self-diffusion coefficient for TIP4P/Ice is estimated to $D_0 = \SI{4.0 \pm 0.1 d-9}{\meter\squared\per\second}$}
 \label{fig:diffusivity_comparison_tip4p_ice_2005}
 \end{figure}
 
 \section{Measuring elastic properties with a constant strain rate}
-A naive approach, which I will use for crude estimates, is to subject a system to a constant strain rate by expanding the simulation box in one of the coordinate directions, and rescale all atom positions accordingly. An anisotropic thermo-barostat should be applied along the other axes, to keep the pressure and temperature of the environment constant. Since the barostat scales the simulation box, strains along the two axes perpendicular to the applied strain can be measured as the contraction of the simulation box in these directions:
+A simple approach to measuring elastic properties, which I will use for my estimates, is to subject a system to a constant strain rate by expanding the simulation box in one of the coordinate directions. Atom positions must be rescaled accordingly, to avoid the introduction of elastic waves. This is also justified by the fact that there are no ``special places'' in the simulation box -- since it is periodic in all directions -- so expanding the simulation box without rescaling the particle positions would be a strange choice. An anisotropic barostat will be applied along the other axes, to keep the confining pressure constant. The barostat will change dimensions of the simulation box perpendicular to the applied deformation, so the lateral strains can be measured using the dimensions of the simulation box:
 
 \begin{equation}
 \varepsilon_i = \frac{L_i-L_{0, i}}{L_{0, i}}
 \end{equation}
 
-If the sample is isotropic, I only have to simulate strain application in one of the coordinate directions to estimate both Young's modulus and Poisson's ratio for a given system. To account for the possibility that the model I use do not exhibit isotropic behavior, I will check strains in both of the coordinate axes that are perpendicular to the axis of applied strain when calculating Poisson's ratio. The scalar value of $\nu$ is the slope of the strain-strain curve, and for $E$ of the stress-strain curve, both in their linear regions. I will calculate these slopes using linear regression with least squares on the curves.
-In the following, I will apply the method described above to a Lennard-Jones crystal and to the TIP4P/ICE+UAM methane hydrate model.
+If the sample is isotropic, strain application in only one of the coordinate directions has to be applied to estimate both Young's modulus and Poisson's ratio for a given system. To account for the possibility that the model I use do not exhibit isotropic behavior, I will deform the system in only \emph{one} direction, but check the resulting lateral strains in both of the coordinate directions perpendicular to the axis of applied strain. The value of Poisson's ratio,$\nu$, is minus the ratio of lateral to normal strain. For linear materials, this can be calculated as the negative of the slope of the strain-strain curve. The value of Young's modulus,$E$, is normal stress divided by normal strain. Again, this can be calculated as the slope of the stress--strain curve if the material is linear. I will calculate these slopes using linear regression with least squares on the curves, and check whether the slope is actually linear by visual inspection.
+
+In the following, I apply the method described above to a Lennard-Jones crystal and to the TIP4P/Ice+UAM methane hydrate model.
 
 \subsection{Lennard-Jones crystal}
-The FCC-lattice with a Lennard-Jones potential has been extensively investigated due to its simplicity. Therefore it provides robust benchmarking capabilities. I want to check that my protocols for dynamic (but quasi-static) determination of elastic properties and fracture strength reproduces known parameters for a Lennard-Jones solid. Reference values are for Young's modulus, $E=61.1 \epsilon/\sigma^3$ ($ = \text{\SI{2.40}{\giga\pascal}}$ for the parameters I use for Methane), and for Poisson's ratio, $\nu=0.347$. Values are taken from a molecular dynamics study by \citet{Quesnel1993}.
+The FCC-lattice with a Lennard-Jones potential has been extensively investigated due to its simplicity and its fundamental role in molecular dynamics. Therefore it provides robust benchmarking capabilities. I will check that my protocols for dynamic (but quasi-static) determination of elastic properties reproduce known parameters for a Lennard-Jones solid. Reference values are: Young's modulus, $E=61.1 \epsilon/\sigma^3$ ($ = \text{\SI{2.40}{\giga\pascal}}$ for the parameters I use for methane), and Poisson's ratio, $\nu=0.347$. These values are taken from a molecular dynamics study by \citet{Quesnel1993}.
 
-Figures \ref{fig:stress_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones} and \ref{fig:strain_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones} show data for a strain test of two different systems of Lennard-Jones particles. One consisting of $11^3$ FCC unit cells, and one consisting of $22^3$ FCC unit cells. The samples were subjected to a strain rate of \SI{2d-8}{\per\femto\second} over \SI{0.4}{\nano\second}, resulting in a maximum strain of \SI{8d-3}{}. The external pressure was set to \SI{50}{\mega\pascal}, and the temperature was \SI{5}{\kelvin}. Estimates of Poisson's ratio and Young's modulus, taken as the best linear regression with least squares, are indicated in the figure legends. The estimates show no significant finite-size effects on the elastic properties. Young's modulus is estimate to $E = \SI{2.48}{\giga\pascal}$, and Poisson's ratio is estimated to $\nu = 0.35$. This corresponds well with the numbers from \citet{Quesnel1993}.
+The elastic test is performed on two Lennard--Jones systems of different size: 
+One consisting of $11^3$ FCC unit cells, and another consisting of $22^3$ FCC unit cells. The samples are subjected to a strain rate of \SI{2d-8}{\per\femto\second} over \SI{0.4}{\nano\second}, resulting in a maximum strain of \SI{8d-3}{}. The external pressure is set to \SI{50}{\mega\pascal}, and the temperature is \SI{5}{\kelvin}. The stress--strain curve and the normal strain--lateral strain curves are shown in figures \ref{fig:stress_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones} and \ref{fig:strain_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones}, respectively. Estimates of Poisson's ratio and Young's modulus, taken as the best linear regression with least squares, are indicated in the figure legends. The data show no significant finite-size effects on the elastic properties. Young's modulus is estimated to $E = \SI{2.48}{\giga\pascal}$, and Poisson's ratio is estimated to $\nu = 0.35$. This corresponds well with the numbers reported by \citet{Quesnel1993}.
 
 \begin{figure}
 \centering
-\includegraphics[width=10cm]{../figures/thesis/stress_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones.pdf}
-\caption{Stress-strain relations for Lennard-Jones systems of $11^3$ (red) and $22^3$ (blue) FCC unit cells. The sample was subjected to a constant strain rate of \SI{2d-8}{\per\femto\second}. $E$ is estimated using linear regression with least squares on all data points.}
+\includegraphics[width=11cm]{../figures/thesis/stress_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones.pdf}
+\caption{Stress-strain relations for Lennard-Jones systems of $11^3$ (red) and $22^3$ (blue) FCC unit cells. The sample was subjected to a constant strain rate of \SI{2d-8}{\per\femto\second}. Young's modulus, $E$, is estimated using linear regression with least squares on all data points.}
 \label{fig:stress_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones}
 % Path to simulation: /media/henriasv/Data/molecular-data/master_methane_hydrates/stress_strain/20150113_lennard_jones_strain
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=10cm]{../figures/thesis/strain_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones.pdf}
-\caption{Strain-strain relations for for the same simulations as in Figure \ref{fig:stress_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones}. All data points were used to estimate $\nu$.}
+\includegraphics[width=11cm]{../figures/thesis/strain_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones.pdf}
+\caption{Strain-strain relations for for the same simulations as in Figure \ref{fig:stress_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones}. All data points were used to estimate Poisson's ration,$\nu$.}
 \label{fig:strain_strain_11_11_11_and_22_22_22_y_z_poisson_lennard_jones}
 % Path to simulation: /media/henriasv/Data/molecular-data/master_methane_hydrates/stress_strain/20150113_lennard_jones_strain
 \end{figure}
 
 \subsection{sI methane hydrate with TIP4P/ICE+UAM}
-To my knowledge, there are no published estimates of Young's modulus and Poisson's ratio for the TIP4P/ICE+UAM model of methane hydrates. Therefore, I seek to make crude estimates of these quantities in dynamic simulations. I apply a constant strain rate by continuously rescaling particle positions in one direction during MD-simulations. The other directions are kept under a constant pressure with anisotropic barostatting.
-Figure \ref{fig:stress_strain_11_11_11_tip4p_ice_uam} shows the stress strain relationships and corresponding estimates of Young's modulus for a system of 11x11x11 sI unit cells subjected to strain rates of \SI{5d-7}{\per\femto\second} and \SI{2d-7}{\per\femto\second}. By extrapolating the results to quasi-static strain, Young's modulus is estimated to \SI{7.1}{\giga\pascal}.
-Figure \ref{fig:strain_strain_11_11_11_y_z_poisson_tip4p_ice_uam} shows the relationship between applied strain along the x-axis and the measured strain along the other axes. It is not outrageous to assume sI methane hydrate to be isotropic. Under this assumption, and by extrapolation to quasi-static strain, I estimate Poisson's ratio for this model of sI methane hydrate to be $\nu = 0.41$. Putting the calculated values for Young's modulus and Poisson's ratio, along with the density calculated in \citet{Ning2010}, $\rho = \SI{0.919}{\kilo\gram\per\liter}$ into the equations for shear and pressure waves give the elastic wave speeds for the methane hydrate: $v_s=\SI{3780}{\meter\per\second}$ and $v_p = \SI{1650}{\meter\per\second}$. From the Poisson's ratio and the shear wave speed, the Rayleigh wave speed can be calculated using the following approximate formula from \cite{0957-4484-16-6-N01}:
+To my knowledge, there are no published estimates of Young's modulus and Poisson's ratio for the TIP4P/Ice+UAM model of methane hydrates. Therefore, I seek to make crude estimates of these quantities in dynamic simulations. I perform the elastic test outlined above, with zero confining pressure. The test is performed on two systems of $11^3$ sI unit cells. One subjected to a strain rate of \SI{5d-7}{\per\femto\second}, and another subjected to a strain rate of \SI{2d-7}{\per\femto\second}. Having two simulations with a different strain rate, the calculated mechanical properties can be extrapolated to infinitely slow strain, yielding more accurate estimates.
+Figure \ref{fig:stress_strain_11_11_11_tip4p_ice_uam} shows the stress--strain relationships and corresponding estimates of Young's modulus. By extrapolation, Young's modulus is estimated to $E = \SI{7.1}{\giga\pascal}$.
+Figure \ref{fig:strain_strain_11_11_11_y_z_poisson_tip4p_ice_uam} shows the relationship between applied normal strain and the measured laterals strains. Based on the results shown in this figure, I find it reasonable to treat methane hydrates as isotropic for this work. My extrapolated estimate of Poisson's ratio is $\nu = 0.41$. Putting the calculated values for Young's modulus and Poisson's ratio, along with the density calculated from \citet{Ning2010}, $\rho = \SI{0.919}{\kilo\gram\per\liter}$, into the equations for shear and pressure waves, give the elastic wave speeds for the methane hydrate: $v_s=\SI{3780}{\meter\per\second}$ and $v_p = \SI{1650}{\meter\per\second}$. From the Poisson's ratio and the shear wave speed, the Rayleigh wave speed can be calculated using the following approximate formula from \cite{0957-4484-16-6-N01}:
 \begin{equation}
 v_R = v_s(0.874 + 0.196\nu − 0.043\nu^{2} − 0.055\nu^{3}),
 \end{equation}
-resulting in a Rayleigh wave speed of $v_R = \SI{1570}{\meter\per\second}$.
+This results in a Rayleigh wave speed of $v_R = \SI{1570}{\meter\per\second}$.
 The new mechanical properties obtained for methane hydrates in the TIP4P/Ice + UAM model in this work are given in table \ref{tbl:mechanical_from_simulation}. Compared to the experimental values I presented in table \ref{tbl:si_mech_exp}, these mechanical properties are quite good, except from Poisson's ratio which differs quite significantly from the experimental value.
 \begin{table}
 \centering
 \caption{Mechanical properties of the methane hydrate in the TIP4P/Ice + UAM model measured under isothermal tensile strain with zero confining pressure. The elastic wave speeds are derived from Young's modulus and Poisson's ratio.}
 \label{tbl:mechanical_from_simulation}
-\begin{tabular}{cc}
+\begin{tabular}{c|c}
 Property & Value \\
 \hline
 Young's modulus, $E$ & \SI{7.1}{\giga\pascal} \\
@@ -97,28 +99,55 @@ Rayleigh wave speed $v_R$ & \SI{1570}{\meter\per\second} \\
 \end{figure}
 
 \section{Early results on fracture and fracture toughness}
-
-
-
+Having obtained the basic elastic properties, I go on to the fracture studies. I start by discussing the simulation protocol for fracture simulations, and  continue by performing preliminary simulations to verify that the protocol works. The main goal I work towards here, is to calculate the fracture toughness of methane hydrates.
 \subsection{Simulation protocol}
-Several approaches can be applied to determine the fracture toughness in molecular dynamics. \citet{Hantal2014} performed NVT simulations and imposed incremental deformations to their sample. After each deformation, they minimized the system, and then ran molecular dynamics for \SI{10}{\pico\second}. I tried to use the same protocol, but found that for my system, the impact on the energy distribution among the degrees of freedom was too large when performing minimizations between the deformations. After a deformation, the system is no longer in equilibrium, and the minimization is supposed to bring the system closer to equilibrium. However, in an equilibrium of finite temperature, some fraction of the system energy is associated with moving particles being temporarily positioned closer or farther from each other than the distance dictated by their inter-atomic potential and the overall structure of the system. This is a thermal energy. A minimization removes this energy from the system, and when an NVT simulation is started after minimization, the thermostat will have to put this energy back into the system. This takes time: With the thermostat settings I apply, it takes several tens of picoseconds. Therefore, a possible protocol that does not use minimization is:
+Several approaches can be applied to determine the fracture toughness in molecular dynamics. \citet{Hantal2014}performed NVT simulations and imposed incremental deformations to their sample. After each deformation, they minimized the system, and then ran molecular dynamics for \SI{10}{\pico\second}. I tried to use the same protocol, but found that for my system, the impact on the energy distribution among the degrees of freedom was too large when performing minimizations between the deformations. After a deformation, the system is no longer in equilibrium, and the minimization is supposed to bring the system closer to equilibrium. However, in an equilibrium of finite temperature, some fraction of the system energy is associated with moving particles being temporarily positioned closer or farther from each other than the equilibrium distance dictated by their inter-atomic potential and the overall structure of the system. This is a thermal energy. A minimization removes this energy from the system, and when an NVT simulation is started after minimization, the thermostat will have to put this energy back into the system. This takes time: With the thermostat settings I apply, it takes several tens of picoseconds. Therefore, a possible protocol that does not use minimization is:
 \begin{enumerate}
-\item Equilibrate the system NVT (Molecular dynamics)
+\item Carve out an initial crack and equilibrate the system NPT to relax the system after the crack is introduced.
 \item Perform small deformation
-\item Re-equilibrate the system NVT (Molecular dynamics)
+\item Re-equilibrate the system NVT.
 \item Molecular dynamics run (NVT) to wait for failure
 \item Return to 2 or end the simulation. 
 \end{enumerate}
 This approach was also tested, but it turned out that the waiting times were unpredictable -- it was hard to set a reasonable waiting time for step 4. This resulted in additional deformations being applied \emph{during} fracture. 
+%
+\begin{framed}
+\textbf{The protocol I will actually use:} A simpler protocol -- and I believe this to be a good way to study this particular system -- is to subject the sample to a constant strain rate until it reaches some predefined strain, and then wait for a crack to propagate. This is simple to do, and it is also close to experimental conditions, except that the strain rate must necessarily be much higher in MD simulations than in experiments. The downside of this method is that only a single strain level will be tested in each simulation, but if there exists waiting times for fracture that depend on the applied strain, then there has to be performed individual simulation for each strain level anyway.
+\end{framed}
 
-A simpler protocol -- and I believe this to be a good way to study this particular system -- is to subject the sample to a constant strain rate until it reaches some predefined strain, and then wait for a crack to propagate. This is simple to do, and is also close to experimental conditions, except that the strain rate must necessarily be much higher in MD simulations than in experiments. The downside of this method is that only a single strain level will be tested in each simulation, but if there exits waiting times for fracture that depend on the applied strain, then there has to be done individual simulation for each strain level.
+In addition to complication the simulations, I see the possible waiting times for fracture as a research opportunity. Waiting times for fracture can depend for example on the applied strain and temperature, and this relation can be characterized. It will probably be very computationally demanding to obtain good statistics, but I believe that some tendencies can be identified without spending too many CPU-hours.
 
-I propose to exploit the possible time problem, and investigate how the crack velocities and waiting times for fracture depend on the applied strain and temperature. It will probably be very computationally demanding to obtain good statistics, but I believe that some tendencies can be identified without spending too many CPU-hours.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Proof-of-concept simulations}
-Before performing large scale simulations, I do preliminary, smaller, simulations to find out whether the protocol proposed in the latter section can produce useful results. I do simulations on the thinnest possible system consisting of sI unit cells -- the system is only one unit cell thick -- to keep computational costs down. The total computational cost for tuning in on parameters and getting rid of bugs and blunders has been around $10^4$ CPU hours.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Before performing large scale simulations, I do preliminary, smaller, simulations to find out whether the protocol proposed in the latter section can produce useful results. I do simulations on the thinnest possible system consisting of sI unit cells -- the system that is only one unit cell thick -- to keep computational costs down. The total computational cost for tuning in on parameters and getting rid of bugs and blunders has been around $10^4$ CPU hours.
 
-The simplest way to identify whether a crack has propagated, it turns out, is to check the potential energy curve. The potential energy of the system goes down when the system fractures. Figure \ref{fig:proof_of_concept_crack} shows the potential energy and strain for four simulations where sI methane hydrates of 24x24x1 unit cells were gradually subjected to a strain of between 0.045 and 0.1 (see figure caption for simulation details). Then, the system was left on its own. In three of the systems, a crack spanned the $yz$-plane after the simulation was finished. In the two other system, I observed no crack growth.
+The proof-of-concept simulations are performed using the protocol outlined above (the one that I state I will be using), on systems of $24\times 24\times 1$ sI methane hydrate unit cells. The systems are subjected to a constant strain rate during \SI{50}{\pico\second}, to obtain a strains ranging from 0.045 to 0.1. Then, the system is left on its own. Table \ref{tbl:proof_of_concept_parameters} shows all parameters of these simulations.
+The simplest way to identify whether a crack has propagated, it turns out, is to check the potential energy curve. The potential energy of the system goes down when the system fractures. Figure \ref{fig:proof_of_concept_crack} shows the potential energy of the proof-of-concept simulations. In three of the systems, a crack spans the $yz$-plane after the simulation is finished. In the other two simulations, no crack growth is observed.
+
+
+\begin{table}
+\caption{Parameters for the proof-of-concept simulations.}
+\label{tbl:proof_of_concept_parameters}
+\begin{tabular}{|rl|}
+\hline
+System & $24\times 24 \times 1$ sI unit cells. Carved crack of $6\times \SI{40}{\angstrom}$\\
+Protocol:& 0--\SI{100}{\ps}: NPT @ \SI{101325}{\pascal}, \SI{260}{\kelvin} \\
+& 100--\SI{150}{\pico\second}: NVT @ \SI{260}{\kelvin} with straining \\
+& 150--\SI{550}{\pico\second}: NVT @ \SI{260}{\kelvin} and final strain \\
+Final strain: & [1.045, 1.05, 1.055, 1.1] \\
+Interactions: & TIP4P/Ice and United Atom Methane \\
+Short-range potentials: & Lennard--Jones and Coulomb with \SI{10}{\angstrom} cutoff. \\
+Long-range corrections: & Coulomb with P$^3$M allowing a relative error of $10^{-4}$. \\
+Thermostat damping time: & \SI{1}{\pico\second} \\
+Barostat damping time: & \SI{1}{\pico\second} \\
+Integration timestep: & \SI{1}{\femto\second} \\ 
+SHAKE tolerance: & $10^{-4}$ \\
+Drag term (LAMMPS specific): & 1.0 \\
+\hline
+\end{tabular} 
+\end{table}
+
 
 \begin{framed}
 \paragraph{Visual experience of the crack propagation (figure \ref{fig:thin_crack})}
@@ -145,7 +174,7 @@ Where the $\frac{1}{2}$ factor is because the crack opens two surfaces. The ther
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/proof_of_concept_poteng_strain.pdf}
-\caption{Potential energy (upper panel) and strain (lower panel) for a series of simulations where systems of 24x24x1 unit cells sI hydrate are subjected to tensile strain. The systems were initiated with an elliptic crack of $6.0 \times 40.0 \si{\angstrom}$. The system was allowed to equilibrate NPT during \SI{100}{\pico\second}, which can be seen from the small fluctuations in strain in this time-frame. Then the simulations were NVT, but with imposed volume change due to the application of a constant strain rate, taking the system to a predesignated stress after \SI{50}{\pico\second}. Then, a regular NVT-simulation was run for \SI{400}{\pico\second} (bright colors). The thermostat and barostat damping times were \SI{1000}{\pico\second}. $T=\SI{260}{\kelvin}$. Falling potential energies correspond to crack opening (in these specific simulations). The slope of falling potential energy is systematically steeper for higher values of the strain before crack propagation. The systems that crack show oscillating potential energy after crack propagation, which is due to global oscillations of the system. The oscillations are damped out by a drag term in the thermostat. }
+\caption{Potential energy (upper panel) and strain (lower panel) for a series of simulations where systems of 24x24x1 unit cells sI hydrate are subjected to tensile strain. The systems were initiated with an elliptic crack of $6.0 \times 40.0 \si{\angstrom}$. The system was allowed to equilibrate NPT during \SI{100}{\pico\second}, which can be seen from the small fluctuations in strain in this time-frame. Then the simulations were NVT, but with imposed volume change due to the application of a constant strain rate, taking the system to a predesignated stress after \SI{50}{\pico\second}. Then, a regular NVT-simulation was run for \SI{400}{\pico\second} (bright colors). The thermostat and barostat damping times were \SI{1}{\pico\second}. $T=\SI{260}{\kelvin}$. Falling potential energies correspond to crack opening (in these specific simulations). The slope of falling potential energy is systematically steeper for higher values of the strain before crack propagation. The systems that crack show oscillating potential energy after crack propagation, which is due to global oscillations of the system. The oscillations are damped out by a drag term in the thermostat. }
 \label{fig:proof_of_concept_crack}
 \end{figure}
 
@@ -155,8 +184,14 @@ The estimate of the surface area of the crack based on the simulation box side, 
 \begin{equation}
 v_c = \frac{1}{2L_z}\frac{\dd A_c}{\dd t}
 \end{equation}
-
-@MeasureCrackInTimeForTheseSimulations
+%
+Figure \ref{fig:crack_in_time_thin} shows the evolution of crack area and crack speed in time.
+\begin{figure}
+\centering
+\includegraphics[width=12cm]{../figures/thesis/crack_in_time_thin.pdf}
+\caption{Evolution of crack area in time (upper panel) and derived crack tip speed (lower panel).}
+\label{fig:crack_in_time_thin}
+\end{figure}
 
 \paragraph{Summary of concept simulations} The results from these initial simulations indicate that methane hydrates are very brittle on the tens-of-picoseconds scale, in the sense that they do not at all deform plastically to withstand strain. They either deform elastically, or they fail. There is also indications that the time before fracture depends on the applied strain in a systematic way. A close look at the potential energy curve of the simulation in figure \ref{fig:proof_of_concept_crack} that did not end in rupture reveals that the potential energy is actually slowly decreasing. Whether this is a sign of a coming fracture, strengthening rearrangements of particles -- which could imply some ductility -- or something else, remains to be investigated. 
 
@@ -256,14 +291,14 @@ When the crack propagates, the stress in the methane hydrate is released, and th
 This is in principle sufficient to determine the critical energy release rate for any mode of loading, provided that the conditions for using Equation \ref{eq:hantal_critical_energy_release_rate} to estimate the critical energy release rate are met. 
 For expansion of the simulation box along the x-axis, the strain integral (nominator) is equivalent to \ref{eq:work_expansion}. The area integral (denominator) is just the crack area in time, which can be estimated using the crack tracer described in \ref{ch:tools}.
 
-Using equation \ref{eq:hantal_critical_energy_release_rate} to measure the strain energy, I can recalculate the fracture toughness. I run a series of new simulations to be able to pinpoint the strain level at which the hydrate fails. Figure \ref{fig:pot_strain_eng_l1} shows the potential energy \emph{and} the strain energy from a simulation where the strain before crack propagation was 0.048. This particular simulation is chosen because it is the simulation with the lowest required strain level to support a crack in a series of simulations with a strain increment of 0.001. The strain energy in this simulation is \SI{0.01455}{\femto\joule}. The cross-sectional area of this simulation is $\SI{12.04}{\angstrom} \times \SI{288.8}{\angstrom}$, so my current best estimate of the critical energy release rate is $\mathcal{G}_c = \SI{0.42}{\joule\per\meter\squared}$. That corresponds to a fracture toughness of $K_{Ic} = 0.060$ MPam$^\frac{1}{2}$.
+Using equation \ref{eq:hantal_critical_energy_release_rate} to measure the strain energy, I can recalculate the fracture toughness. I run a series of new simulations to be able to pinpoint the strain level at which the hydrate fails. Figure \ref{fig:pot_strain_eng_l1} shows the potential energy \emph{and} the strain energy from a simulation where the strain before crack propagation was 0.048. It is clear from the figure that the entropic energy contribution (which is supplied by the thermostat) is larger than the strain energy, which means the total potential energy gives a bad estimate of the free energy, and ultimately, gives a bad estimate of the fracture toughness. This particular simulation is chosen because it is the simulation with the lowest required strain level to support a crack in a series of simulations with a strain increment of 0.001. The strain energy in this simulation is \SI{0.01455}{\femto\joule}. The cross-sectional area of this simulation is $\SI{12.04}{\angstrom} \times \SI{288.8}{\angstrom}$, so my current best estimate of the critical energy release rate is $\mathcal{G}_c = \SI{0.42}{\joule\per\meter\squared}$. That corresponds to a fracture toughness of $K_{Ic} = 0.060$ MPam$^\frac{1}{2}$.
 
 
 
 \begin{figure}
 \centering
 \includegraphics[width=12cm]{../figures/thesis/pot_strain_eng_24_24_1.pdf}
-\caption{Potential energy and strain energy from a simulation where the strain before crack propagation is 0.048. The strain energy difference from before to after straining is \SI{0.01455}{\femto\joule}.}
+\caption{Potential energy and strain energy from a simulation where the strain before crack propagation is 0.048. The strain energy difference from before to after straining is \SI{0.01455}{\femto\joule}. It is clear from this figure that the entropic energy introduced during straining is higher than the strain energy.}
 \label{fig:pot_strain_eng_l1}
 \end{figure} 
 
@@ -417,16 +452,18 @@ Since the total crack area is limited by the cross-sectional area of the simulat
 \end{figure}
 
 \section{Effects of the system thickness}
-The study of finite size effects has not yet gotten much attention in this work, but from visual inspection of simulations with different thicknesses $L_z$, it is clear that there are finite thickness effects. Until now, two system sizes has been studied: A thickness of one sI unit cell and a thickness of 12 sI unit cells. 
+The study of finite size effects has not yet gotten much attention in this work, but from visual inspection of simulations with different thicknesses $L_z$, it is clear that there are finite thickness effects. Until now, three system sizes has been studied: A thickness of one sI unit cell, two sI unit cells, and a thickness of 12 sI unit cells. 
 
-Most notably, the crack propagation in the big system is more predictable than that in the small system. Particularly, the crack tip in the small simulations can change direction for a short time, and then continue propagating in the y-direction but in another column of unit cells than it did before. Similar behavior has not been observed in the large system.
+Most notably, the crack propagation in the thickest system seems more predictable than that in the thinnest system. Particularly, the crack tip in the small simulations can change direction for a short time, and then continue propagating in the y-direction but in another column of unit cells than it did before. Similar behavior has not been observed in the large system.
 
-To systematically study this effect, I compare the crack surface area in simulations with systems of different thicknesses, but with the same strain rate. A chaotic crack should leave a larger crack surface area than a straight one.
+To systematically study this effect, I have compared the crack surface area in simulations with systems of different thicknesses, but with the same strain rates. A chaotic crack should leave a larger crack surface area than a straight one.
+
+The result is that i cannot see any effect of the system thickness on the crack area; potential differences are masked by the fluctuations in the measured crack surface area.
 
 \section{Investigating simulations with no system-spanning crack}
 All simulations up to now has had a production time of \SI{400}{\pico\second}, but as there is a waiting time before fracture starts, there might be potential of having fracture in the non-fractures systems if the simulation is sufficiently long. It is also possible that something else will happen. The crack can for example change shape and strengthen the sample. It is also possible that a much slower crack can propagate, possibly not reaching the periodic boundary if the strain does not contribute enough energy to open a surface spanning the whole $yz$-plane. 
 
-In this section, I look at a simulation very similar to the one described in section \ref{sec:complete_analysis_single_simulation}. The only difference is that the strain level after \SI{150}{\pico\second} is 0.045, and the temperature is \SI{280}{\kelvin}. No system spanning crack is observed during the \SI{400}{\pico\second} after straining. There is, however, a small increase in the surface area, as can be seen in figure @insertFigure. 
+In this section, I look at a simulation very similar to the one described in section \ref{sec:complete_analysis_single_simulation}. The only difference is that the strain level after \SI{150}{\pico\second} is 0.045, and the temperature is \SI{280}{\kelvin}. No system spanning crack is observed during the \SI{400}{\pico\second} after straining. There is, however, a small increase in the surface area, as can be seen from the orange dotted line in the lower panel of figure \ref{fig:area_speed_stress_zoom}.
 
 Since the system doesn't seem tom have equilibrated (the potential energy is still falling), I continue the simulation for another \SI{400}{\pico\second} to see what happens. Figure \ref{fig:crack_no_propagate_long_time_snapshots} shows images of the crack at selected points in time, and shows that even though the crack does not span the system after the simulations, it \emph{does} develop. It seems like the system is trying to minimize its mechanical energy by creating an optimal surface -- it looks like the crack is trying to optimize its shape. This is probably a different process than the process leading to rapid crack initiation and propagation. It can for instance be that the process can bee usefully described with a thermal activation and a stress activation. 
 
@@ -452,6 +489,7 @@ Since the system doesn't seem tom have equilibrated (the potential energy is sti
 \end{figure}
 
 \section{Aggregated results}
+In this section, I present overall tendencies that arise from putting together the results I have already presented with results from additional simulations of the same kind, but with different strain levels. I end the section with a comparison of my results with the theory of linear elastic fracture mechanics.
 
 \subsection{Waiting time for fracture}
 In the simulations with $T=\SI{260}{\kelvin}$, the waiting time was short for the highly strained samples, and the samples subjected to too little strain didn't fracture. Between these extremes, there was no general rule that higher strains gave shorter waiting times. The simulations with $T=\SI{280}{\kelvin}$, on the other hand, showed more systematic behavior, and generally shorter waiting times. It is possible that the variation in waiting time is smaller when temperature increases, and especially when exceeding the melting temperature of pure water in the given model.
@@ -467,11 +505,11 @@ In the simulations with $T=\SI{260}{\kelvin}$, the waiting time was short for th
 \centering
 \includegraphics[width=12cm]{../figures/thesis/area_speed_stress_all_zoomed.pdf}
 \caption{Crack area (top panel), crack speed (middle panel) and tensile stress (lower panel). The panels are the same as the ones in \ref{fig:area_speed_stress_all}, but they are significantly zoomed.}
+\label{fig:area_speed_stress_zoom}
 \end{figure}
 
 \subsection{Crack tip speed}
-There is a significant relationship between the crack tip speed and the strain before fracture. 
-
+Crack tip speeds have been measured both in the thin and the thick systems, but I have only made comparisons between different simulations for the thickest system. There is a clear tendency that the crack tip speed upon rupture increases with increasing strain level before crack propagation. This is unsurprising. The low accuracy of the speed measure makes is hard to make quantitative comparisons, and a longer system is probably needed for robust quantitative comparison. What can be said, is that even though the crack tip speed significantly depend on the strain, the differences in crack speed are not big. In figure \ref{fig:area_speed_stress_zoom}, all crack speeds fall roughly between \SI{750}{\meter\per\second} and \SI{1000}{\meter\per\second}. In terms of Rayleigh wave speeds, this range corresponds to $\approx 0.5 - 0.65 v_R$ (see table \ref{tbl:mechanical_from_simulation} for wave speeds in this model). This is well within the speed range where crack instabilities are expected to be present, but crack instabilities have not been prominent in the simulations in this work.
 \subsection{Free methane}
 Methane is freed almost instantly during crack propagation, which is opposed to the possibility of a very sharp crack where methane would have to diffuse out of their cages after crack propagation. It is also worth noting that the proportion of methane that is freed during rapid surface area growth is of the same order as the proportion of surface area that is grown during rapid area growth. That means methane is quickly released -- it does not stay in the hydrate lattice and then diffuse out.
 
@@ -481,7 +519,7 @@ The same exercise of measuring the critical energy release rate of the hydrate a
 
 \begin{table}
 \centering
-\caption{Surface energies and critical energy release rates from this work. The critical energy release rates must be taken as upper estimates, since a finer resolution in the strain increment could reveal lower strains supporting crack propagation.}
+\caption{Surface energies and critical energy release rates from this work. The critical energy release rates must be taken as upper estimates, since a finer resolution in the strain increments could reveal lower strains supporting crack propagation.}
 \label{tbl:fracture_surface}
 \begin{tabular}{c|c|c}
 Parameters & Surface energy & Critical energy release rate \\
@@ -493,11 +531,19 @@ Parameters & Surface energy & Critical energy release rate \\
 \end{tabular}
 \end{table}
 
-\section{Comparison with continuum LEFM}
-Figure \ref{fig:fracture_theory_compare} shows the global tensile stress in the \SI{280}{\kelvin} simulations plotted against the crack length. The results agree well with the Griffith theory for brittle solids. It might be that this plot can aid the understanding of two separate mechanisms for fracture. some process slowly increases the crack width and reduces the tensile stress, until -- at some point -- the crack width-tensile stress configuration is such that it allows for rapid crack growth. This should be determined by whether the simulation follows a less steep slope than some critical line, which is probably close to the finite width Griffith line.
+\section{Comparison with linear elastic fracture mechanics}
+Figure \ref{fig:fracture_theory_compare} shows the global tensile stress in the thick simulations (12 sI unit cells in the $z$-direction) plotted against the crack length. The crack length is estimated as $A_s/2L_z$, which means the crack is assumed to be thin. This probably slightly overestimate the crack lengths, since the cracks are elliptical prior to crack propagation, but the differences between the simulations can still be robustly analyzed. Results are presented both for simulations at $T= \SI{260}{\kelvin}$ and at $T=\SI{280}{\kelvin}$. Along with the evolution of the simulations on the Stress--Crack-width axes, I have plotted three expected fracture criteria from linear elastic fracture mechanics: The Inglis formula, the Griffith formula, and the finite width-corrected Griffith formula. Respectively:
+\begin{align}
+\sigma_f & = \sqrt{\frac{E\gamma_s}{4a}} \\
+\sigma_f & = \sqrt{\frac{2E\gamma_s}{\pi a}} \\
+\sigma_f & = \sqrt{\frac{2E\gamma_s}{2W\tan\left( \frac{\pi a}{2W}\right)}}
+\end{align}
+ I have indicated in the figure where the crack evolution goes from slow (melting) to fast (fracture). This point is found by inspecting the crack speed plot, finding the time just before the crack tip speed starts to increase rapidly. This point in time is quite well-defined. The markers in figure \ref{fig:fracture_theory_compare} indicate the stress--crack-width configuration at this specific time for each simulation. 
+ The results agree well with the Griffith theory for brittle solids. This plot can aid the understanding of two separate mechanisms for fracture. Some process slowly increases the crack width and reduces the tensile stress, until -- at some point -- the stress--crack-width configuration is such that it allows for rapid crack growth. This should be determined by whether the simulation follows a less steep slope than some critical line, which is probably close to the finite width Griffith line.
+%
 \begin{figure}
 \centering
 \includegraphics[width=12cm]{../figures/thesis/stress_area_lefm.pdf}
-\caption{Relationship between tensile stress and crack width during dynamic runs. Markers indicate where critical fracture is estimated to have started (judgment call from looking at the fracture speed). It is the position of the markers that determine whether this is a good agreement with Griffith or Inglis theory. The crack width is estimated as $A_s/2L_z$, and it is clear that it is over-estimated at the end of the simulation (at full crack opening). It is not clear whether the crack length is over-estimated at the early stages of crack propagation. When straining is finished, which is at the point where the stress reaches its maximum, the crack area is quite exactly estimated to the length of the crack that was carved out, namely \SI{40}{\angstrom}. The theory curves (Inglis and Griffith) are calculated using $E=\SI{7.1}{\giga\pascal}$ and $\gamma_s = \SI{0.21}{\joule\per\meter\squared}$ The finite width curve is made using equation \ref{eq:griffith_finite_sheet}. The legend indicate the maximum strain level in each simulation, and the different theoretical curves.}
+\caption{Relationship between tensile stress and crack width during dynamic runs. Markers indicate where critical fracture is estimated to have started (judgment call from looking at the fracture speed). It is the position of the markers that determine whether this is a good agreement with Griffith or Inglis theory. The crack length is estimated as $A_s/2L_z$, and it is clear that it is over-estimated at the end of the simulation (at full crack opening). It is not clear whether the crack length is over-estimated at the early stages of crack propagation. When straining is finished, which is at the point where the stress reaches its maximum, the crack area is quite exactly estimated to the length of the crack that was carved out, namely \SI{40}{\angstrom}. The theory curves (Inglis and Griffith) are calculated using $E=\SI{7.1}{\giga\pascal}$ and $\gamma_s = \SI{0.21}{\joule\per\meter\squared}$ The finite width curve is made using equation \ref{eq:griffith_finite_sheet}. The legend indicate the maximum strain level in each simulation, and the different theoretical curves.}
 \label{fig:fracture_theory_compare}
 \end{figure}
