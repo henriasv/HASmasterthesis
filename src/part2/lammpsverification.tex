@@ -4,11 +4,11 @@ In this chapter, i verify that my LAMMPS setup reproduces known results from the
 
 I use potentials that are already parts of the LAMMPS distribution, so I only need to test that I use LAMMPS correctly. 
 
-\section{TIP4P/ICE}
-I want to check that the TIP4P/ICE water potential in LAMMPS reproduces known thermodynamic properties from the literature. The TIP4P potential that comes with LAMMPS, really just handles the massless charged site; the rest of the implementation, namely the rigid bonds and angle, are implemented by the user. Additionally, parameters have to be set. If thermodynamic properties are reproduces, I can be confident that my configuration of the TIP4P potential in LAMMPS is really the potential introduced by \cite{Abascal2005}. 
+\section{TIP4P/Ice}
+I want to check that the TIP4P/Ice water potential in LAMMPS reproduces known thermodynamic properties from the literature. The TIP4P potential that comes with LAMMPS, really just handles the massless charged site; the rest of the implementation, namely the rigid bonds and angle, are implemented by the user. Additionally, parameters have to be set. If thermodynamic properties are reproduces, I can be confident that my configuration of the TIP4P potential in LAMMPS is really the potential introduced by \cite{Abascal2005}. 
 
 \subsection{Density of bulk water}
-As a quick check of my TIP4P/ICE setup, I want to check the density of bulk water in an NPT simulation. This property is easily measured, as long as the simulation time is sufficient to gather enough statistics. 
+As a quick check of my TIP4P/Ice setup, I want to check the density of bulk water in an NPT simulation. This property is easily measured, as long as the simulation time is sufficient to gather enough statistics. 
 
 \begin{table}
 \centering
@@ -16,7 +16,7 @@ As a quick check of my TIP4P/ICE setup, I want to check the density of bulk wate
 \begin{tabular}{c|cc}
 Model & Melting point [K] & Density [\si{\gram\per\cubic\cm}] \\
 \hline
-TIP4P/ICE 	& 272.2 	& 0.985 \\
+TIP4P/Ice 	& 272.2 	& 0.985 \\
 TIP4P 		& 232.0 	& 1.002 \\
 TIP4P/Ew 	& 245.5 	& 0.992 \\
 SPC/E 		& 215.0 	& 1.011 \\
@@ -69,11 +69,11 @@ Having measured both the shear viscosity and the diffusivity well within the unc
 The methane model is simply a Lennard-Jones model, and I will use it with a cutoff and no long-range corrections. Young's modulus and Poisson's ratio for the Lennard-Jones model will be verified when I check my protocol for measuring elastic properties in molecular dynamics. I an confident that LAMMPS treats the Lennard-Jones potential correctly, and I will have confirmation that my parameter input is correct if Young's modulus is correct (which it turns out to be).
 
 \section{Stabilizing methane hydrates}
-The TIP4P/ICE potential should be able to stabilize a methane hydrate structure. Therefore, I prepared an S1 hydrate using positions priovided by \citet{Takeuchi2013}. These positions were derived using the TIP4P (no suffix) potential, and are not expected to be an equilibrium configuration for TIP4P/ICE. The hydrate turns out to equilibrate nicely -- although some water molecules turn around -- using a Nosé-Hoover NPT thermostat with a temperature rising from $0$ to \SI{30}{\kelvin}. The reason for using a rising temperature rather than an energy minimization, is that the energy minimization schemes don't work with the SHAKE-algorithm in LAMMPS.
+The TIP4P/Ice potential should be able to stabilize a methane hydrate structure. Therefore, I prepared an S1 hydrate using positions priovided by \citet{Takeuchi2013}. These positions were derived using the TIP4P (no suffix) potential, and are not expected to be an equilibrium configuration for TIP4P/Ice. The hydrate turns out to equilibrate nicely -- although some water molecules turn around -- using a Nosé-Hoover NPT thermostat with a temperature rising from $0$ to \SI{30}{\kelvin}. The reason for using a rising temperature rather than an energy minimization, is that the energy minimization schemes don't work with the SHAKE-algorithm in LAMMPS.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../snapshots/first_stable_hydrate.pdf}
-\caption{Methane hydrate at low temperature. Rendered with VMD}
+\caption{Methane hydrate being stable at low temperature.}
 \label{fig:part2:first_hydrate}
 \end{figure}
 
@@ -91,7 +91,7 @@ Increasing the number of processor cores running a simulation almost always mean
 \label{fig:lammps_efficiency}
 \end{figure}
 
-\section{A subtle bug that took a lot of time to figure out -- Atoms out of range during P$^3$M calculation}
+\section{Atoms out of range during P$^3$M calculation: A time-consuming bug}
 
 Since dealing with technical problems is a huge part of computational physics, I feel it necessary to describe some of the problems I have experienced. The most painful error that I experienced after getting rid of the beginners mistakes, was the following:
 
