@@ -41,14 +41,6 @@ This job script starts LAMMPS in a hybrid MPI and OpenMP mode with 18 mpi proces
 
 Note: since it turned out that I could not use the OpenMP package, the scripts I actually used does not contain the OpenMP commands, and {\tt --cpus-per-task} is set to 1.
 
-\section{Experienced problems when using the Abel computing cluster}
-When performing large-scale simulations, failures on the computing cluster can consume a lot of time.
-\begin{itemize}
-\item Random node failures
-\item Slow nodes -- killed jobs
-\end{itemize}
-
-
 I have made a small python module that lets me submit a job for each subdirectory containing a file {\tt lmp\_slurm\_job.sh}:
 
 \begin{lstlisting}[language=Python]
@@ -80,3 +72,11 @@ Usage:
 \begin{lstlisting}[language=Bash]
 python -m sbatch_tree $PWD
 \end{lstlisting}
+
+\section{Experienced problems when using the Abel computing cluster}
+When performing large-scale simulations, failures on the computing cluster can consume a lot of time. I have had two main problems when performing simulations on the Abel cluster, leading to seemingly random simulations not running or finishing correctly:
+\begin{itemize}
+\item Random node failures. Some nodes do not have the correct software settings. Small things like how each node bind the tasks to CPU-cores can make the simulation crash.
+\item Slow nodes -- killed jobs. If the simulation is sent to nodes that are slower than expected, the time limit set for the simulation can be too short, and the simulation gets killed.
+\end{itemize}
+These kinds of failures are part of the challenge of performing large-scale computations. After simulations have been submitted, it must be checked that it was started correctly. After a simulation has stopped, it must be checked whether it stopped because it was finished, or if it was killed or crahsed.
