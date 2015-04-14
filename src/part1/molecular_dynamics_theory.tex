@@ -12,7 +12,7 @@ Where $\rvec^N = \rvec_1, \dots, \rvec_N$ are the positions of all the particles
 	\mb{F}_i = \sum_{j=1}^N -\frac{\partial U(\rvec_{ij})}{\partial \rvec_{ij}}
 \end{equation}
 
-Given a potential $U$, this is in principle all that is needed to do molecular dynamics. However, many details arise when implementing specific potentials, and when the thermodynamic conditions for the simulations are to be controlled. In order to get results that are relevant to the real world, the potentials often have to be quite complicated, involving not only pairwise interactions. While complicated potentials are just rules that imposed within the framework presented above, details concerning controlling thermodynamic properties and boundary conditions will actually alter the fundamental equations. 
+Given a potential $U$, this is in principle all that is needed to do molecular dynamics. However, many details arise when implementing specific potentials, and when the thermodynamic conditions for the simulations are to be controlled. In order to get results that are relevant to the real world, the potentials often have to be quite complicated, involving not only pairwise interactions, but also many-body interactions. While complicated potentials are just rules imposed within the framework presented above, details concerning controlling thermodynamic properties and boundary conditions will alter the fundamental equations given above. 
 
 There are also details concerning computational efficiency. To be able to simulate large systems over long periods of time -- large and long is relative to molecular scales -- the methods must ignore negligible parts of the potentials, but capture the important parts to sufficient accuracy.
 
@@ -24,7 +24,7 @@ In molecular dynamics, it is natural to define two types of interactions, and th
 	U_{\text{tot}} = U_{\text{non-bonding}} + U_{\text{bonding}} 
 \end{equation}
 
-These definitions should not be confused with the distinction between covalent and non-covalent bonds i chemistry, even though it is common that bonding interactions in molecular dynamics represent covalent bonds.
+These definitions should not be confused with the distinction between covalent and non-covalent bonds in chemistry, even though it is common that bonding interactions in molecular dynamics represent covalent bonds.
 
 \subsection{Non-bonding potentials}
 \label{sec:non_bonding_potentials}
@@ -34,7 +34,7 @@ The Lennard-Jones potential is simple and widely used. For two particles separat
 	U_{LJ} = 4\varepsilon\left[\left(\frac{\sigma}{r}\right)^{12} - \left(\frac{\sigma}{r}\right)^{6}\right]
 \end{equation}
 (Do not confuse $\sigma$ and $\epsilon$ with stress and strain in elasticity).
-The first term represents Pauli repulsion, and the second represents van der Waals attraction. $\sigma$ is a characteristic length which is close to the equilibrium distance between two particles. $\varepsilon$ is the depth of the potential well -- a measure of the strength of the interaction. The Lennard-Jones potential is computationally attractive because there is no need to calculate square roots of distances between particles. The Lennard-Jones potential is given in terms of reduced units. Since most studies of Lennard-Jones systems report results in these units, the equations defining some properties in reduced units are included in table \ref{tbl:lj_parameters}.
+The first term represents Pauli repulsion, and the second represents van der Waals attraction. $\sigma$ is a characteristic length that is close to the equilibrium distance between two particles. $\varepsilon$ is the depth of the potential well -- a measure of the strength of the interaction. The Lennard-Jones potential is computationally attractive because there is no need to calculate square roots of distances between particles. The Lennard-Jones potential is given in terms of reduced units. Since most studies of Lennard-Jones systems report results in these units, the equations defining some properties in reduced units are included in table \ref{tbl:lj_parameters}.
 
 \begin{table}
 \centering
@@ -66,7 +66,7 @@ As an example of a simple three-particle non-bonding potential, I include the si
 	\phi_3(r_{ij}, r_{ik}, \theta_{ijk}) = \lambda\varepsilon\left[ \cos{\theta_{ijk}} - \cos{\theta_0}\right]^2 \exp\left( \frac{\gamma\sigma}{r_{ij}-a\sigma}\right) \exp\left(\frac{\gamma \sigma}{r_{ik}-a\sigma} \right)
 \end{equation}
 
-Note the exponential tails on the potential, resulting in the potential and its derivative going to zero when $r_{ij}$ gets large. The functional form of this potential is quite flexible, and of the Stillinger–Weber potential has been used for example to model water using one Stillinger-Weber particle per water molecule. 
+Note the exponential tails on the potential, resulting in the potential and its derivative going to zero when $r_{ij}$ gets large. The functional form of this potential is quite flexible, and of the Stillinger–Weber potential has been used for example to model water, using one Stillinger-Weber particle per water molecule. 
 
 \subsection{Bonding potentials}
 Bonded potentials only apply for a specific group of particles. A simple two-particle bonding potential is the harmonic bond potential:
@@ -91,19 +91,19 @@ The velocity Verlet algorithm is:
 	\rvec(t+\Delta t) &=& \rvec(t) + \dot\rvec(t)\Delta t + \frac{1}{2}\frac{\mb{F}(t)}{m}\Delta t^2 \\
 	\dot\rvec(t + \Delta t) &=& \dot\rvec(t) + \frac{1}{2} \frac{\mb{F}(t) + \mb{F}(t+\Delta t)}{m}\Delta t
 \end{align*}
-The velocity Verlet integrator is symplectic. Being symplectic can be defined in a very strict mathematical way, but for the purposes of this work, it is sufficient to note that a symplectic integrator conserves a Hamiltonian that is only slightly perturbed relative to the Hamiltonian from which it tries to solve Hamilton's equations. This in turn means that in practice it conserves energy. Therefore the velocity Verlet algorithm can be used to sample the microcanonical ensemble (NVE).
+The velocity Verlet integrator is symplectic. Being symplectic can be defined in a very strict mathematical way, but for the purposes of this work, it is sufficient to note that a symplectic integrator conserves a Hamiltonian that is only slightly perturbed relative to the Hamiltonian from which it tries to solve Hamilton's equations. This in turn means that in practice it conserves energy. Therefore, the velocity Verlet algorithm can be used to sample the microcanonical ensemble (NVE).
 
 \section{Simulation box}
 MD simulations can in principle be performed in infinite space, but it is usually best to confine the simulation to a specified region. Most commonly, the simulation is performed in a box with periodic boundary conditions (PBC). In PBC, a particle that leaves the simulation box reappears on the opposite side of the simulation box, keeping its velocity. At any point in time, the position of a particle can be measured in any \emph{periodic image} by going through the periodic boundary as many times as wanted before actually measuring the position. The position of a particle in the simulations box, ignoring the periodic boundary condition is the \emph{local cell} position of that particle, and the simulation box itself is thought of as the \emph{local cell}. Note that a particle comes back to the local cell when it goes through the periodic boundary. The whole concept of the image cells is introduced to be able to handle interactions correctly. The most immediate complication introduced by PBC is that there are now several ways to go from one atom to another, depending on what periodic image positions of the particle positions are used. This has consequences for the force calculation. The usual solution is to apply the so-called \emph{minimum image convention}, which means that each pair of particles is counted only once, and the distance vector is chosen to be the shortest one. In practice, the minimum image is calculated by first checking the non-periodic distance. Then, for each component of the difference vector, it is checked if the absolute value of that component can be reduced by adding or subtracting the simulation box length along that component.
-There are two main reasons why PBC in beneficial for simulations in confined regions: First, it is the simplest choice. Any other choice would imply either some sort of wall interaction or particles just disappearing. Secondly, it allows for sampling bulk properties of the system, since the system is quasi-infinite. This should however be done with caution, since there are well-known finite size effects of unsing PBC, such as the self-diffusion coefficient being lower for smaller simulation boxes (To be discussed in chapter \ref{ch:verification}).
+There are two main reasons why PBC in beneficial for simulations in confined regions: First, it is the simplest choice. Any other choice would imply either some sort of wall interaction or particles just disappearing. Secondly, it allows for sampling bulk properties of the system, since the system is quasi-infinite. This should, however, be done with caution, since there are well-known finite size effects of using PBC, such as the self-diffusion coefficient being lower for smaller simulation boxes (To be discussed in chapter \ref{ch:verification}).
 
 \section{Temperature}
-The instantanous temperature $T$ in molecular dynamics is usually defined using the equipartition theorem:
+The instantaneous temperature $T$ in molecular dynamics is usually defined using the equipartition theorem:
 \begin{equation}
 	\langle E_k \rangle = \frac{f}{2}k_B T
 \end{equation}
 
-Where $f$ is the number of kinetic degrees of freedom and $T$ is the thermodynamic temperature defined by the differential coefficient of internal energy with respect to entropy, $\frac{1}{T} = \frac{\partial E}{\partial S}$. The thermodynamic temperature is not available, so an instantaneous temperature is defined. With point mass particles, using the instant value of the kinetic energy, the instantaneous temperature can be defined as:
+Where $f$ is the number of kinetic degrees of freedom, and $T$ is the thermodynamic temperature defined by the differential coefficient of internal energy with respect to entropy, $\frac{1}{T} = \frac{\partial E}{\partial S}$. The thermodynamic temperature is not available, so an instantaneous temperature is defined. With point mass particles, using the instant value of the kinetic energy, the instantaneous temperature can be defined as:
 
 \begin{equation}
 	\mathcal{T} \equiv \frac{2E_k}{f k_B} = \frac{1}{f k_B}\sum_{i=1}^{N} m_iv_i^2
@@ -114,7 +114,7 @@ This definition takes into account all translational degrees of freedom in the s
 
 When a temperature measure is defined, various schemes can be applied to control the temperature of a molecular dynamics simulation. Such schemes are called thermostats, and they all try to couple the MD system to an external heat bath, either to get the system to a specific temperature before running in the microcanonical ensemble (NVE), or to run a simulation at constant temperature and sample properties in the canonical ensemble (NVT). Some thermostats can be shown to make the system sample a known thermodynamic ensemble, whereas others do not correspond to any known ensemble. The Nosé--Hoover thermostat is an example of a thermostat that samples the canonical ensemble, while the Berendsen thermostat is an example of a thermostat that does not sample any know ensemble. The Nose-Hoover thermostat is also an example of a thermostat that explicitly changes the equations defining the system that is simulated, while for example the simpler Berendsen thermostat only implicitly change the equations by introducing an artificial velocity rescaling. 
 
-The simplest way to control the temperature is to rescale all velocities such that equation \ref{eq:temp_md} yields the correct value for the temperature. However, that results in very unrealistic dynamics. The instantaneous temperature is not supposed to be constant, neither in the canonical ensemble nor in the microcanonical. 
+The simplest way to control the temperature is to rescale all velocities such that equation \ref{eq:temp_md} yields the correct value for the temperature. However, that results in very unrealistic dynamics. The instantaneous temperature is not supposed to be constant, neither in the canonical ensemble nor the microcanonical. 
 
 \subsection{Berendsen thermostat}
 A considerable improvement from the rescaling approach is the thermostat of \citet{Berendsen1984}. The Berendsen thermostat introduces a timescale for the velocity rescaling by adding a temperature-dependent friction term to the equations of motion. The idea is to weakly couple the system to a heat bath by rescaling particle velocities to satisfy:
@@ -131,7 +131,7 @@ The effective equation of motion resulting from using the Berendsen thermostat t
 \end{equation} 
 
 \subsection{Nosé--Hoover thermostat}
-The Nosé--Hoover thermostat represents a more complicated coupling to a heat bath than the Berendsen thermostat. An MD system propagated using the Nosé--Hoover thermostat will sample the canonical ensemble. This presentation of the Nosé--Hoover thermostat follows the presentation of \citet{Hunenberger2005}.
+The Nosé--sHoover thermostat represents a more complicated coupling to a heat bath than the Berendsen thermostat. An MD system propagated using the Nosé--Hoover thermostat will sample the canonical ensemble. This presentation of the Nosé--Hoover thermostat follows the presentation of \citet{Hunenberger2005}.
 
 
 The Lagrangian\footnote{The Lagrangian is the kinetic energy minus the potential energy: $\mathcal{L}=E_k - U$.} of an MD system with no temperature control (NVE).
@@ -150,19 +150,18 @@ The basic idea of the Nosé-Hoover thermostat is to introduce an extra dynamic v
 		\node [fill=green!20, anchor=base] (t2) {$+ \frac{1}{2} Q \dot{\tilde s}^2 - gk_BT_{\text{bath}} \ln\tilde s $};
 	}
 \end{equation}
-
+%
 \begin{itemize}
 \item Microcanonical part 
 \tikz[na]\node [coordinate] (microcanonical) {};
 \item Thermostat terms 
 \tikz[na]\node [coordinate] (thermostat) {};
 \end{itemize}
-
+%
 \begin{tikzpicture}[overlay]
 	\path[->] (microcanonical) edge [out=0, in=-90] (t1);
 	\path[->] (thermostat) edge [out=0, in=-90] (t2);
 \end{tikzpicture}
-
 where $s$ is a new dynamic variable associated with a mass $Q$. $g$ shall be chosen to be the number of degrees of freedom $f$ if sampling is done in real time, and $f+1$ if sampling is done in virtual time (explained below) for the thermostat to sample the canonical ensemble.
 The equation is now written in terms of new coordinates, which are the coordinates of the extended system. The new coordinates are given below, with extended system coordinates marked with \textasciitilde: 
 
@@ -175,7 +174,7 @@ The corresponding equations of motion are (in the extended system):
 	\ddot{\tilde\rvec}_i & = m_i^{-1} \tilde s^{-2} \tilde{\mathbf{F}}_i - 2\tilde s^{-1} \dot{\tilde s} \dot{\tilde\rvec}_i \\
 	\ddot{\tilde s} & =  Q^{-1} \tilde s^{-1} \left(\sum_{i=1}m_i\tilde s^2 \dot{\tilde\rvec}_i - gk_BT_{\text{bath}}\right)
 \end{align}
-
+%
 This is the thermostat of \citet{Nose1984}, and in the real system it samples the canonical ensemble. A problem with this thermostat, is that the velocity-scaling between the real and the extended system effectively leads to uneven time intervals in the real system. Running a simulation with the Nosé-thermostat is referred to as \emph{virtual-time sampling}. \citet{Hoover1985} later overcame this problem, and showed that the equations of motion in the Nosé-algorithm could be equivalently formulated in real system coordinates (\emph{real-time sampling}):
 
 \begin{align}
@@ -206,7 +205,7 @@ $\langle W \rangle$ is an ensemble average of the virial:
 \begin{equation}
 	W(\rvec^N) \equiv -3V\frac{\dd U(\rvec^N)}{\dd V}
 \end{equation}
-$U$ is the potential energy of the system, and is only a function of the postitions of the particles and the interaction potentials acting between them, since molecular dynamics are, except for temporary thermostat contributions, frictionless. 
+$U$ is the potential energy of the system, and is only a function of the positions of the particles and the interaction potentials acting between them, since molecular dynamics are, except for temporary thermostat contributions, frictionless. 
 
 The virial is usually just derived for two-particle interactions, ignoring many-body interactions. But \citet{Thompson2009} shows that the virial of a system with many-body interactions is not very different from that of the pair interactions, as long as the many-body interacting particles can be divided into groups. The virial of the local cell is then:
 \begin{equation}
@@ -225,7 +224,7 @@ The virial tensor, again found in \citet{Thompson2009} is:
 \end{equation}
 
 \subsection{Barostats}
-Various schemes can be applied to achieve a desired pressure in a simulation. Usually this is done by changing the simulation box volume. The basic idea of the box volume scaling schemes is the same as the velocity rescaling schemes for creating thermostats: The system is coupled to a pressure bath. Berendsen proposed a barostat rescaling the box volume in the exact same spirit as his thermostat rescaled velocities:
+Various schemes can be applied to achieve a desired pressure in a simulation. Usually, this is done by changing the simulation box volume. The basic idea of the box volume scaling schemes is the same as the velocity rescaling schemes for creating thermostats: The system is coupled to a pressure bath. Berendsen proposed a barostat rescaling the box volume in the same spirit as his thermostat rescaled velocities:
 \begin{equation}
 	\frac{\dd \mathcal{P}}{\dd t} = \frac{P_{\text{bath}}-\mathcal{P}}{\tau_P}
 \end{equation}
@@ -245,21 +244,20 @@ For Coulomb point charges with periodic boundary conditions, the electrostatic e
 \begin{equation}
 	E_{\text{Coulomb}} = \frac{1}{2} \sum_{i=1}^N\sum_{j=1}^N \sum_{\mb{n} \in \mathbb{Z}^3} \frac{q_iq_j}{|\rvec_{ij}+\mb{n} L|} 
 \end{equation}
-
 Where the inner sum over $\mb{n}$ is over all periodic images of the system. The inner sum omits $\mb{n} = (0, 0, 0)$ when $i=j$. The idea of the Ewald summation is to divide this sum into a short-range part $E_{sr}$ and a long-rang part $E_{lr}$. The short-range contribution will be calculated in real space, and the long-range part will be calculated in Fourier space. The Fourier space calculation will deal with the Fourier transformed of the charge density:
 \begin{equation}
 	\tilde{\rho}(\mb{k}) = \sum_{j=1}^N q_j e^{-i\mb{k}\cdot \rvec_j}
 \end{equation}
 For the method to be effective, the variations in charge density in the part calculated in Fourier space must be sufficiently slowly varying so that its Fourier transform can be well represented by only a few $\mb{k}$-vectors.
 
-There are several methods that calculate the Ewald sum. They differ for example in how they mesh the charge distribution for fourier transforms. It is crucial for computational eficiency to be able to use the fast fourier transform (FFT), so the mesh has to support FFT. In a paper concerining different methods to cacluate Ewald sums, \citet{Deserno1998} states, in a thorough paper reviewing the accuracy of mesh routines for Ewald sums, that the partilce-particle-particle-mesh routine (P$^3$M) by \citet{Hockney:1988:CSU:62815} is the ``most accurate and versatile routine'' for Ewald sums. 
+There are several methods that calculate the Ewald sum. They differ for example in how they mesh the charge distribution for Fourier transforms. It is crucial for computational efficiency to be able to use the fast Fourier transform (FFT), so the mesh has to support FFT. In a paper concerning different methods to calculate Ewald sums, \citet{Deserno1998} states, in a thorough paper reviewing the accuracy of mesh routines for Ewald sums, that the particle-particle-particle-mesh routine (P$^3$M) by \citet{Hockney:1988:CSU:62815} is the ``most accurate and versatile routine'' for Ewald sums. 
 
 \section{Rigid groups of particles}
-There are several ways to keep a group of atoms constrained as a rigid molecule. The goal of constraint algorithms is to obtain the same positions and velocities as if the equations of motion were integrated in coordinates incorporationg the holonomic constraints, but without explicitly using these coordinates. The SHAKE algorithm by \citet{Ryckaert1977} is the most common constaint algorithm. For the particular case of three rigid atoms, like a water molecule, the SETTLE algorithm \cite{Miyamoto1992} is an analytical solution when integrating numerically the equations of motion.
+There are several ways to keep a group of atoms constrained as a rigid molecule. The goal of constraint algorithms is to obtain the same positions and velocities as if the equations of motion were integrated in coordinates incorporating the holonomic constraints, but without explicitly using these coordinates. The SHAKE algorithm by \citet{Ryckaert1977} is the most common constraint algorithm. For the particular case of three rigid atoms, like a water molecule, the SETTLE algorithm \cite{Miyamoto1992} is an analytical solution when integrating numerically the equations of motion.
 \label{sec:shake}
 
 \section{Measurements}
-I this section, I describe two transport properties (self diffusion coeficient and viscosity) and one structural property (the radial distribution function), and explain how to measure them in MD.
+I this section, I describe two transport properties (self-diffusion coefficient and viscosity) and one structural property (the radial distribution function), and explain how to measure them in MD.
 
 \subsection{Self-diffusion coefficient}
 Self-diffusion is the diffusion of a labeled particle of a species among other particles of the same species. Like in regular diffusion, the expected concentration of this particle in time will be governed by Fick's law. The self-diffusion coefficient can be measured with the Einstein relation:
@@ -276,7 +274,7 @@ For calculating the viscosity, I use the Green-Kubo relation:
 	\label{eq:GK_shear_viscosity}
 \end{equation}
 % http://www.nyu.edu/classes/tuckerman/stat.mech/lectures/lecture_21/node6.html
-Where $\sigma_{\alpha\beta}$ are independent off-diagonal elements of the stress tensor of the system. These can be $\sigma_{xy}$, $\sigma_{xz}$, $\sigma_{yz}$, $(\sigma_{xx}-\sigma_{yy})/2$ and $(\sigma_{yy}-\sigma_{zz})/2$. The expectation value inside the integral assumes that a large number of systems are investigated. Through the ergodic hypothesis, we can transform the autocorrelation function to a time integral. Also, since infinite time series are not available in practice, I introduce finite bounds on the integrals. 
+Where $\sigma_{\alpha\beta}$ are independent off-diagonal elements of the stress tensor of the system. These can be $\sigma_{xy}$, $\sigma_{xz}$, $\sigma_{yz}$, $(\sigma_{xx}-\sigma_{yy})/2$ and $(\sigma_{yy}-\sigma_{zz})/2$. The expectation value inside the integral assumes that a large number of systems are investigated. Through the ergodic hypothesis, we can transform the autocorrelation function into a time integral. Also, since infinite time series are not available in practice, I introduce finite bounds on the integrals. 
 \begin{equation}
 	\eta_{GK}(t, \tau) = \frac{V}{k_B T} \int_0^t  \frac{1}{\tau} \int_0^\tau \sigma_{\alpha\beta}(\tau'+t') \sigma_{\alpha\beta}(\tau')\ \dd \tau'\ \dd t' 
 \label{eq:GK_shear_viscosity_estimate}
@@ -292,8 +290,7 @@ The radial distribution function (RDF), $g(r)$, describes how the density of par
 \begin{equation}
 	g(r) = 4\pi r^2 \rho(r) \ \dd r
 \end{equation}
-
-Where $r$ is taken from a selected particle, and $\rho(r)$ is the number density of particles within the sherical shell $(r, r+\dd r)$. In practice, the RDF is sampled using all particles as the origin in order to collect as much statistics as possible. The RDF is useful to identify crystal structures and for verification of simulations. 
+Where $r$ is taken from a selected particle, and $\rho(r)$ is the number density of particles within the spherical shell $(r, r+\dd r)$. In practice, the RDF is sampled using all particles as the origin in order to collect as much statistics as possible. The RDF is useful to identify crystal structures and for verification of simulations. 
 
 The simplest way to measure the RDF is to loop over all pairs of particles, measure the distance between them and put the distances in bins.
 
