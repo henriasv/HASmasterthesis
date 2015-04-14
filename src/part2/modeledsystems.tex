@@ -355,7 +355,7 @@ Figure \ref{fig:energy_1048} shows the potential energy, the kinetic energy and 
 \label{fig:energy_1048}
 \end{figure}
 
-Figure \ref{fig:crack_area_evolution_1048} shows the measured crack area in time, and its time derivative which estimates the crack tip speed. The maximum crack tip speed is around \SI{1}{\kilo\meter\per\second}. A little bump can be seen in the crack tip speed during crack propagation. This is a feature that has been seen in all the crack tip speed measurements in this work. My guess is that it is caused by bulk elastic waves triggered by the crack. The fluctuations of the measurement in figure \ref{fig:crack_area_evolution_1048} (full-analysis simulation) are significantly lower than the fluctuations for the same measure in figure \ref{fig:crack_in_time_thin}, which shows data from a thin system. The fluctuations are best seen in the crack tip speed plots, as differentiation enhances noise. The parameters for the crack analysis were the same in both these measurements: $N = 10^6$, $\Delta l = \SI{1}{\angstrom}$ and $r_p = \SI{4.0}{\angstrom}$. Therefore, the fluctuations in the measured crack area must be due to the fluctuations in the underlying solvent-accessible surface area, not due to too poor sampling of the surface. 
+Figure \ref{fig:crack_area_evolution_1048} shows the measured crack area in time, and its time derivative which estimates the crack tip speed. The maximum crack tip speed is around \SI{1}{\kilo\meter\per\second}. A little bump can be seen in the crack tip speed during crack propagation. This is a feature that has been seen in all the crack tip speed measurements in this work. My guess is that it is caused by bulk elastic waves triggered by the crack. The fluctuations of the measurement in figure \ref{fig:crack_area_evolution_1048} (full-analysis simulation) are significantly lower than the fluctuations for the same measure in figure \ref{fig:crack_in_time_thin}, which shows data from a thin system. The fluctuations are best seen in the crack tip speed plots, as differentiation enhances noise. The parameters for the crack analysis were the same in both these measurements: $N = 10^6$, $\Delta l = \SI{1}{\angstrom}$ and $r_p = \SI{4.0}{\angstrom}$. Therefore, the fluctuations in the measured crack area must be due to the fluctuations in the underlying solvent-accessible surface area (which are relatively larger for the thinner system), not due to too poor sampling of the surface. 
 
 \begin{figure}
 \centering
@@ -373,11 +373,11 @@ Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stre
 \label{fig:stressfield_avg_wait_for_crack}
 \end{figure}
 
-Figure \ref{fig:stressfield_snap_propagation_180} is similar to figure \ref{fig:stressfield_avg_wait_for_crack}, but it now shows the stress field during crack propagation Since tracking the crack requires higher time resolution, the stresses are only averaged over \SI{0.3}{\pico\second}. As expected, the region of high stresses moves along with the crack tip.
+Figure \ref{fig:stressfield_snap_propagation_180} is similar to figure \ref{fig:stressfield_avg_wait_for_crack}, but it now shows the stress field \emph{during} crack propagation. Since tracking the crack requires higher time resolution, the stresses are only averaged over \SI{0.3}{\pico\second}. As expected, the region of high stresses moves along with the crack tip.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/stressfield_snap_propagation_180.pdf}
-\caption{Snapshot of the stress field during crack propagation. Average over \SI{0.3}{\pico\second} before $t = \SI{180}{\pico\second}$.}
+\caption{Stress field during crack propagation in the full-analysis simulation. Stresses are averaged over \SI{0.3}{\pico\second} before $t = \SI{180}{\pico\second}$.}
 \label{fig:stressfield_snap_propagation_180}
 \end{figure}
 
