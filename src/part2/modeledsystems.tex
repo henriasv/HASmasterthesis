@@ -312,7 +312,7 @@ Larger simulations allow for statistically more robust results. During crack ini
 \label{sec:complete_analysis_single_simulation}
 
 \subsection{Complete analysis of a single simulation}
-In the following, I use the analysis tools that were presented in the tools section to analyze \emph{one} simulation. This simulation will be referred to as the \emph{full-analysis simulation}. The analyzes here will be representative of how data is obtained when showing up in later results where data from several simulations are used together to say something more general.
+In the following, I use the analysis tools that were presented in the tools section to analyze \emph{one} simulation. This simulation will be referred to as the \emph{full-analysis simulation}. The analyzes here will be representative of how data is obtained when showing up in later results where data from several simulations are used together to say something more general. 
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../pictures/system_1048.pdf}
@@ -320,27 +320,14 @@ In the following, I use the analysis tools that were presented in the tools sect
 \label{fig:system_1048}
 \end{figure}
 
+Below follows simulation details. Some parameters are not mentioned in this description. They are the same as the ones listed for the proof-of-concept simulations in table \ref{tbl:proof_of_concept_parameters}.
 \begin{framed} 
 \textbf{Simulation details:} A system consisting of $24 \times 24\times 12$ sI unit cells is prepared. First, an elliptical hole in the $xy$-plane spanning the whole z-direction is carved out as described in section \ref{subsec:reg_eprism}. The system is then allowed to equilibrate with an anisotropic NPT thermo-barostat for \SI{100}{\pico\second}, with ambient barostat pressure (\SI{101325}{\pascal}). The system is then integrated NVT, but subjected to a constant strain rate taking it to a strain level of $\epsilon_{xx} = 0.048$ after \SI{50}{\pico\second}. Then straining is stopped, and the system is left NVT for \SI{350}{\pico\second}. The damping time of the thermostat and barostat during the whole simulations is $t_{damp} = \SI{1}{\ps}$. Additionally, a drag coefficient of $1.0$ (as described in the LAMMPS documentation) is added, as this is recommended to damp oscillations in solids. The thermostat temperature is set to \SI{260}{\kelvin}. The parameters applied here, are the same as in the proof-of-concept simulations, with the exception that it is thicker, and that the simulation time is slightly shorter.
 \end{framed}
 
-For illustrative purposes, figure \ref{fig:system_1048} shows what the system looks like in perspective. The other pictures are rendered with an orthographic projection, so the system will look two-dimensional. 
+This simulation features a crack spanning the whole $yz$-plane. Figure \ref{fig:system_1048} shows what the system looks like in perspective after crack propagation. The other pictures are rendered with an orthographic projection, so the system will look two-dimensional. 
 
-Figure \ref{fig:crack_evolution} shows pictures of the crack evolution in time, to give an idea of what the system looks like during fracture. 
-
-Figure \ref{fig:energy_1048} shows the potential energy, the kinetic energy and the strain energy for the whole simulation. It shows that a strain of 0.048 is only a bit more than what is needed if the criterion for a crack to propagate is $\mathcal{G}_c = 2\gamma_s$. This means the system shows brittle behavior in this particular simulation. The kinetic energy slightly increases, which means the temperature increases during fracture. This is because heat is released during fracture, and that the thermostat has a finite damping time. The temperature is not indicated in the figure, but the temperature change is only by a few Kelvin. 
-
-
-Figure \ref{fig:crack_area_evolution_1048} shows the measured crack area in time, and its time derivative which estimates the crack tip speed. The maximum crack tip speed is around \SI{1}{\kilo\meter\per\second}. A little bump can be seen in the crack tip speed during crack propagation. This is a feature that I see in all the crack tip speed measurements. My guess is that it is caused by bulk elastic waves triggered by the crack. The crack tip speed is a measure that is likely to be influenced by the strain level before fracture. 
-
-Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stress tensor of the system in space during the period when the system is fully strained, but before propagation starts. It is averaged over the z-direction in space and over \SI{20}{\pico\second} in time to get statistics for a nice picture. The stress field is visually compatible with the analytical solution close to the crack tip for a homogeneous isotropic linear elastic solid. The shear components normal to the $xy$-plane are small, but not negligible, which means that the plane strain condition is only partially met. Particularly, the amplitude of $\tau_{xz}$ is about $1/5$ of that of $\tau_{xy}$. 
-
-Figure \ref{fig:stressfield_snap_propagation_180} is similar to figure \ref{fig:stressfield_avg_wait_for_crack}, but it now shows the stress field during crack propagation Since tracking the crack requires higher time resolution, the stresses are only averaged over \SI{0.3}{\pico\second}. As expected, the region of high stresses moves along with the crack tip.
-
-Figure \ref{fig:stressfield_timelapse} shows the stress $\sigma_{xx}$ at several points in time before, during and after crack propagation. Here also, the stresses are only averaged over \SI{0.3}{\pico\second}. The top crack is leading the bottom crack with $\sim \SI{10}{\angstrom}$, which is probably coincidental
-
-
-Figure \ref{fig:free_methane} shows the system after fracture with the free methane -- methane that was released as a consequence of the crack -- indicated as big spheres. This figure is explained later, but the data is from this full-analysis simulation.
+In this simulation, it takes around \SI{30}{\pico\second} from the system is fully strained till a crack starts propagating. Figure \ref{fig:crack_evolution} shows pictures of the crack evolution in time, to give an idea of what the system looks like during fracture. The figure shows a very straight crack.
 
 \begin{figure}
 \begin{minipage}[b]{0.5\linewidth}
@@ -359,6 +346,7 @@ Figure \ref{fig:free_methane} shows the system after fracture with the free meth
 \label{fig:crack_evolution}
 \end{figure}
 
+Figure \ref{fig:energy_1048} shows the potential energy, the kinetic energy and the strain energy in time for the whole simulation. It shows that a strain of 0.048 results in a strain energy only slightly higher than what is needed if the criterion for a crack to propagate is $\mathcal{G}_c = 2\gamma_s$. This means the system shows brittle behavior in this particular simulation. The kinetic energy slightly decreases during straining. This is the reason why the thermostat supplies energy to the system, as was discussed in section \ref{sec:energy_considerations}. During fracture, the kinetic energy increases, which means the temperature increases during fracture. The heat supplied by the thermostat during straining is now released. The reason why the temperature change is visible, is that there is a finite damping time on the thermostat, so that the energy corrections are not immediate. The temperature is not indicated in the figure, but the temperature changes are only by a few Kelvin. 
 
 \begin{figure}
 \centering
@@ -367,12 +355,16 @@ Figure \ref{fig:free_methane} shows the system after fracture with the free meth
 \label{fig:energy_1048}
 \end{figure}
 
+Figure \ref{fig:crack_area_evolution_1048} shows the measured crack area in time, and its time derivative which estimates the crack tip speed. The maximum crack tip speed is around \SI{1}{\kilo\meter\per\second}. A little bump can be seen in the crack tip speed during crack propagation. This is a feature that has been seen in all the crack tip speed measurements in this work. My guess is that it is caused by bulk elastic waves triggered by the crack. The fluctuations of the measurement in figure \ref{fig:crack_area_evolution_1048} (full-analysis simulation) are significantly lower than the fluctuations for the same measure in figure \ref{fig:crack_in_time_thin}, which shows data from a thin system. The fluctuations are best seen in the crack tip speed plots, as differentiation enhances noise. The parameters for the crack analysis were the same in both these measurements: $N = 10^6$, $\Delta l = \SI{1}{\angstrom}$ and $r_p = \SI{4.0}{\angstrom}$. Therefore, the fluctuations in the measured crack area must be due to the fluctuations in the underlying solvent-accessible surface area, not due to too poor sampling of the surface. 
+
 \begin{figure}
 \centering
 \includegraphics[width=10cm]{../figures/thesis/crack_area_evolution_1048.pdf}
 \caption{Crack surface area evolution in time. The upper panel shows the measured area, and the lower panel is an estimate of the crack tip speed. The derivative for the lower panel is calculated using a standard 5-point stencil for the first derivative. The crack surface area was measured using the Monte Carlo procedure described earlier, with $N_s = 10^6$, $r_p = \SI{4.0}{\angstrom}$ and $\Delta l = \SI{1.0}{\angstrom}$. Note the little bump in the crack speed around \SI{180}{\pico\second}.}
 \label{fig:crack_area_evolution_1048}
 \end{figure}
+
+Figure \ref{fig:stressfield_avg_wait_for_crack} shows all components of the stress tensor of the system in space during the period when the system is fully strained, but before propagation starts. It is averaged over the z-direction in space and over \SI{20}{\pico\second} in time to get statistics for a nice picture. The stress field is visually compatible with the analytical solution close to the crack tip for a homogeneous isotropic linear elastic solid. The shear components normal to the $xy$-plane are small, but not negligible, which means that the plane strain condition is only partially met. Particularly, the amplitude of $\tau_{xz}$ is about $1/5$ of that of $\tau_{xy}$. 
 
 \begin{figure}
 \centering
@@ -381,6 +373,7 @@ Figure \ref{fig:free_methane} shows the system after fracture with the free meth
 \label{fig:stressfield_avg_wait_for_crack}
 \end{figure}
 
+Figure \ref{fig:stressfield_snap_propagation_180} is similar to figure \ref{fig:stressfield_avg_wait_for_crack}, but it now shows the stress field during crack propagation Since tracking the crack requires higher time resolution, the stresses are only averaged over \SI{0.3}{\pico\second}. As expected, the region of high stresses moves along with the crack tip.
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/stressfield_snap_propagation_180.pdf}
@@ -388,6 +381,7 @@ Figure \ref{fig:free_methane} shows the system after fracture with the free meth
 \label{fig:stressfield_snap_propagation_180}
 \end{figure}
 
+Figure \ref{fig:stressfield_timelapse} shows the stress $\sigma_{xx}$ at several points in time before, during and after crack propagation. Here also, the stresses are only averaged over \SI{0.3}{\pico\second}. The top crack is leading the bottom crack with $\sim \SI{10}{\angstrom}$, which is probably coincidental
 
 \begin{figure}
 \includegraphics[width=\textwidth]{../figures/thesis/stressfield_timelapse.pdf}
@@ -396,8 +390,9 @@ with $\sim \SI{10}{\angstrom}$. }
 \label{fig:stressfield_timelapse}
 \end{figure}
 
+The stress-field analyses are at this point only useful to get an idea of what the stress-field looks like, and I will not follow up with comparisons of the stress-fields between different simulations. 
 
-
+Figure \ref{fig:free_methane} shows the system after fracture with the free methane -- methane that was released as a consequence of the crack -- indicated as big spheres. Free methane characterization is explained in the next section, and represents a little detour before going on to comparing results between simulations with different strains and temperatures, to make more general analyses of fracture in methane hydrates.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{A simple characterization of the fracture: The amount of free methane.}
@@ -553,7 +548,9 @@ Figure \ref{fig:fracture_theory_compare} shows the global tensile stress in the 
 \end{align}
 These lines are plotted using the obtained values of the elastic properties from this work, and a surface energy of \SI{0.21}{\joule\per\meter\squared}, which corresponds to the measured surface energy of the $T = \SI{280}{\kelvin}$ simulations. 
  I have indicated in the figure where the crack evolution goes from slow (melting) to fast (fracture). This point is found by inspecting the crack speed plot, finding the time just before the crack tip speed starts to increase rapidly. This point in time is quite well-defined. The markers in figure \ref{fig:fracture_theory_compare} indicate the stress--crack-width configuration at this specific time for each simulation. 
- The results agree well with the Griffith theory for brittle solids. This plot can aid the understanding of two separate mechanisms for fracture. Some process slowly increases the crack width and reduces the tensile stress, until -- at some point -- the stress--crack-width configuration is such that it allows for rapid crack growth. This should be determined by whether the simulation follows a less steep slope than some critical line, which is probably close to the finite width Griffith line. The slope of the markers associated with a temperature of \SI{260}{\kelvin} seems slightly shifted with respect to that corresponding to a temperature of \SI{280}{\kelvin}. I speculate that this can be attributed to the pressure of the methane in the initial crack. The amplitude of the shift is compatible with a surface energy reduction by the methane of about \SI{0.02}{\joule\per\meter\squared}. This estimate was obtained by looking at the effect of reducing the surface energy in the finite width-corrected Griffith formula, and a reduction of \SI{0.02}{\joule\per\meter\squared} shifted the Griffith-prediction by approximately the same amount as the observed shift between the lines of markers corresponding to different temperatures.
+ The results agree well with the Griffith theory for brittle solids. This plot can aid the understanding of two separate mechanisms for fracture. Some process slowly increases the crack width and reduces the tensile stress, until -- at some point -- the stress--crack-width configuration is such that it allows for rapid crack growth. This should be determined by whether the simulation follows a less steep slope than some critical line, which is probably close to the finite width Griffith line. 
+
+ The markers corresponding to each temperature seem to form two different slopes. The slope of the markers associated with a temperature of \SI{260}{\kelvin} seems slightly shifted with respect to that corresponding to a temperature of \SI{280}{\kelvin}. I speculate that this can be attributed to the pressure of the methane in the initial crack. The amplitude of the shift is compatible with a surface energy reduction by the methane of about \SI{0.02}{\joule\per\meter\squared}. This estimate was obtained by looking at the effect of reducing the surface energy in the finite width-corrected Griffith formula, and a reduction of \SI{0.02}{\joule\per\meter\squared} shifted the Griffith-prediction by approximately the same amount as the observed shift between the lines of markers corresponding to different temperatures.
 %
 \begin{figure}
 \centering
