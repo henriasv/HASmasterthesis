@@ -1,0 +1,32 @@
+{
+	"folders":
+	[
+		{
+			"file_exclude_patterns": ["*.aux", "*.fls", "*.synctex.gz", "*.out", "*.fdb_latexmk",
+			"*.blg", "*.log"],
+			"folder_exclude_patterns": ["Output"]
+		},
+		{
+			"path": "../bib"
+		},
+		{
+			"path": "../figures/thesis"
+		},
+		{	
+			"path": "../utils"
+		},
+		{	
+			"path": "../pictures"
+		},
+		{	
+			"path": "./"
+		}
+
+
+	],
+	"options":
+	{
+		"pdf": "HASMasterPresentation.pdf",
+		"root": "main.tex"
+	}
+}
