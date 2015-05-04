@@ -6,9 +6,12 @@
 \usepackage{tikz}
 \usepackage{xparse}
 \usepackage{xifthen}
+\usepackage{calc}
+\usepackage{fp}
 \usetikzlibrary{calc, arrows,shapes, intersections, decorations.pathreplacing, decorations.text, decorations.pathmorphing, decorations.fractals}
 \tikzstyle{every picture}+=[remember picture]
 \tikzstyle{na} = [baseline=-.5ex]
+\usepackage{pgfplots}
 \beamertemplatenavigationsymbolsempty
 
 \definecolor{myGray}{rgb}{.5,.5,.5}
@@ -68,7 +71,7 @@ Universitetet i Oslo
 
 \column{0.5\textwidth}
 \begin{itemize}
-\item Et isliknende stoff som inneholder molekyler av stoffer som opptrer som gass under vanlige forhold.
+\item Et isliknende stoff som inneholder molekyler av stoffer som opptrer som gasser under vanlige forhold.
 \end{itemize}
 
 \end{columns}
@@ -77,9 +80,17 @@ Universitetet i Oslo
 
 \subsection{}
 \begin{frame}
-\frametitle{Hvor finnes gasshydrater?}
+\frametitle{Gasshydrater kan brukes som stormkjøkken}
 \begin{figure}
-\includegraphics[width=0.8\textwidth]{../pictures/hydrate_map_nice.pdf}
+\includegraphics[width=\textwidth]{../pictures/baked_alaska.pdf}
+\end{figure}
+\end{frame}
+
+\subsection{}
+\begin{frame}
+\frametitle{Det ligger masse gasshydrater i havet, men sannsynligvis ikke så mye som man ofte blir fortalt..}
+\begin{figure}
+\includegraphics[width=\textwidth]{../pictures/hydrate_map_nice.pdf}
 \end{figure}
 \myref{Figur: \textit{The World Ocean Review, Marine Resources -- Opportunities and Risks, 2014}}
 \end{frame}
@@ -87,34 +98,106 @@ Universitetet i Oslo
 \subsection{}
 \begin{frame}
 \frametitle{Bruksområder}
-
+\begin{itemize}
+\item Energi (brenne metan)
+\item CO$_2$-lagring
+\end{itemize}
 \end{frame}
 
 \subsection{}
 \begin{frame}
 \frametitle{Risiko}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{block}{Operasjonelle}
 \begin{itemize}
+\item Tette rør
+\end{itemize}
+\end{block}
+
+\column{0.5\textwidth}
+\begin{block}{Geologisk skala}
+\begin{itemize}
+\item Sedimentskred
 \item \emph{the clathrate gun hypothesis}
 \end{itemize}
+\end{block}
+
+\end{columns}
+
 \end{frame}
 
 
-\section{Modellering}
+\section{Modellering og simulering}
 
 \subsection{}
 \begin{frame}
 \frametitle{Molekylærdynamikk}
+\begin{columns}
+\column{0.4\textwidth}
+Tidsutvikle et system av punktpartikler som styres av Newtons 2. lov, $\mathbf{F} = m\ddot{\mathbf{x}}$
+\pgfplotsset{width=5cm, compat=1.8}
+\begin{figure}
+\begin{tikzpicture}[baseline]
+\begin{axis}[
+	xmin=0,
+	xtick={0,5,10},
+	ytick=\empty,
+	xlabel={$r$ [\AA]},
+	ylabel={$U$ [arb. enhet]},
+	title=Lennard--Jones potensial,
+	]
+\addplot[
+	red,
+	domain=3.5:10,
+	samples=100,
+]
+{(1/((x/3.73)^12)-1/((x/3.73)^6))};
+\end{axis}
+\draw[black, <->] (0, 0.5) -- (1.12, 0.5) ;
+\end{tikzpicture}
+\end{figure}
 
+\column{0.5\textwidth}
+\only<1>
+{
+\begin{tikzpicture}[remember picture,overlay]
+  \tikzset{shift={(current page.center)},yshift=-3.5cm}
+\draw[blue!40!white] (0, 0) rectangle (5, 6);
+\pgfmathsetseed{1138}
+\foreach \i in {1, 2, ..., 100}
+{
+	\pgfmathrandominteger{\x}{0}{500}
+	\pgfmathrandominteger{\y}{0}{600}
+	\pgfmathrandominteger{\xsh}{0}{50}
+	\pgfmathrandominteger{\ysh}{0}{60}
+	\filldraw [red] (\x/100, \y/100) circle (1pt);
+}
+\end{tikzpicture}
+}
+\only<2>
+{
+\begin{tikzpicture}[remember picture,overlay]
+  \tikzset{shift={(current page.center)},yshift=-3.5cm}
+\draw[blue!40!white] (0, 0) rectangle (5, 6);
+\pgfmathsetseed{1138}
+\foreach \i in {1, 2, ..., 100}
+{
+	\pgfmathrandominteger{\x}{0}{500}
+	\pgfmathrandominteger{\y}{0}{600}
+	\pgfmathrandominteger{\xsh}{-5}{5}
+	\pgfmathrandominteger{\ysh}{-5}{5}
+	\FPeval{\resultx}{clip(\x+\xsh)}
+	\FPeval{\resulty}{clip(\y+\ysh)}
+	\filldraw [gray!40!white] (\x/100, \y/100) circle (1pt);
+	\filldraw [red] (\resultx/100, \resulty/100) circle (1pt);
+	
+}
+\end{tikzpicture}
+}
+\end{columns}
 \end{frame}
 
-\subsection{}
-\begin{frame}
-\frametitle{LAMMPS}
-\begin{itemize}
-\item Oppsett
-\item Verifisering
-\end{itemize}
-\end{frame}
 
 \subsection{}
 \begin{frame}
@@ -154,7 +237,7 @@ $L$ & total lengde av trukne linjestykker
 	\begin{figure}
  	\centering
  	\begin{tikzpicture}
- 		\filldraw[blue!40!white] (0, 0) rectangle (3, 6);
+ 		\filldraw[blue!20!white] (0, 0) rectangle (3, 6);
  		\draw[very thick] (0,0) -- (3, 0);
  		\draw[very thick] (0,6) -- (3, 6);
  		\fill[name path=myellipse, white] (1.5, 3) ellipse (0.2cm and 0.7cm);
