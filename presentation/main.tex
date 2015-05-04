@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[absolute,overlay]{textpos}
 \usepackage{tikz}
+\usepackage{chemfig}
 \usepackage{xparse}
 \usepackage{xifthen}
 \usepackage{calc}
@@ -202,6 +203,30 @@ Tidsutvikle et system av punktpartikler som styres av Newtons 2. lov, $\mathbf{F
 \subsection{}
 \begin{frame}
 \frametitle{TIP4P/ICE + UAM}
+\begin{tikzpicture}[remember picture,overlay]
+\tikzset{shift={(current page.center)},yshift=-1cm, xshift=-2cm}
+\filldraw (0, 0) [green] circle [radius=1.0];
+\draw (0, 0) [green!60!black] circle [radius=3.73];
+\fill [violet, shift={(0, 0)}] (0, 0) circle [radius=0.1];
+
+\filldraw [red!60!black,shift={(6, 2)}, rotate=210] (0, 0) circle [radius=0.7] node (o1) {} [gray!40!white] (-52.5:0.95) circle [radius=0.4] node (h1) [black]{+} (52.5:0.95) circle [radius=0.4] node (h2) [black] {+};
+\draw (6, 2) [red] circle [radius=3.16];
+\fill [red, shift={(6, 2)}] (0, 0) circle [radius=0.7] node[circle, draw, fill=red!20!white] (m2) at (210:0.38) {--};
+\fill [violet, shift={(6, 2)}] (0, 0) circle [radius=0.1];
+
+\filldraw [red!60!black,shift={(5, -2)}, rotate=120] (0, 0) circle [radius=0.7] node (o2) {} [gray!40!white] (-52.5:0.95) circle [radius=0.4] node (h21) [black]{+} (52.5:0.95) circle [radius=0.4] node (h22) [black]{+};
+\draw (5, -2) [red] circle [radius=3.16];
+\fill [red, shift={(5, -2)}] (0, 0) circle [radius=0.7] node[circle, draw, fill=red!20!white] (m2) at (120:0.38) {--};
+\fill [violet, shift={(5, -2)}] (0, 0) circle [radius=0.1];
+
+%\draw [red!60!black, shift={(6, 2)}] (0, 0) circle [radius=0.7] node (o1) {} [gray] (-52.5:1.0) circle [radius=0.4] node(h1) {} (52.5:1.0) circle [radius=0.4] node (h2) {};
+
+%\draw (6, 2) [blue] node[rotate=-30] (h2o1) {\chemfig{O(-[:-142]H)(-[:-38]H)(-[:270, 0.5]M)}};
+%\draw (6, -2) [blue] node[rotate=-130] (h2o2) {\chemfig{O(-[:-142]H)(-[:-38]H)(-[:270, 0.5]M)}};
+%\path [violet, draw, <->, very thick]  (ch41.center) -- node[above] {$LJ$} ($(h2o1.north)+(-0.2,-0.2)$);
+%\path [violet, draw, <->, very thick]  (ch41.center) -- node[below] {$LJ$} (h2o2.north);
+%\path [violet, draw, <->, very thick]  (h2o2.north) -- node[right] {$LJ$} (h2o1.north);
+\end{tikzpicture}
 \end{frame}
 
 \subsection{}

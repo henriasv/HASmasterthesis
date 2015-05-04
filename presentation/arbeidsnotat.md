@@ -29,6 +29,8 @@ Nå går jeg over til den mer alvorlige delen av foredraget – den delen som ha
 
 I min masteroppgave bruker jeg en metode som heter molekylærdynamikk for å simulere et system av gasshydrater. Jeg vil først nå snakke kort om molekylærdynamikk, før jeg går videre til hvordan det brukes i mitt prosjekt.
 
+I molekylærdynamikk simulerer man banen til punktpartikler som påvirkes av krefter imellom hverandre. Siden det gjøres med datamaskin må problemet diskretiseres i tid, og forflytning av partikler skjer i tidssteg. På bildet dere ser til høyre har alle partiklene en viss posisjon og en viss hastighet, men for å vise dem stille er det hele frøset i tid. Så beregnes alle kreftene i systemet, og partiklene forflytter seg basert på hastigheten de hadde, og hvilke krefter som virket på dem. (Vise at partiklene flytter seg i figuren).
+
 Nå skal jeg være veldig eksplisitt om hva som er modelleringen i mitt prosjekt:
 
 1. Velge et potensial som beskriver interaksjonene i systemet mitt
