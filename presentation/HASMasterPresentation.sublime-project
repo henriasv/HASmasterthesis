@@ -28,5 +28,12 @@
 	{
 		"pdf": "HASMasterPresentation.pdf",
 		"root": "main.tex"
-	}
+	},
+	"build_systems":
+    [
+        {
+            "name": "List",
+            "cmd": ["pdflatex -shell-escape main.tex"]
+        }
+    ]
 }

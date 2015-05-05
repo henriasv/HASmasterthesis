@@ -3,15 +3,19 @@ Nå fungerer denne maskinen kun som en skrivemaskin. Det er behagelig. Det er p�
 Hva skal med?
 1. Det siste resultatet mitt der tensiltrykket er plottet mot sprekklengden
 
+#### Slide "Introduksjon"
+Min masteroppgave kombinerer tre ting som ikke er så vanlig å kombinere: Gasshydrater, molekylærdynamikk og bruddmekanikk.
 
 #### Slide "Hva er gasshydrater?"
 Gasshydrater er et isliknende stoff. En bit med gasshydrat vil være kald, og den vil se ut som valnlig is. Det som skiller det fra vanlig is, er at det har fanget molekyler av stoffer som vanligvis opptrer som gasser. For eksempel metan. Når isen har fanget en brennbar gass, kan man tenne på isen, slik at man har en brennende isklump. 
 
 #### Slide "Gasshydrater kan brukes som stormkjøkken"
-Gasshydrater er relativt ukjente for folk flest, og de har derfor ikke gjort noe særlig inntog i populærkulturen. Men noen eksempler finnes, og foreløpig er dette min favoritt. Her eksemplifisert ved Sarah Palin på tur i alaska. Som vi kan se har hun med seg isbiter av gasshydrat som hun kan tenne på. Jeg kan ikke se for meg noen annen grunn til det enn at hun skal grille seg noe kjøtt. 
+Gasshydrater er relativt ukjente for folk flest, og de har derfor ikke gjort noe særlig inntog i populærkulturen. Men noen eksempler finnes, og foreløpig er dette min favoritt. Her eksemplifisert ved Sarah Palin på tur i alaska. Som vi kan se har hun med seg isbiter av gasshydrat som hun kan tenne på. Jeg kan ikke se for meg noen annen grunn til det enn at hun skal grille seg noe kjøtt. Det er sikkert en fin ting å gjøre, men det er ikke sånn man ser for seg at utvinningen skal foregå. Det er unødvendig å dra med seg all isen opp når man bare vil ha metanet. Men det er helt riktig at det skal brennes, på samme måte som vi gjør med konvensjonell naturgass og skifergass i dag.
 
 #### Slide "Hvor befinner gasshydratene seg?"
-Gasshydrater finnes på havbunnen i store deler av verden, slik som man kan se av kartet. I tillegg til gasshydratene som er markert her, finnes det også en del gasshydrater i permafrost, for eksempel i sibir.
+Gasshydrater finnes på havbunnen i store deler av verden, slik som man kan se av kartet. I tillegg til gasshydratene som er markert her, finnes det også en del gasshydrater i permafrost, for eksempel i sibir. La meg understreke at det som er markert her ikke er resultater av prøveboringer for å sjekke hvor mye gasshydrater som er rundt omkring. Dette er resultater basert på en modell av dannelse av gasshydrat på havbunnen, og forbundet med stor usikkerhet.
+
+En av grunnene til at man kan si noe om hvor mye gasshydrater det er, er at man vet hvor i verden de kan finnes. Gasshydrater er nemlig bare stabile ved en riktig kombinasjon av trykk og temperatur. 
 
 Det finnes masse gasshydrater, men man skal passe seg litt når man blir fortalt ting som at det er så og så mange ganger karbon i gasshydrater som i alle andre fossile energikilder kombinert. Dette kommer av to ting. For det første liker folk høye estimater, så når en forskningsartikkel sier at det er mellom 400 og 10000 gigatonn med karbon i gasshydrater, så hører man 10000 gigatonn. De høye estimatene er generelt eldre enn de lave estimatene, så man er ikke så fantastisk optimistiske lengre. Men for all del. Det er fortsatt masse gasshydrater. Mer enn 
 

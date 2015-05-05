@@ -1,18 +1,25 @@
-\documentclass[utf8x, notes]{beamer}
+\documentclass[utf8x, notes, graphics]{beamer}
 %\usepackage[norsk]{babel}
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[absolute,overlay]{textpos}
+%\usepackage[absolute,overlay]{textpos}
 \usepackage{tikz}
-\usepackage{chemfig}
+%\usepackage{chemfig}
 \usepackage{xparse}
-\usepackage{xifthen}
+%\usepackage{xifthen}
+\usepackage{xcolor}
 \usepackage{calc}
-\usepackage{fp}
-\usetikzlibrary{calc, arrows,shapes, intersections, decorations.pathreplacing, decorations.text, decorations.pathmorphing, decorations.fractals}
+%\usepackage{fp}
+\usepackage{textpos}
+\usepackage{graphicx}
+%\usepackage{eso-pic}
+\usepackage{verbatim}
+
+\usetikzlibrary{calc, arrows,shapes, intersections, decorations.pathreplacing, decorations.text, decorations.pathmorphing, decorations.fractals, external}
 \tikzstyle{every picture}+=[remember picture]
 \tikzstyle{na} = [baseline=-.5ex]
 \usepackage{pgfplots}
+
 \beamertemplatenavigationsymbolsempty
 
 \definecolor{myGray}{rgb}{.5,.5,.5}
@@ -23,14 +30,26 @@
 \tiny{\color{myGray}{#1}}
 \end{textblock}}
 
-\mode<presentation>{
-\usetheme{Frankfurt}
-%\usecolortheme{dolphin}
-% \usecolortheme{beaver}
-\setbeamercovered{transparent}
+\newcommand{\zerodisplayskips}{%
+  \abovedisplayskip=0pt
+  \belowdisplayskip=0pt
+  \abovedisplayshortskip=0pt
+  \belowdisplayshortskip=0pt
 }
 
-\setbeamertemplate{footline}{}
+\usefonttheme{professionalfonts}
+\setbeamerfont{note page}{family*=pplx,size=\footnotesize} % 
+
+
+\useoutertheme[subsection=false, footline=empty]{miniframes}
+\useinnertheme{rectangles}
+\usecolortheme{dolphin}
+\usecolortheme{rose}
+\setbeamercolor{frametitle}{bg=section in head/foot.bg!20!white}
+
+
+\setbeamercovered{transparent}
+
 
 \title{Molekylær modellering av oppsprekking i gasshydrater}
 \author{Henrik Andersen Sveinsson}
@@ -49,7 +68,6 @@ Universitetet i Oslo
 }
 
 \begin{document}
-
 \begin{frame}
 	\titlepage
 \end{frame}
@@ -73,51 +91,93 @@ Universitetet i Oslo
 \column{0.5\textwidth}
 \begin{itemize}
 \item Et isliknende stoff som inneholder molekyler av stoffer som opptrer som gasser under vanlige forhold.
+\item Vanligvis mener man metanhydrater når man sier gasshydrater.
 \end{itemize}
 
 \end{columns}
 \myref{Figur: \textit{U.S. Geological Survey}}
 \end{frame}
 
-\subsection{}
-\begin{frame}
-\frametitle{Gasshydrater kan brukes som stormkjøkken}
-\begin{figure}
-\includegraphics[width=\textwidth]{../pictures/baked_alaska.pdf}
-\end{figure}
-\end{frame}
-
-\subsection{}
-\begin{frame}
-\frametitle{Det ligger masse gasshydrater i havet, men sannsynligvis ikke så mye som man ofte blir fortalt..}
-\begin{figure}
-\includegraphics[width=\textwidth]{../pictures/hydrate_map_nice.pdf}
-\end{figure}
-\myref{Figur: \textit{The World Ocean Review, Marine Resources -- Opportunities and Risks, 2014}}
-\end{frame}
-
-\subsection{}
+%\subsection{}
 \begin{frame}
 \frametitle{Bruksområder}
+\begin{columns}
+\column{0.3\textwidth}
 \begin{itemize}
 \item Energi (brenne metan)
 \item CO$_2$-lagring
 \end{itemize}
+\column{0.7\textwidth}
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{../pictures/baked_alaska.pdf}
+\end{figure}
+\end{columns}
 \end{frame}
 
-\subsection{}
+
+%\subsection{}
+\begin{frame}
+\frametitle{Det ligger masse gasshydrater i havet, men sannsynligvis ikke så mye som man ofte blir fortalt..}
+
+\begin{tikzpicture}[overlay]
+\coordinate (x1) at ($(current page.center)-(0,1cm)$);
+\only<1>{
+\node[opacity=1.0] at (x1){\includegraphics[width=\textwidth]{../pictures/hydrate_map_nice.pdf}};
+}
+\only<2>
+{
+\node[opacity=0.2](watermarkmap) at (x1){\includegraphics[width=\textwidth]{../pictures/hydrate_map_nice.pdf}};
+\node[align=center] (text) at (x1) {Kartet viser ca 500 gigatonn med karbon lagret i gasshydrater. \\Det er mye. \\Vanlige estimater ligger mellom 500 og 2500 gigatonn. \\Høye estimater er $\sim$ 10 000 gigatonn. \\ \\Det 120 gigatonn karbon i kjente naturgassreservoarer.};
+}
+\end{tikzpicture}
+\only<1-2>
+{
+\myref{Figur: \textit{The World Ocean Review, Marine Resources -- Opportunities and Risks, 2014}}
+}
+
+\only<3>
+{
+	\begin{figure}
+		\centering
+		\begin{tikzpicture}[scale=0.8]
+		\draw[very thick,->] (0,6) -- (8,6) node[midway, above] (temptext) {Temperatur};
+		\draw[very thick,->] (0,6) -- (0,0) node[midway, above, rotate=90] (depthtext) {Dybde (trykk)};
+		\draw[step=1cm,gray,very thin] (0,0) grid (8,6);
+		\foreach \x in {0,1,2,3,4, 5, 6}
+		    \draw (\x cm,1pt) -- (\x cm,-1pt) node[anchor=north] {};
+		\foreach \y in {0,1,2,3,4, 5, 6}
+		    \draw (1pt,\y cm) -- (-1pt,\y cm) node[anchor=east] {};
+		\draw[name path=stability] (0, 4) .. controls (3.0, 4) and (4, 3.5) .. (4, 0); % Stability
+		\draw[name path=watertemp] (5, 6) to [out=190, in=85] (2, 3.0) -- (6, 0) ; 
+		\draw[dashed] (0, 3) -- (8, 3) node[above, xshift=-1.7cm] (textpermafrost) {Sjøbunn};
+		\fill[blue!40!white!]
+			(0, 4) .. controls (3.0, 4) and (4, 3.5) .. (4, 0) -- (0, 0) -- (0, 4);
+		\draw[name path=stability, very thick, postaction={decorate, decoration={text along path, text align=center, raise=2pt, text={Grense for hydratfase}}}] (0, 4) .. controls (3.0, 4) and (4, 3.5) .. (4, 0); % Stability
+		\draw[red, name path=geoterm, very thick, postaction={decorate, decoration={text along path, text align=left, raise=-10pt, text={Geoterm.}}}](2, 3.0) -- (6, 0); % Geoterm parmafrost
+		\draw[red, very thick] (5, 6) to [out=190, in=85] (2, 3.0) -- (6, 0);
+		\draw[dashed, very thick, blue] (0, 3.8) -- (8, 3.8);
+		\draw[dashed, very thick, blue] (0, 1.55) -- (8, 1.55);
+		\draw [decorate,decoration={brace,amplitude=10pt,mirror,raise=4pt},yshift=0pt]
+		(8 ,1.55) -- (8, 3.8) node [black,midway,xshift=0.8cm, rotate=90] {GHSZ};
+		\end{tikzpicture}
+	\end{figure}
+}
+\end{frame}
+
+
+%\subsection{}
 \begin{frame}
 \frametitle{Risiko}
-\begin{columns}
+\begin{columns}[T]
 \column{0.5\textwidth}
-\begin{block}{Operasjonelle}
+\begin{block}{Operasjonell}
 \begin{itemize}
 \item Tette rør
 \end{itemize}
 \end{block}
 
 \column{0.5\textwidth}
-\begin{block}{Geologisk skala}
+\begin{block}{Geologisk}
 \begin{itemize}
 \item Sedimentskred
 \item \emph{the clathrate gun hypothesis}
@@ -129,15 +189,42 @@ Universitetet i Oslo
 \end{frame}
 
 
+\begin{frame}{Åpne spørsmål}
+\begin{columns}[T]
+\column{0.5\textwidth}
+\begin{block}{Materialegenskaper}
+\begin{itemize}
+\item Bruddstyrke
+\item Spøtt eller duktilt?
+\item Hvordan ser sprekkoverflaten ut?
+\item Hvor mye metan frigjøres ved oppsprekking?
+\item Hvor forutsigbar er bruddstyrken?
+\item Hvorfor viser eksperimenter deformasjonsherding til 20 \% deformasjon?
+\end{itemize}
+\end{block}
+\column{0.5\textwidth}
+\begin{block}{Simuleringsteknisk}
+\begin{itemize}
+\item Hvilke interaksjonspotensialer er best?
+\item Hvordan bør man utløse sprekker?
+\end{itemize}
+\end{block}
+\end{columns}
+\end{frame}
+
 \section{Modellering og simulering}
 
 \subsection{}
+%%%%%%%%%%%%%%%%%%
+\begin{comment}
+%%%%%%%%%%%%%%%%%
 \begin{frame}
-\frametitle{Molekylærdynamikk}
+\frametitle{Molekylærdynamikk: Tidsutvikle et system av punktpartikler som styres av Newtons 2. lov, $\mathbf{F} = m\ddot{\mathbf{r}}$}
 \begin{columns}
 \column{0.4\textwidth}
-Tidsutvikle et system av punktpartikler som styres av Newtons 2. lov, $\mathbf{F} = m\ddot{\mathbf{x}}$
 \pgfplotsset{width=5cm, compat=1.8}
+\only<1-2>
+{
 \begin{figure}
 \begin{tikzpicture}[baseline]
 \begin{axis}[
@@ -146,7 +233,7 @@ Tidsutvikle et system av punktpartikler som styres av Newtons 2. lov, $\mathbf{F
 	ytick=\empty,
 	xlabel={$r$ [\AA]},
 	ylabel={$U$ [arb. enhet]},
-	title=Lennard--Jones potensial,
+	title=Potensialer:,
 	]
 \addplot[
 	red,
@@ -154,17 +241,46 @@ Tidsutvikle et system av punktpartikler som styres av Newtons 2. lov, $\mathbf{F
 	samples=100,
 ]
 {(1/((x/3.73)^12)-1/((x/3.73)^6))};
+\addplot[
+	blue,
+	domain=2.0:10,
+	samples=100
+]
+{1/x};
 \end{axis}
-\draw[black, <->] (0, 0.5) -- (1.12, 0.5) ;
+\draw[black, <->] (0, 0.8) -- node[above] (n1) {$\sigma$} (1.17, 0.8) ;
 \end{tikzpicture}
 \end{figure}
-
+}
+\only<3>
+{
+	\zerodisplayskips
+	\begin{block}{\textcolor{red}{Lennard--Jones-potensialet}}
+	\vspace{-4mm}
+	\begin{equation*}
+	U = 4\epsilon\left[\left(\frac{\sigma}{r}\right)^{12}-\left(\frac{\sigma}{r}\right)^6\right]
+	\end{equation*}
+	\end{block}
+	\begin{block}{\textcolor{blue}{Coulomb-potensialet}}
+	\vspace{-4mm}
+	\begin{equation*}
+	U = k\frac{q_aq_b}{r}
+	\end{equation*}
+	\end{block}
+	\begin{block}{\textcolor{gray}{Kraftberegning}}
+	\vspace{-4mm}
+	\begin{equation*}
+	\mathbf{F} = -\nabla U
+	\end{equation*}
+	\end{block}
+}
 \column{0.5\textwidth}
 \only<1>
 {
 \begin{tikzpicture}[remember picture,overlay]
-  \tikzset{shift={(current page.center)},yshift=-3.5cm}
+  \tikzset{shift={(current page.center)},yshift=-4cm}
 \draw[blue!40!white] (0, 0) rectangle (5, 6);
+\node (title) at (2.5, 6.3) {Partikler med posisjoner og hastigheter};
 \pgfmathsetseed{1138}
 \foreach \i in {1, 2, ..., 100}
 {
@@ -176,11 +292,12 @@ Tidsutvikle et system av punktpartikler som styres av Newtons 2. lov, $\mathbf{F
 }
 \end{tikzpicture}
 }
-\only<2>
+\only<2-3>
 {
 \begin{tikzpicture}[remember picture,overlay]
-  \tikzset{shift={(current page.center)},yshift=-3.5cm}
+  \tikzset{shift={(current page.center)},yshift=-4cm}
 \draw[blue!40!white] (0, 0) rectangle (5, 6);
+\node (title) at (2.5, 6.3) {Partikler med posisjoner og hastigheter};
 \pgfmathsetseed{1138}
 \foreach \i in {1, 2, ..., 100}
 {
@@ -200,9 +317,9 @@ Tidsutvikle et system av punktpartikler som styres av Newtons 2. lov, $\mathbf{F
 \end{frame}
 
 
-\subsection{}
+%\subsection{}
 \begin{frame}
-\frametitle{TIP4P/ICE + UAM}
+\frametitle{TIP4P/ICE + UAM (vann og metan)}
 \begin{tikzpicture}[remember picture,overlay]
 \tikzset{shift={(current page.center)},yshift=-1cm, xshift=-2cm}
 \filldraw (0, 0) [green] circle [radius=1.0];
@@ -219,6 +336,12 @@ Tidsutvikle et system av punktpartikler som styres av Newtons 2. lov, $\mathbf{F
 \fill [red, shift={(5, -2)}] (0, 0) circle [radius=0.7] node[circle, draw, fill=red!20!white] (m2) at (120:0.38) {--};
 \fill [violet, shift={(5, -2)}] (0, 0) circle [radius=0.1];
 
+\fill[violet] (-4, 4) circle[radius=0.1] node[xshift=69] (ljdef) {Lennard--Jones-sentrum};
+
+\fill[red!20!white] (-4, 3.3) circle[radius=0.3] node (ljdef) [red] {--} node [xshift=51] {Negativ ladning};
+
+\fill[gray!40!white] (-4, 2.6) circle[radius=0.3] node (ljdef) [black] {+} node [xshift=49] {Positiv ladning};
+
 %\draw [red!60!black, shift={(6, 2)}] (0, 0) circle [radius=0.7] node (o1) {} [gray] (-52.5:1.0) circle [radius=0.4] node(h1) {} (52.5:1.0) circle [radius=0.4] node (h2) {};
 
 %\draw (6, 2) [blue] node[rotate=-30] (h2o1) {\chemfig{O(-[:-142]H)(-[:-38]H)(-[:270, 0.5]M)}};
@@ -228,10 +351,86 @@ Tidsutvikle et system av punktpartikler som styres av Newtons 2. lov, $\mathbf{F
 %\path [violet, draw, <->, very thick]  (h2o2.north) -- node[right] {$LJ$} (h2o1.north);
 \end{tikzpicture}
 \end{frame}
+\end{comment}
 
-\subsection{}
 \begin{frame}
-Simulert system
+\frametitle{Simulert system for mekaniske egenskaper}
+\only<1>
+{
+\begin{tikzpicture}[overlay, shift={($(current page.center)-(2.5,3.5)$)}]
+\filldraw[fill=blue!40!white] (0, 0) rectangle (5, 5);
+\foreach \i in {0.5, 1.5, 2.5, 3.5, 4.5}
+{
+	\draw[thick, ->] (5, \i) -- (6, \i);
+	\draw[thick, ->] (0, \i) -- (-1, \i);
+}
+\draw [decorate,decoration={brace,amplitude=4pt,mirror,raise=4pt},yshift=0pt]
+		(5, 5) -- (0, 5) node [black,midway,yshift=0.6cm, rotate=0] {$l_0$};
+\end{tikzpicture}
+}
+\only<2>
+{
+\begin{tikzpicture}[overlay, shift={($(current page.center)-(2.5,3.5)$)}]
+\filldraw[fill=blue!40!white, opacity=0.4] (0, 0) rectangle (5, 5);
+\filldraw[fill=blue!40!white] (-1, 0.5) rectangle (6, 4.5);
+\foreach \i in {0.9, 1.7, 2.5, 3.3, 4.1}
+{
+	\draw[thick, ->] (6, \i) -- (7, \i);
+	\draw[thick, ->] (-1, \i) -- (-2, \i);
+}
+\draw [decorate,decoration={brace,amplitude=4pt,mirror,raise=4pt},yshift=0pt]
+		(-1, 4.5) -- (0, 4.5) node [black,midway,yshift=-0.6cm, rotate=0] {$\frac{\Delta x}{2}$};
+\draw [decorate,decoration={brace,amplitude=4pt,mirror,raise=4pt},yshift=0pt]
+		(0, 4.5) -- (0, 5) node [black,midway,xshift=0.6cm, rotate=0] {$\frac{\Delta y}{2}$};
+\end{tikzpicture}
+}
+\end{frame}
+
+\begin{frame}
+Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
+
+\begin{columns}[T]
+
+\column{0.5\textwidth}
+\begin{block}{Youngs modul}
+\begin{equation*}
+ E=\frac{\sigma_x l_0}{\Delta x} = \frac{\sigma_x}{\epsilon_x}
+\end{equation*}
+\end{block}
+
+\column{0.5\textwidth}
+\begin{block}{Poissonforholdet}
+\begin{equation*}
+\nu = -\frac{\Delta y}{\Delta x}
+\end{equation*}
+\end{block}
+\end{columns}
+
+\end{frame}
+
+%\subsection{}
+\begin{frame}
+\frametitle{Simulert system for sprekker}
+\only<1>
+{
+\begin{tikzpicture}
+\filldraw[fill=blue!40!white] (0, 0) rectangle (4, 6);
+\draw[very thick] (0,0) -- (4, 0);
+\draw[very thick] (0,6) -- (4, 6);
+\filldraw[fill=white, draw=red, thick, dashed] (2, 3) ellipse (0.25cm and 1cm);
+\foreach \i in {1, 2, 3, 4, 5}
+{
+	\draw[thick, ->] (4, \i) -- (5, \i);
+	\draw[thick, ->] (0, \i) -- (-1, \i);
+}
+\foreach \i in {0.3,0.6,...,3.8}
+{
+	\draw (\i, 0) -- (\i+0.2, -0.2);
+	\draw (\i, 6.0) -- (\i-0.2, 6.2);
+}
+\end{tikzpicture}
+}
+
 \end{frame}
 
 \section{Resultater}
@@ -241,7 +440,7 @@ Simulert system
 \frametitle{Mekaniske egenskaper}
 \end{frame}
 
-\subsection{}
+%\subsection{}
 \begin{frame}{Måling av arealet til sprekkoverflaten}
 \begin{columns}[c]
 \column{0.5\textwidth}
@@ -286,12 +485,20 @@ $L$ & total lengde av trukne linjestykker
 	\end{columns}
 \end{frame}
 
-\subsection{}
+%\subsection{}
 \begin{frame}
 \frametitle{Hovedresultat}
-\begin{figure}
-\includegraphics[height=0.95\textheight]{../figures/thesis/stress_area_lefm.pdf}
-\end{figure}
+\begin{columns}
+\column{0.5\textwidth}
+\begin{itemize}
+\item Hver fargede strek er en sprekksimulering.
+\item Oppsprekking skjer først sakte, ved smelting, deretter fort, ved brudd.
+\end{itemize}
+\column{0.5\textwidth}
+\begin{tikzpicture}
+\node at (current page.center) {\includegraphics[height=0.9\textheight]{../figures/thesis/stress_area_lefm.pdf}};
+\end{tikzpicture}
+\end{columns}
 
 \end{frame}
 
