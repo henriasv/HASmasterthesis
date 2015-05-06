@@ -183,6 +183,10 @@ Jeg kombinerer 3 ting som ikke er så vanlig å kombinere:
 \end{itemize}
 \end{block}
 
+\begin{figure}
+\includegraphics[width=0.8\textwidth]{../pictures/pipe_plug.pdf}
+\end{figure}
+
 \column{0.5\textwidth}
 \begin{block}{Geologisk}
 \begin{itemize}
@@ -190,23 +194,29 @@ Jeg kombinerer 3 ting som ikke er så vanlig å kombinere:
 \item \emph{the clathrate gun hypothesis}
 \end{itemize}
 \end{block}
-
 \end{columns}
+\end{frame}
 
+\begin{frame}
+\frametitle{Overordnet mål: Utvinne metan fra gasshydrater, og lagre CO$_2$}
+\begin{tikzpicture}[overlay, shift={($(current page.center)-(0,0.7)$)}]
+\node (pic) at (0, 0) {\includegraphics[height=0.87\textheight]{../pictures/utvinning.pdf}};
+\end{tikzpicture}
+\myref{Figur: US patent 7,222,637 B2}
 \end{frame}
 
 
-\begin{frame}{Åpne spørsmål}
+\begin{frame}
+\frametitle{Hva lurer vi på akkurat nå?}
+Hvordan sprekker i gasshydrater bidrar til å oppløse hydratet.
 \begin{columns}[T]
 \column{0.5\textwidth}
 \begin{block}{Materialegenskaper}
 \begin{itemize}
-\item Bruddstyrke
-\item Spøtt eller duktilt?
-\item Hvordan ser sprekkoverflaten ut?
+\item Hva er bruddstyrken?
+\item Er gasshydratet spøtt eller duktilt?
 \item Hvor mye metan frigjøres ved oppsprekking?
-\item Hvor forutsigbar er bruddstyrken?
-\item Hvorfor viser eksperimenter deformasjonsherding til 20 \% deformasjon?
+\item Hva er bruddmekanismen?
 \end{itemize}
 \end{block}
 \column{0.5\textwidth}
@@ -340,8 +350,8 @@ Jeg kombinerer 3 ting som ikke er så vanlig å kombinere:
 	\pgfmathrandominteger{\ysi}{-5}{5}
 	\FPeval{\resultx}{clip(\x+\xsh)}
 	\FPeval{\resulty}{clip(\y+\ysh)}
-	\FPeval{\resultxi}{clip(\x+1.5*\xsh+0.5*\xsi)}
-	\FPeval{\resultyi}{clip(\y+1.5*\ysh+0.5*\ysi)}
+	\FPeval{\resultxi}{clip(\x+2*\xsh+\xsi)}
+	\FPeval{\resultyi}{clip(\y+2*\ysh+\ysi)}
 	\filldraw [gray!40!white] (\x/100, \y/100) circle (1pt);
 	\filldraw [gray!40!white] (\resultx/100, \resulty/100) circle (1pt);
 	\filldraw [red] (\resultxi/100, \resultyi/100) circle (1pt);	
@@ -391,7 +401,7 @@ Jeg kombinerer 3 ting som ikke er så vanlig å kombinere:
 \only<2>
 {
 	\begin{figure}
-		\includegraphics[height=0.8\textheight]{../snapshots/carved_crack.pdf}
+		\includegraphics[height=0.8\textheight]{../snapshots/bulk_hydrate.pdf}
 	\end{figure}
 }
 \end{frame}
@@ -452,16 +462,53 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 }
 \end{frame}
 
+\begin{frame}
+\frametitle{Mekaniske egenskaper}
+\only<1>
+{
+	\begin{columns}
+	\column{0.7\textwidth}
+	\begin{figure}
+		\includegraphics[width=\textwidth]{../figures/thesis/stress_strain_11_11_11_tip4p_ice_uam.pdf}
+	\end{figure}
+	\column{0.3\textwidth}
+	Youngs modul er omtrent 7.1 GPa.\\
+	\vspace{3mm}
+	Det ser bra ut. (Exp $\approx 7.8$ GPa).
+	Til sammenlikning: PMMA har $E \approx 3$ GPa.
+	\end{columns}
+}
+\only<2>
+{
+	\begin{columns}
+	\column{0.7\textwidth}
+	\begin{figure}
+		\includegraphics[width=\textwidth]{../figures/thesis/strain_strain_11_11_11_y_z_poisson_tip4p_ice_uam.pdf}
+	\end{figure}
+	\column{0.3\textwidth}
+	Poissonforholdet er omtrent 0.4.\\
+	\vspace{3mm}
+	Det er litt mye.
+	\end{columns}
+}
+\end{frame}
+
 %\subsection{}
 \begin{frame}
 \frametitle{Simulert system for sprekker}
 \only<1>
 {
+	\begin{tikzpicture}[overlay, shift={($(current page.center)-(0, 0.5)$)}]
+	\node (pic) at (0, 0) {\includegraphics[trim=35 0 35 0, clip, width=4cm]{../snapshots/bulk_hydrate.pdf}};
+	\end{tikzpicture}
+}
+\only<2>
+{
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(0, 0.5)$)}]
 \node (pic) at (0, 0) {\includegraphics[trim=100 0 100 0, clip, width=4cm]{../snapshots/carved_crack.pdf}};
 \end{tikzpicture}
 }
-\only<2>
+\only<3>
 {
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)}]
 \centering
@@ -481,7 +528,7 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 }
 \end{tikzpicture}
 }
-\only<3->
+\only<4->
 {
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)}]
 \centering
@@ -502,13 +549,13 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 \end{tikzpicture}
 }
 
-\only<4-6>
+\only<5-7>
 {
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)},decoration={random steps,segment length=3pt,amplitude=2pt}]
 \fill[white,decorate,rounded corners=1pt] (2,3) ellipse (0.15cm and 1.2cm);
 \end{tikzpicture}
 }
-\only<5-6>
+\only<6-7>
 {
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)},decoration={random steps,segment length=3pt,amplitude=2pt}]
 \filldraw[fill=white, draw=red, thick, dashed] (2, 3) ellipse (0.40cm and 1cm);
@@ -516,7 +563,7 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 \end{tikzpicture}
 }
 
-\only<6>
+\only<7>
 {
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)},decoration={random steps,segment length=3pt,amplitude=2pt}]
 \filldraw[fill=white, draw=red, thick, dashed] (2, 3) ellipse (0.45cm and 1cm);
@@ -524,7 +571,7 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 \fill[white,decorate,rounded corners=1pt] (2,3) ellipse (0.20cm and 3cm);
 \end{tikzpicture}
 }
-\only<7->
+\only<8->
 {
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)},decoration={random steps,segment length=3pt,amplitude=2pt}]
 \pgfmathsetseed{42}
@@ -540,25 +587,25 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 \mathcal{G} > \mathcal{G}_c \stackrel{\text{sprøtt}}{=} 2\gamma_s
 \end{equation*}
 \end{block}
-Dersom den \emph{mekaniske} energien som frigjøres ved å åpne ny sprekkflate er større enn energien som kreves for å åpne sprekken, vil sprekken vokse.
+Dersom den \emph{mekaniske} energien som frigjøres ved å åpne ny sprekkflate er større enn energien som kreves for å åpne sprekken, vil sprekken vokse.\\
+\vspace{5mm}
+Bruddstyrken defineres vanligvis som den mekaniske energien som må tilføres med tensilt stress for å åpne sprekkareal.
 \end{frame}
 
 
 \begin{frame}
-\frametitle{Hva var det jeg lurte på?}
+\frametitle{Hva var det vi lurte på?}
 \begin{itemize}
 \item Bruddstyrke
-\item Frigjort metan
 \item Bruddmekanisme
+\item Frigjort metan
 \end{itemize}
 \end{frame}
 
 \section{Resultater}
 
 \subsection{}
-\begin{frame}
-\frametitle{Mekaniske egenskaper}
-\end{frame}
+
 
 %\subsection{}
 \begin{frame}{Måling av arealet til sprekkoverflaten}

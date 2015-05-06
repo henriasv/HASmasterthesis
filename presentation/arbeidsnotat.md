@@ -25,15 +25,35 @@ Man ser for seg to *store* bruksområder for gasshydrater: For det første, det 
 Nå er det vel sånn at ikke alle er tilfreds med utvinning av fossilt brensel som grunn til å forske på noe. For gasshydrater finnes det også andre grunner. Grunner som har å gjøre med at gasshydratene utgjør en mulig trussel mot oss. Litt som med jordskjelv og vulkaner. 
 
 #### Slide "Risiko"
-Det er både risiko knyttet til gasshydratene i seg selv, og eventuell ressursutnyttelse fra gasshydratene. 
+Det er både risiko knyttet til gasshydratene i seg selv, og eventuell ressursutnyttelse fra gasshydratene. Den mest umiddelbare risikoen – den er en risiko man kjenner fra oljeindustrien – er at gasshydrater kan dannes i multifase oljeledninger, der olje, gass og vann fraktes sammen. Gass og vann under høyt trykk kan danne gasshydrater.  Dette er noe man har visst om helt siden 1934, da en ingeniør beskrev det første funnet av gasshydrater i el oljeledning. Derfor er det mye virksomhet knyttet til å finne stoffer man kan blande inn i olje-gass-vann-bladingen for å unngå at det dannes gasshydrater der.
 
+Videre, så kan gasshydrater være viktige for stabiliteten til sedimenter som ligger på havbunnen. Det er vanlig at gasshydrater fyller relativt store porer i slengen, og dersom gasshydratene i et område dissosierer, så kan det i ytterste konsekvens føre til skred langs havbunnen, som igjen kan føre til for eksempel en tsunami. 
+
+I tillegg finnes det en bekymring knyttet til klimaendringer: Gasshydratene er stabile på grunn av temperaturen og trykket der de ligger. Dersom temperaturen øker, kan hydratene begynne å smelte, og dermed frigjøre metan, som er en kraftig drivhusgass. Frykten er at denne mekanismen skal løpe løpsk, slik at varmen som følge av metanutslippene fører til at stadig mer gasshydrater smelter, og til det blir så varmt at livet på jorda, iallfall for menneskenes del, er over. Men ta det med ro. Dette er ikke mainstream, så det er ingen grunn til å frykte det med det første. 
+
+#### Hvorfor studerer vi dette, og hva lurer vi på?
+Man vet overraskende lite om egenskapene til gasshydrater. Det skyldes i stor grad at det er vanskelig å lage rene prøver av gasshydrater. Eksperimentelle resultater er usikre. Derfor kan teoretiske studier slik som denne, være nyttige. Det overordnede målet med å studere dette er at vi ønsker å finne en metode for å utvinne metan fra gasshydrater på en trygg og lønnsom måte. Men siden man vet såpass lite om gasshydratene, har vi satt noen litt mindre hårete delmål, som har vært det jeg har jobbet med i løpet av masteren.
+I første omgang har vi lurt på følgende:
+
+1. Hva er bruddstyrken til gasshydrater?
+2. Hva er bruddmekanismen til gasshydrater?
+3. Hvor mye metan frigjøres når et gasshydrat sprekker?
+
+I tillegg må vi ha et eksplisitt forhold til hvordan vi skal bruke simuleringer for å svare på disse spørsmålene. Det handler i første omgang om hvilke interaksjonspotensialer man skal bruke, hvordan man skal utløse sprekker, og hvor perfekte krystaller man skal se på.
 
 #### Slide "Modellering og simulering"
 Nå går jeg over til den mer alvorlige delen av foredraget – den delen som handler om det jeg har brukt det siste året mitt på.
 
+#### Slide "Molekylærdynamikk"
 I min masteroppgave bruker jeg en metode som heter molekylærdynamikk for å simulere et system av gasshydrater. Jeg vil først nå snakke kort om molekylærdynamikk, før jeg går videre til hvordan det brukes i mitt prosjekt.
 
-I molekylærdynamikk simulerer man banen til punktpartikler som påvirkes av krefter imellom hverandre. Siden det gjøres med datamaskin må problemet diskretiseres i tid, og forflytning av partikler skjer i tidssteg. På bildet dere ser til høyre har alle partiklene en viss posisjon og en viss hastighet, men for å vise dem stille er det hele frøset i tid. Så beregnes alle kreftene i systemet, og partiklene forflytter seg basert på hastigheten de hadde, og hvilke krefter som virket på dem. (Vise at partiklene flytter seg i figuren).
+I molekylærdynamikk simulerer man banen til punktpartikler som påvirkes av krefter imellom hverandre. Partiklene lever inni en boks, og den boksen har periodiske randbetingelser, som betyr at om en partikkel prøver å fly ut av boksen på den ene siden, så dukker den opp igjen på den andre siden. 
+
+Punkpartiklene påvirkes av hverandre ved at det virker krefter mellom dem. Disse kreftene er gitt av potensialer, og i mitt tilfelle har jeg brukt to typer potensialer. Lennard–Jones-potensialet og Coulomb-potensialet. Coulomb potensialet er det man får fra Coulombs lov i elektromagnetisme. 
+
+Når man har potensialer, er kreftene mellom partiklene gradienten av potensialet, og når man har regnet kreftene som virker på alle partiklene i systemet kan man løse bevegelsen i tid ved hjelp av sin favoritt-numeriske integrator. Den favorittintegratoren er alltid en variant av Velocity-Verlet-integratoren.
+
+Siden det gjøres med datamaskin må problemet diskretiseres i tid, og forflytning av partikler skjer i tidssteg. På bildet dere ser til høyre har alle partiklene en viss posisjon og en viss hastighet, men for å vise dem stille er det hele frøset i tid. Så beregnes alle kreftene i systemet, og partiklene forflytter seg basert på hastigheten de hadde, og hvilke krefter som virket på dem. (Vise at partiklene flytter seg i figuren).
 
 Nå skal jeg være veldig eksplisitt om hva som er modelleringen i mitt prosjekt:
 
@@ -42,3 +62,38 @@ Nå skal jeg være veldig eksplisitt om hva som er modelleringen i mitt prosjekt
 3. Påføre deformasjon under simulering
 
 I tillegg kommer selve integrasjonen av bevegelseslikningene. 
+
+#### Slide "TIP4P/ICE + UAM"
+I forrige slide viste jeg bare en masse røde prikker, og det er jo ikke så veldig tilfredsstillende. Nå innfører jeg de faktiske partiklene jeg har brukt til å modellere gasshydratet. For vann har jeg brukt en modell som heter TIP4P/ICE. Det er en modell det vannet har et Lennard–Jones-sentrum plassert midt i oksygenet, en positiv ladning plassert på hver av hydrogenene, og en negativ ladning langs halveringslinja i båndvinkelen som spennes ut fra oksygenet av de to hydrogenene. Man plasserer også masse på oksygenet og hydrogenene ut ifra det beste estimatet man har for disse, mens det punktet der den negative ladningen ligger er masseløst. ...Også finnes det rundt 15 varianter av denne vannmodellen basert på hvor den negative ladningen er plassert, og hvor stor ladning den skal ha. Metanet modelleres med en litt enklere modell. Den er kun en Lennard–Jones-kjerne, og er gjerne kjent som "United Atom Methane". 
+
+
+#### Slide "Mekaniske egenskaper"
+
+... Grunnen til at de blå linjene viser et lavere poissonforhold enn de blå, er at i den blå strekkes systemet raskere enn i den røde, og dermed rekker ikke systemet å trekke seg skillelig sammen normalt på strekkretningen.
+
+#### Slide "Simulert system for sprekker" 
+Når vi skal simulere oppsprekking av gasshydratet velger vi følgende prosedyre. Og herifra vil jeg presisere. Dette er det ingen som har gjort før: 
+
+1. Setter opp posisjoner for alle partiklene, slik at de står i en gasshydratstruktur
+2. Skjærer ut en elliptisk sprekk i materialet. Grunnen til at den er elliptisk er at det er lærebokeksempelet i bruddmekanikk, og gjør dermed analysen enklere. Det kommer vi til mot slutten av presentasjonen.
+3. Lar materialet komme seg i likevekt etter utskjæringen
+4. Strekker materialet over en viss tid
+5. Venter og ser om en sprekk utvilker seg. 
+6. Man kan gjerne se stor aktivitet nær de spisseste områdene av ellipsen. Etterhvert utvikler det seg en skikkelig sprekk
+7. Da utvikler den seg plutselig fort, og øker i størrelse til den når endene av prøven.
+8. Når sprekken går, slippes det også fri metan.
+
+#### Slide "Måling av størrelsen på sprekken"
+Størrelsen på sprekken er interessant av flere grunner, men spesielt er det av interesse å følge utviklingen i sprekkstørrelsen i tid, og å sammenlikne den med utviklingen i andre parametre i kjøringen. 
+
+#### Slide "Metan frigjøres fort"
+Noe av det første man ser her, er hvor fort metan frigjøres når systemet sprekker opp. Man kunne tenke seg at systemet først sprakk opp, og at metanet deretter diffunderte inn i sprekken. Men sånn er det ikke. Metan frigjøres med en eneste gang. Og det det egentlig betyr, er at sprekken ikke er helt skarp. Ikke bare deles gasshydratet når det sprekker opp, men det rives også litt i stykker. 
+
+#### Slide "Hva var det vi lurte på"
+Så for å oppsummere. Hva var det egentlig jeg lurte på?
+
+1. 	Hva er bruddstyrken til gasshydratet? Det har jeg besvart innenfor den modellen jeg har brukt. Og svaret er et tall, nemlig rundt 0.2 Joule per kvadratmeter. 
+2. Hvordan starter oppsprekkingen? Jeg har funnet ut at i den modellen jeg bruker, så begynner oppsprekkingen med at den initielle sprekken vokser sakte, som ved smelting, før den når det som ser ut som et kritisk nivå, der sprekken begynner å gå fort – i en hastighet nær lydhastigheten i materialet.
+3. På hvilken måte frigjøres metan?
+
+Den andre siden av saken, er at vi har gjort de første simuleringene, så vidt vi kjenner til, av sprekker i gasshydrater med molekylærdynamikk. Vi har samlet erfaring om hvordan det skal gjennomføres. blabla.
