@@ -2,20 +2,20 @@
 %\usepackage[norsk]{babel}
 \usepackage[utf8x]{inputenc}
 \usepackage[T1]{fontenc}
-%\usepackage[absolute,overlay]{textpos}
+\usepackage[absolute,overlay]{textpos}
 \usepackage{tikz}
-%\usepackage{chemfig}
+\usepackage{chemfig}
 \usepackage{xparse}
-%\usepackage{xifthen}
+\usepackage{xifthen}
 \usepackage{xcolor}
 \usepackage{calc}
-%\usepackage{fp}
+\usepackage{fp}
 \usepackage{textpos}
 \usepackage{graphicx}
-%\usepackage{eso-pic}
+\usepackage{eso-pic}
 \usepackage{verbatim}
 
-\usetikzlibrary{calc, arrows,shapes, intersections, decorations.pathreplacing, decorations.text, decorations.pathmorphing, decorations.fractals, external}
+\usetikzlibrary{calc, arrows,shapes, intersections, decorations.pathreplacing, decorations.text, decorations.pathmorphing, decorations.fractals, patterns}
 \tikzstyle{every picture}+=[remember picture]
 \tikzstyle{na} = [baseline=-.5ex]
 \usepackage{pgfplots}
@@ -80,6 +80,13 @@ Universitetet i Oslo
 \section[Introduksjon]{Introduksjon og Bakgrunn}
 
 \subsection{}
+
+\begin{frame}
+\frametitle{Hva skjer i masteren min?}
+Jeg kombinerer 3 ting som ikke er så vanlig å kombinere:
+
+\end{frame}
+
 \begin{frame}
 \frametitle{Hva er gasshydrater?}
 \begin{columns}[cc]
@@ -216,14 +223,14 @@ Universitetet i Oslo
 
 \subsection{}
 %%%%%%%%%%%%%%%%%%
-\begin{comment}
+%\begin{comment}
 %%%%%%%%%%%%%%%%%
 \begin{frame}
 \frametitle{Molekylærdynamikk: Tidsutvikle et system av punktpartikler som styres av Newtons 2. lov, $\mathbf{F} = m\ddot{\mathbf{r}}$}
 \begin{columns}
 \column{0.4\textwidth}
 \pgfplotsset{width=5cm, compat=1.8}
-\only<1-2>
+\only<1-3>
 {
 \begin{figure}
 \begin{tikzpicture}[baseline]
@@ -252,7 +259,7 @@ Universitetet i Oslo
 \end{tikzpicture}
 \end{figure}
 }
-\only<3>
+\only<4->
 {
 	\zerodisplayskips
 	\begin{block}{\textcolor{red}{Lennard--Jones-potensialet}}
@@ -288,11 +295,13 @@ Universitetet i Oslo
 	\pgfmathrandominteger{\y}{0}{600}
 	\pgfmathrandominteger{\xsh}{0}{50}
 	\pgfmathrandominteger{\ysh}{0}{60}
+	\pgfmathrandominteger{\xsi}{0}{50}
+	\pgfmathrandominteger{\ysi}{0}{60}
 	\filldraw [red] (\x/100, \y/100) circle (1pt);
 }
 \end{tikzpicture}
 }
-\only<2-3>
+\only<2>
 {
 \begin{tikzpicture}[remember picture,overlay]
   \tikzset{shift={(current page.center)},yshift=-4cm}
@@ -305,11 +314,37 @@ Universitetet i Oslo
 	\pgfmathrandominteger{\y}{0}{600}
 	\pgfmathrandominteger{\xsh}{-5}{5}
 	\pgfmathrandominteger{\ysh}{-5}{5}
+	\pgfmathrandominteger{\xsi}{0}{50}
+	\pgfmathrandominteger{\ysi}{0}{60}
 	\FPeval{\resultx}{clip(\x+\xsh)}
 	\FPeval{\resulty}{clip(\y+\ysh)}
 	\filldraw [gray!40!white] (\x/100, \y/100) circle (1pt);
-	\filldraw [red] (\resultx/100, \resulty/100) circle (1pt);
-	
+	\filldraw [red] (\resultx/100, \resulty/100) circle (1pt);	
+}
+\end{tikzpicture}
+}
+\only<3->
+{
+\begin{tikzpicture}[remember picture,overlay]
+  \tikzset{shift={(current page.center)},yshift=-4cm}
+\draw[blue!40!white] (0, 0) rectangle (5, 6);
+\node (title) at (2.5, 6.3) {Partikler med posisjoner og hastigheter};
+\pgfmathsetseed{1138}
+\foreach \i in {1, 2, ..., 100}
+{
+	\pgfmathrandominteger{\x}{0}{500}
+	\pgfmathrandominteger{\y}{0}{600}
+	\pgfmathrandominteger{\xsh}{-5}{5}
+	\pgfmathrandominteger{\ysh}{-5}{5}
+	\pgfmathrandominteger{\xsi}{-5}{5}
+	\pgfmathrandominteger{\ysi}{-5}{5}
+	\FPeval{\resultx}{clip(\x+\xsh)}
+	\FPeval{\resulty}{clip(\y+\ysh)}
+	\FPeval{\resultxi}{clip(\x+1.5*\xsh+0.5*\xsi)}
+	\FPeval{\resultyi}{clip(\y+1.5*\ysh+0.5*\ysi)}
+	\filldraw [gray!40!white] (\x/100, \y/100) circle (1pt);
+	\filldraw [gray!40!white] (\resultx/100, \resulty/100) circle (1pt);
+	\filldraw [red] (\resultxi/100, \resultyi/100) circle (1pt);	
 }
 \end{tikzpicture}
 }
@@ -320,6 +355,8 @@ Universitetet i Oslo
 %\subsection{}
 \begin{frame}
 \frametitle{TIP4P/ICE + UAM (vann og metan)}
+\only<1>
+{
 \begin{tikzpicture}[remember picture,overlay]
 \tikzset{shift={(current page.center)},yshift=-1cm, xshift=-2cm}
 \filldraw (0, 0) [green] circle [radius=1.0];
@@ -350,8 +387,15 @@ Universitetet i Oslo
 %\path [violet, draw, <->, very thick]  (ch41.center) -- node[below] {$LJ$} (h2o2.north);
 %\path [violet, draw, <->, very thick]  (h2o2.north) -- node[right] {$LJ$} (h2o1.north);
 \end{tikzpicture}
+}
+\only<2>
+{
+	\begin{figure}
+		\includegraphics[height=0.8\textheight]{../snapshots/carved_crack.pdf}
+	\end{figure}
+}
 \end{frame}
-\end{comment}
+%\end{comment}
 
 \begin{frame}
 \frametitle{Simulert system for mekaniske egenskaper}
@@ -384,9 +428,9 @@ Universitetet i Oslo
 		(0, 4.5) -- (0, 5) node [black,midway,xshift=0.6cm, rotate=0] {$\frac{\Delta y}{2}$};
 \end{tikzpicture}
 }
-\end{frame}
 
-\begin{frame}
+\only<3>
+{
 Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 
 \begin{columns}[T]
@@ -405,7 +449,7 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 \end{equation*}
 \end{block}
 \end{columns}
-
+}
 \end{frame}
 
 %\subsection{}
@@ -413,7 +457,14 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 \frametitle{Simulert system for sprekker}
 \only<1>
 {
-\begin{tikzpicture}
+\begin{tikzpicture}[overlay, shift={($(current page.center)-(0, 0.5)$)}]
+\node (pic) at (0, 0) {\includegraphics[trim=100 0 100 0, clip, width=4cm]{../snapshots/carved_crack.pdf}};
+\end{tikzpicture}
+}
+\only<2>
+{
+\begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)}]
+\centering
 \filldraw[fill=blue!40!white] (0, 0) rectangle (4, 6);
 \draw[very thick] (0,0) -- (4, 0);
 \draw[very thick] (0,6) -- (4, 6);
@@ -430,7 +481,76 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 }
 \end{tikzpicture}
 }
+\only<3->
+{
+\begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)}]
+\centering
+\filldraw[fill=blue!40!white] (-0.5, 0) rectangle (4.5, 6);
+\draw[very thick] (-0.5,0) -- (4.5, 0);
+\draw[very thick] (-0.5,6) -- (4.5, 6);
+\filldraw[fill=white, draw=red, thick, dashed] (2, 3) ellipse (0.35cm and 1cm);
+\foreach \i in {1, 2, 3, 4, 5}
+{
+	\draw[thick, ->] (4.5, \i) -- (5.5, \i);
+	\draw[thick, ->] (-0.5, \i) -- (-1.5, \i);
+}
+\foreach \i in {-0.125, 0.25,...,4.0}
+{
+	\draw (\i, 0) -- (\i+0.2, -0.2);
+	\draw (\i, 6.0) -- (\i-0.2, 6.2);
+}
+\end{tikzpicture}
+}
 
+\only<4-6>
+{
+\begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)},decoration={random steps,segment length=3pt,amplitude=2pt}]
+\fill[white,decorate,rounded corners=1pt] (2,3) ellipse (0.15cm and 1.2cm);
+\end{tikzpicture}
+}
+\only<5-6>
+{
+\begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)},decoration={random steps,segment length=3pt,amplitude=2pt}]
+\filldraw[fill=white, draw=red, thick, dashed] (2, 3) ellipse (0.40cm and 1cm);
+\fill[white,decorate,rounded corners=1pt] (2,3) ellipse (0.15cm and 2cm);
+\end{tikzpicture}
+}
+
+\only<6>
+{
+\begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)},decoration={random steps,segment length=3pt,amplitude=2pt}]
+\filldraw[fill=white, draw=red, thick, dashed] (2, 3) ellipse (0.45cm and 1cm);
+\pgfmathsetseed{42}
+\fill[white,decorate,rounded corners=1pt] (2,3) ellipse (0.20cm and 3cm);
+\end{tikzpicture}
+}
+\only<7->
+{
+\begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)},decoration={random steps,segment length=3pt,amplitude=2pt}]
+\pgfmathsetseed{42}
+\fill[outer color=green!40!gray, inner color=white, decorate, rounded corners=1pt] (2,3) ellipse (0.23cm and 3cm) (2, 3) ellipse (0.48cm and 1cm);
+\end{tikzpicture}
+}
+\end{frame}
+
+\begin{frame}
+\frametitle{Hva skal til for at det sprekker opp?}
+\begin{block}{Griffith og Irwins energibalanse}
+\begin{equation*}
+\mathcal{G} > \mathcal{G}_c \stackrel{\text{sprøtt}}{=} 2\gamma_s
+\end{equation*}
+\end{block}
+Dersom den \emph{mekaniske} energien som frigjøres ved å åpne ny sprekkflate er større enn energien som kreves for å åpne sprekken, vil sprekken vokse.
+\end{frame}
+
+
+\begin{frame}
+\frametitle{Hva var det jeg lurte på?}
+\begin{itemize}
+\item Bruddstyrke
+\item Frigjort metan
+\item Bruddmekanisme
+\end{itemize}
 \end{frame}
 
 \section{Resultater}
