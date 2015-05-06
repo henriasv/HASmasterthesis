@@ -83,6 +83,13 @@ Når vi skal simulere oppsprekking av gasshydratet velger vi følgende prosedyre
 7. Da utvikler den seg plutselig fort, og øker i størrelse til den når endene av prøven.
 8. Når sprekken går, slippes det også fri metan.
 
+#### Slide "Hva skal til for at systemet sprekker opp?"
+Grunnleggende bruddmekanikk sier at i sprø materialer, så vil en sprekk vokse dersom den mekaniske energien som frigjøres ved å la sprekken vokse er større enn energien som kreves for å åpne sperekkflaten, så vil en sprekk vokse. Så i likningen. Større enn er til venste, og energien for å åpene sprekk er til høyre. Uansett om materialet er sprøtt eller ikke, så kan man definere en bruddstyrke utifra en kritisk energi, men bare for sprø materialer er den den samme som overflateenergien til sprekken. 
+
+Det jeg i praksis har gjort for å finne bruddstyrken, er å lage mange simuleringer, der jeg strekker forskjellig. Dermed vil en simulering være den simuleringen med størst strekk som ikke sprakk opp, og en simulering vil være den simuleringen med laves strekk som sprakk opp, og bruddstyrken vil ligge et sted mellom de to simuleringene. Jeg bruker da den laveste som sprakk som estimat.
+
+Når jeg har funnet den simuleringen, finner jeg hvor stor mekanisk energi som måtte tilføres for at den skulle sprekke opp, og bruker den for å beregne bruddstyrken. Sigma er stresset, kraft per areal, som måles på endeflatene i systemet.	Der hvor pilene var tegnet inn i de forrige slidene.
+
 #### Slide "Måling av størrelsen på sprekken"
 Størrelsen på sprekken er interessant av flere grunner, men spesielt er det av interesse å følge utviklingen i sprekkstørrelsen i tid, og å sammenlikne den med utviklingen i andre parametre i kjøringen. 
 
