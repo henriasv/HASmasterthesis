@@ -392,14 +392,14 @@ Hvordan sprekker i gasshydrater bidrar til å oppløse hydratet.
 \draw (0, 0) [green!60!black] circle [radius=3.73];
 \fill [violet, shift={(0, 0)}] (0, 0) circle [radius=0.1];
 
-\filldraw [red!60!black,shift={(6, 2)}, rotate=210] (0, 0) circle [radius=0.7] node (o1) {} [gray!40!white] (-52.5:0.95) circle [radius=0.4] node (h1) [black]{+} (52.5:0.95) circle [radius=0.4] node (h2) [black] {+};
+\filldraw [red!60!white,shift={(6, 2)}, rotate=210] (0, 0) circle [radius=0.7] node (o1) {} [gray!40!white] (-52.5:0.95) circle [radius=0.4] node (h1) [black]{+} (52.5:0.95) circle [radius=0.4] node (h2) [black] {+};
 \draw (6, 2) [red] circle [radius=3.16];
-\fill [red, shift={(6, 2)}] (0, 0) circle [radius=0.7] node[circle, draw, fill=red!20!white] (m2) at (210:0.38) {--};
+\fill [red!60!white, shift={(6, 2)}] (0, 0) circle [radius=0.7] node[circle, draw, fill=red!20!white] (m2) at (210:0.38) {--};
 \fill [violet, shift={(6, 2)}] (0, 0) circle [radius=0.1];
 
 \filldraw [red!60!black,shift={(5, -2)}, rotate=120] (0, 0) circle [radius=0.7] node (o2) {} [gray!40!white] (-52.5:0.95) circle [radius=0.4] node (h21) [black]{+} (52.5:0.95) circle [radius=0.4] node (h22) [black]{+};
 \draw (5, -2) [red] circle [radius=3.16];
-\fill [red, shift={(5, -2)}] (0, 0) circle [radius=0.7] node[circle, draw, fill=red!20!white] (m2) at (120:0.38) {--};
+\fill [red!60!white, shift={(5, -2)}] (0, 0) circle [radius=0.7] node[circle, draw, fill=red!20!white] (m2) at (120:0.38) {--};
 \fill [violet, shift={(5, -2)}] (0, 0) circle [radius=0.1];
 
 \fill[violet] (-4, 4) circle[radius=0.1] node[xshift=69] (ljdef) {Lennard--Jones-sentrum};
@@ -431,7 +431,7 @@ Hvordan sprekker i gasshydrater bidrar til å oppløse hydratet.
 \only<1>
 {
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(2.5,3.5)$)}]
-\filldraw[fill=blue!40!white] (0, 0) rectangle (5, 5);
+\filldraw[fill=blue!25!white] (0, 0) rectangle (5, 5);
 \foreach \i in {0.5, 1.5, 2.5, 3.5, 4.5}
 {
 	\draw[thick, ->] (5, \i) -- (6, \i);
@@ -444,8 +444,8 @@ Hvordan sprekker i gasshydrater bidrar til å oppløse hydratet.
 \only<2>
 {
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(2.5,3.5)$)}]
-\filldraw[fill=blue!40!white, opacity=0.4] (0, 0) rectangle (5, 5);
-\filldraw[fill=blue!40!white] (-1, 0.5) rectangle (6, 4.5);
+\filldraw[fill=blue!25!white, opacity=0.4] (0, 0) rectangle (5, 5);
+\filldraw[fill=blue!25!white] (-1, 0.5) rectangle (6, 4.5);
 \foreach \i in {0.9, 1.7, 2.5, 3.3, 4.1}
 {
 	\draw[thick, ->] (6, \i) -- (7, \i);
@@ -532,7 +532,7 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 {
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)}]
 \centering
-\filldraw[fill=blue!40!white] (0, 0) rectangle (4, 6);
+\filldraw[fill=blue!30!white] (0, 0) rectangle (4, 6);
 \draw[very thick] (0,0) -- (4, 0);
 \draw[very thick] (0,6) -- (4, 6);
 \filldraw[fill=white, draw=red, thick, dashed] (2, 3) ellipse (0.25cm and 1cm);
@@ -552,7 +552,7 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 {
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(2,3.5)$)}]
 \centering
-\filldraw[fill=blue!40!white] (-0.5, 0) rectangle (4.5, 6);
+\filldraw[fill=blue!30!white] (-0.5, 0) rectangle (4.5, 6);
 \draw[very thick] (-0.5,0) -- (4.5, 0);
 \draw[very thick] (-0.5,6) -- (4.5, 6);
 \filldraw[fill=white, draw=red, thick, dashed] (2, 3) ellipse (0.35cm and 1cm);
