@@ -84,7 +84,25 @@ Universitetet i Oslo
 \begin{frame}
 \frametitle{Hva skjer i masteren min?}
 Jeg kombinerer 3 ting som ikke er så vanlig å kombinere:
-
+\begin{figure}
+\begin{tikzpicture}[decoration={random steps,segment length=3pt,amplitude=2pt}]
+\node (gashydrate) at (0, 0) {\includegraphics[width=0.2\textwidth]{../pictures/burning_hydrate.pdf}};
+\begin{scope}[shift={(2, 1)}]
+\draw[blue!40!white] (0, 0) rectangle (2, 3);
+\pgfmathsetseed{1138}
+\foreach \i in {1, 2, ..., 100}
+{
+\pgfmathrandominteger{\x}{0}{200}
+\pgfmathrandominteger{\y}{0}{300}
+\filldraw [red] (\x/100, \y/100) circle (1pt);
+}
+\end{scope}
+\begin{scope}[shift={(5,-2)}]
+\fill[color=blue!40!white] (0, 0) rectangle (2, 3);
+\fill[white,decorate,rounded corners=1pt] (0,1.5) ellipse (1.5cm and 0.1cm);
+\end{scope}
+\end{tikzpicture}
+\end{figure}
 \end{frame}
 
 \begin{frame}
@@ -276,13 +294,13 @@ Hvordan sprekker i gasshydrater bidrar til å oppløse hydratet.
 	\begin{block}{\textcolor{red}{Lennard--Jones-potensialet}}
 	\vspace{-4mm}
 	\begin{equation*}
-	U = 4\epsilon\left[\left(\frac{\sigma}{r}\right)^{12}-\left(\frac{\sigma}{r}\right)^6\right]
+	U_1 = 4\epsilon\left[\left(\frac{\sigma}{r}\right)^{12}-\left(\frac{\sigma}{r}\right)^6\right]
 	\end{equation*}
 	\end{block}
 	\begin{block}{\textcolor{blue}{Coulomb-potensialet}}
 	\vspace{-4mm}
 	\begin{equation*}
-	U = k\frac{q_aq_b}{r}
+	U_2 = k\frac{q_aq_b}{r}
 	\end{equation*}
 	\end{block}
 	\begin{block}{\textcolor{gray}{Kraftberegning}}
@@ -409,7 +427,7 @@ Hvordan sprekker i gasshydrater bidrar til å oppløse hydratet.
 %\end{comment}
 
 \begin{frame}
-\frametitle{Simulert system for mekaniske egenskaper}
+\frametitle{Simulert system for elastiske egenskaper}
 \only<1>
 {
 \begin{tikzpicture}[overlay, shift={($(current page.center)-(2.5,3.5)$)}]
@@ -449,7 +467,7 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 \column{0.5\textwidth}
 \begin{block}{Youngs modul}
 \begin{equation*}
- E=\frac{\sigma_x l_0}{\Delta x} = \frac{\sigma_x}{\epsilon_x}
+ E=\frac{F_x l_0}{A\Delta x} = \frac{\sigma_x}{\epsilon_x}
 \end{equation*}
 \end{block}
 
@@ -464,7 +482,7 @@ Beregner Youngs modul og Poissonforholdet basert på de forrige figurene:
 \end{frame}
 
 \begin{frame}
-\frametitle{Mekaniske egenskaper}
+\frametitle{Elastiske egenskaper}
 \only<1>
 {
 	\begin{columns}
@@ -592,17 +610,32 @@ Dersom den \emph{mekaniske} energien som frigjøres ved å åpne ny sprekkflate 
 \vspace{5mm}
 Bruddstyrken defineres vanligvis som den mekaniske energien som må tilføres med tensilt stress for å åpne sprekkareal. Tilført energi måles ved å integrere stresset over utvidelsen:
 \begin{equation} 
-W = \int F \ \mathrm{d}x = l_xl_y\int_{l_0}^{l_0+\Delta x} \sigma_x \ \mathrm{d}x
+W = \int F \ \mathrm{d}x = A\int_{l_0}^{l_0+\Delta x} \sigma_x \ \mathrm{d}x
 \end{equation}
+\end{frame}
+
+\begin{frame}
+\frametitle{Bruddstyrke}
+\begin{equation*}
+\mathcal{G}_c \approx 0.4 \text{ J/m}^2
+\end{equation*}
+\begin{equation*}
+K_{Ic} \approx 0.06 \text{ MPam}^\frac{1}{2}
+\end{equation*}
+\vspace{5mm}
+\center{Dette betyr at en sprekk vil løpe dersom det å åpne en kvadratmeter med sprekk fører til at det frigjøres 0.4 Joule med \emph{mekanisk} energi.}
+\vspace{5mm}
+\center{Resultatet er omtrent det samme som eksperimentelle resultater for vanlig is.}
 \end{frame}
 
 
 \begin{frame}
 \frametitle{Hva var det vi lurte på?}
 \begin{itemize}
-\item Bruddstyrke
-\item Bruddmekanisme
-\item Frigjort metan
+\item Bruddstyrke -- funnet
+\item Sprøtt eller duktilt? -- Sprøtt
+\item Bruddmekanisme -- Kommer
+\item Frigjort metan -- Kommer
 \end{itemize}
 \end{frame}
 
@@ -654,24 +687,32 @@ $L$ & total lengde av trukne linjestykker
 
 %\subsection{}
 \begin{frame}
-\frametitle{}
-\begin{columns}
-\column{0.4\textwidth}
-\begin{itemize}
-\item Hver fargede strek er en sprekksimulering.
-\item Oppsprekking skjer først sakte, ved smelting, deretter fort, ved brudd.
-\end{itemize}
-\column{0.6\textwidth}
-\begin{tikzpicture}
-\node at (current page.center) {\includegraphics[height=0.95\textheight]{../figures/thesis/stress_area_lefm.pdf}};
-\end{tikzpicture}
-\end{columns}
+\frametitle{Bruddmekanisme}
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{../figures/thesis/fracture_theory_compare.pdf}
+\end{figure}
 
 \end{frame}
 
+\begin{frame}
+\frametitle{Frigjøring av metan: metan frigjøres fort under oppsprekking}
+\begin{figure}
+\includegraphics[width=0.9\textwidth]{../figures/thesis/released_methane_temp.pdf}
+\end{figure}
+\end{frame}
+
+
 
 \section{Oppsummering}
-
-
+\subsection{}
+\begin{frame}
+\frametitle{Oppsummering}
+\begin{itemize}
+\item Jeg har gjort sprekksimuleringer av gasshydrater med molekylærdynamikk
+\item Bruddstyrken er omtrent 0.4 J/m$^2$
+\item Gasshydratene mine er sprø, men smelting er en viktig del av sprekkprosessen.
+\item Metan frigjøres fort, men vi vet fortsatt lite om hvilken rolle det frigjorte metanet har.
+\end{itemize}
+\end{frame}
 
 \end{document}
