@@ -66,6 +66,8 @@ I tillegg kommer selve integrasjonen av bevegelseslikningene.
 #### Slide "TIP4P/ICE + UAM"
 I forrige slide viste jeg bare en masse røde prikker, og det er jo ikke så veldig tilfredsstillende. Nå innfører jeg de faktiske partiklene jeg har brukt til å modellere gasshydratet. For vann har jeg brukt en modell som heter TIP4P/ICE. Det er en modell det vannet har et Lennard–Jones-sentrum plassert midt i oksygenet, en positiv ladning plassert på hver av hydrogenene, og en negativ ladning langs halveringslinja i båndvinkelen som spennes ut fra oksygenet av de to hydrogenene. Man plasserer også masse på oksygenet og hydrogenene ut ifra det beste estimatet man har for disse, mens det punktet der den negative ladningen ligger er masseløst. ...Også finnes det rundt 15 varianter av denne vannmodellen basert på hvor den negative ladningen er plassert, og hvor stor ladning den skal ha. Metanet modelleres med en litt enklere modell. Den er kun en Lennard–Jones-kjerne, og er gjerne kjent som "United Atom Methane". 
 
+Hvorfor valgte jeg akkurat denne modellen? Vel, det var forde den ble brukt i de første simuleringene som klarte å spontant danne gasshydrater med molekylærdynamikk. That's it.
+
 
 #### Slide "Mekaniske egenskaper"
 
@@ -78,7 +80,7 @@ Når vi skal simulere oppsprekking av gasshydratet velger vi følgende prosedyre
 2. Skjærer ut en elliptisk sprekk i materialet. Grunnen til at den er elliptisk er at det er lærebokeksempelet i bruddmekanikk, og gjør dermed analysen enklere. Det kommer vi til mot slutten av presentasjonen.
 3. Lar materialet komme seg i likevekt etter utskjæringen
 4. Strekker materialet over en viss tid
-5. Venter og ser om en sprekk utvilker seg. 
+5. Venter og ser om en sprekk utvilker seg. Dette er ikke den vanlige måten å gjøre denne typen simuleringer. Det vanlige er å strekke også mens sprekken går, for å drive sprekken. I dette systemet var det ikke mulig, fordi systemet viste seg å være veldig sprøtt.
 6. Man kan gjerne se stor aktivitet nær de spisseste områdene av ellipsen. Etterhvert utvikler det seg en skikkelig sprekk
 7. Da utvikler den seg plutselig fort, og øker i størrelse til den når endene av prøven.
 8. Når sprekken går, slippes det også fri metan.
@@ -104,3 +106,6 @@ Så for å oppsummere. Hva var det egentlig jeg lurte på?
 3. På hvilken måte frigjøres metan?
 
 Den andre siden av saken, er at vi har gjort de første simuleringene, så vidt vi kjenner til, av sprekker i gasshydrater med molekylærdynamikk. Vi har samlet erfaring om hvordan det skal gjennomføres. blabla.
+
+#### Slide "Hovedresultat"
+Denne figuren er på en måte hovedresultatet av masteren min. Jeg skal forklare den nøye, men jeg begynner med å fortelle at resultatene mine stemmer med lineær elastisk bruddmekanikk dersom markørene lander på linja som heter "Finite Width Griffith". 
